@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenMusic | xeoniii.dev</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/2.0.0/iconify-icon.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" type="image/svg+xml" href="https://github.githubassets.com/favicons/favicon.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#09090b] text-zinc-400 antialiased selection:bg-white/10 selection:text-white" style="font-family: 'Inter', sans-serif;">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 inset-x-0 z-50 border-b border-white/5 bg-[#09090b]/80 backdrop-blur-md">
+        <div class="mx-auto max-w-6xl px-6 h-16 flex items-center justify-between">
+            <a href="../" class="text-lg font-semibold tracking-tighter text-white">
+                xeoniii.<span class="text-zinc-500">dev</span>
+            </a>
+            <div class="flex items-center gap-8 text-sm font-medium">
+                <a href="../#projects" class="hover:text-white transition-colors duration-200">Projects</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="relative pt-32 overflow-hidden min-h-screen">
+        <!-- Background Glow -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-white/[0.02] rounded-full blur-[120px] pointer-events-none"></div>
+
+        <section class="relative px-6 py-24 mx-auto max-w-4xl z-10">
+            <a href="../" class="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-white transition-colors mb-12 group">
+                <iconify-icon icon="solar:arrow-left-linear" class="text-lg group-hover:-translate-x-1 transition-transform"></iconify-icon>
+                Back to Home
+            </a>
+
+            <div class="flex flex-col gap-8">
+            <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
+                <div class="w-16 h-16 md:w-20 md:h-20 rounded-2xl md:rounded-3xl border border-white/10 bg-white/5 flex items-center justify-center shrink-0">
+                    <iconify-icon icon="mynaui:music-square-solid" class="text-3xl md:text-5xl text-white"></iconify-icon>
+                </div>
+                <div>
+                    <h1 class="text-3xl md:text-6xl font-semibold tracking-tighter text-white mb-2">OpenMusic</h1>
+                    <div class="flex items-center gap-3">
+                        <span class="px-2 py-0.5 rounded border border-white/10 bg-white/5 text-[10px] font-mono text-zinc-400 uppercase tracking-wider">v0.6.0</span>
+                        <span class="text-xs font-mono text-zinc-600">Cross-Platform Desktop</span>
+                    </div>
+                </div>
+            </div>
+
+                <div class="prose prose-invert max-w-none">
+                    <p class="text-xl leading-relaxed text-zinc-300">
+                        OpenMusic is a modern, performance-driven offline music player built for the modern desktop. 
+                        It combines the speed and safety of Rust with the flexibility of React to deliver a seamless listening experience.
+                    </p>
+                    
+                    <div class="grid md:grid-cols-2 gap-6 mt-12">
+                        <div class="p-6 rounded-2xl border border-white/5 bg-white/[0.01]">
+                            <h3 class="text-white font-semibold mb-3 flex items-center gap-2">
+                                <iconify-icon icon="solar:bolt-bold" class="text-zinc-500"></iconify-icon>
+                                Built for Speed
+                            </h3>
+                            <p class="text-sm">Leveraging Rust's performance for audio processing and file management, ensuring a lag-free experience even with massive libraries.</p>
+                        </div>
+                        <div class="p-6 rounded-2xl border border-white/5 bg-white/[0.01]">
+                            <h3 class="text-white font-semibold mb-3 flex items-center gap-2">
+                                <iconify-icon icon="solar:palette-bold" class="text-zinc-500"></iconify-icon>
+                                Modern UI
+                            </h3>
+                            <p class="text-sm">A clean, Material Design inspired interface that stays out of your way and lets your music take center stage.</p>
+                        </div>
+                    </div>
+
+                    <!-- Platform Selection Tabs -->
+                    <div class="mt-12">
+                        <div class="flex flex-wrap gap-4 mb-8">
+                            <button onclick="switchPlatform('windows')" id="tab-windows" class="platform-tab flex items-center gap-2 px-6 py-3 rounded-xl border border-white/20 bg-white/5 text-white transition-all duration-200">
+                                <iconify-icon icon="simple-icons:windows" class="text-xl text-white"></iconify-icon>
+                                <span class="font-medium">Windows</span>
+                            </button>
+                            <button onclick="switchPlatform('macos')" id="tab-macos" class="platform-tab flex items-center gap-2 px-6 py-3 rounded-xl border border-white/5 bg-white/[0.02] text-zinc-400 hover:text-white transition-all duration-200">
+                                <iconify-icon icon="simple-icons:apple" class="text-xl"></iconify-icon>
+                                <span class="font-medium">macOS</span>
+                            </button>
+                            <button onclick="switchPlatform('linux')" id="tab-linux" class="platform-tab flex items-center gap-2 px-6 py-3 rounded-xl border border-white/5 bg-white/[0.02] text-zinc-400 hover:text-white transition-all duration-200">
+                                <iconify-icon icon="simple-icons:linux" class="text-xl"></iconify-icon>
+                                <span class="font-medium">Linux</span>
+                            </button>
+                        </div>
+
+                        <!-- Alert Box -->
+                        <div id="alert-windows" class="platform-content mb-8 p-6 rounded-2xl border border-blue-500/20 bg-blue-500/5 flex gap-4 items-start">
+                            <iconify-icon icon="solar:info-circle-bold" class="text-2xl text-blue-500 mt-1"></iconify-icon>
+                            <div>
+                                <h4 class="text-white font-semibold mb-1">Good to know</h4>
+                                <p class="text-sm text-zinc-400 leading-relaxed text-balance">If you get a warning that the app cannot be opened or is unrecognized by Windows SmartScreen, click "Run anyway" or "More info". This warning is entirely harmless and only shows because the app is currently unverified.</p>
+                            </div>
+                        </div>
+
+                        <!-- Download Sections (Platform Specific) -->
+                        <div id="download-windows" class="platform-content p-8 rounded-3xl border border-white/10 bg-white/[0.02] relative overflow-hidden">
+                            <div class="flex items-center justify-between mb-8">
+                                <div class="flex items-center gap-2 text-xs font-mono text-zinc-500 uppercase tracking-widest">
+                                    <iconify-icon icon="solar:shield-check-bold" class="text-sm"></iconify-icon>
+                                    SHA256: 46181bbe63e6e...
+                                </div>
+                                <span class="text-[10px] font-mono text-zinc-600">v0.6.0 x64</span>
+                            </div>
+
+                            <div class="flex flex-col sm:flex-row items-center gap-6">
+                                <a href="https://github.com/xeoniii/openmusic/releases/latest/download/OpenMusic_0.6.0_x64-setup.exe" class="w-full sm:w-auto group flex flex-col items-center gap-1 bg-white text-zinc-950 px-10 py-5 rounded-2xl transition-all duration-300 hover:bg-zinc-200 hover:scale-[1.02]">
+                                    <div class="flex items-center gap-2 font-bold text-lg">
+                                        <iconify-icon icon="solar:download-bold" class="text-2xl"></iconify-icon>
+                                        Download .exe
+                                    </div>
+                                    <span class="text-[10px] uppercase tracking-tighter opacity-70">WINDOWS 10, 11</span>
+                                </a>
+                                <span class="text-xs font-mono text-zinc-600 uppercase">OR</span>
+                                <a href="https://github.com/xeoniii/openmusic/releases/latest/download/OpenMusic_0.6.0_x64_en-US.msi" class="w-full sm:w-auto group flex flex-col items-center gap-1 bg-zinc-900 text-white border border-white/10 px-10 py-5 rounded-2xl transition-all duration-300 hover:bg-zinc-800 hover:scale-[1.02]">
+                                    <div class="flex items-center gap-2 font-bold text-lg">
+                                        <iconify-icon icon="solar:download-bold" class="text-2xl"></iconify-icon>
+                                        Download .msi
+                                    </div>
+                                    <span class="text-[10px] uppercase tracking-tighter text-zinc-500">MSI INSTALLER</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div id="download-macos" class="platform-content hidden p-8 rounded-3xl border border-white/10 bg-white/[0.02] relative overflow-hidden">
+                            <div class="flex items-center justify-between mb-8">
+                                <div class="flex items-center gap-2 text-xs font-mono text-zinc-500 uppercase tracking-widest">
+                                    <iconify-icon icon="solar:shield-check-bold" class="text-sm"></iconify-icon>
+                                    SHA256: e8f5fd2523b50...
+                                </div>
+                                <span class="text-[10px] font-mono text-zinc-600">v0.6.0 Apple Silicon</span>
+                            </div>
+
+                            <div class="flex flex-col sm:flex-row items-center gap-6">
+                                <a href="https://github.com/xeoniii/openmusic/releases/latest/download/OpenMusic_0.6.0_aarch64.dmg" class="w-full sm:w-auto group flex flex-col items-center gap-1 bg-white text-zinc-950 px-10 py-5 rounded-2xl transition-all duration-300 hover:bg-zinc-200 hover:scale-[1.02]">
+                                    <div class="flex items-center gap-2 font-bold text-lg">
+                                        <iconify-icon icon="solar:download-bold" class="text-2xl"></iconify-icon>
+                                        Download .dmg
+                                    </div>
+                                    <span class="text-[10px] uppercase tracking-tighter opacity-70">MACOS 11+ (APPLE SILICON)</span>
+                                </a>
+                                <span class="text-xs font-mono text-zinc-600 uppercase">OR</span>
+                                <a href="https://github.com/xeoniii/openmusic/releases/latest/download/OpenMusic_aarch64.app.tar.gz" class="w-full sm:w-auto group flex flex-col items-center gap-1 bg-zinc-900 text-white border border-white/10 px-10 py-5 rounded-2xl transition-all duration-300 hover:bg-zinc-800 hover:scale-[1.02]">
+                                    <div class="flex items-center gap-2 font-bold text-lg">
+                                        <iconify-icon icon="solar:download-bold" class="text-2xl"></iconify-icon>
+                                        Download .tar.gz
+                                    </div>
+                                    <span class="text-[10px] uppercase tracking-tighter text-zinc-500">PORTABLE ARCHIVE</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div id="download-linux" class="platform-content hidden p-8 rounded-3xl border border-white/10 bg-white/[0.02] relative overflow-hidden">
+                            <div class="flex items-center justify-between mb-8">
+                                <div class="flex items-center gap-2 text-xs font-mono text-zinc-500 uppercase tracking-widest">
+                                    <iconify-icon icon="solar:shield-check-bold" class="text-sm"></iconify-icon>
+                                    SHA256: a91087042c093...
+                                </div>
+                                <span class="text-[10px] font-mono text-zinc-600">v0.6.0 amd64</span>
+                            </div>
+
+                            <div class="flex flex-wrap items-center gap-6">
+                                <a href="https://github.com/xeoniii/openmusic/releases/latest/download/OpenMusic_0.6.0_amd64.AppImage" class="group flex flex-col items-center gap-1 bg-white text-zinc-950 px-8 py-4 rounded-2xl transition-all duration-300 hover:bg-zinc-200 hover:scale-[1.02]">
+                                    <div class="flex items-center gap-2 font-bold">
+                                        <iconify-icon icon="solar:download-bold" class="text-xl"></iconify-icon>
+                                        .AppImage
+                                    </div>
+                                    <span class="text-[10px] uppercase tracking-tighter opacity-70">UBUNTU, FEDORA</span>
+                                </a>
+                                <span class="text-xs font-mono text-zinc-600 uppercase">OR</span>
+                                <a href="https://github.com/xeoniii/openmusic/releases/latest/download/OpenMusic_0.6.0_amd64.deb" class="group flex flex-col items-center gap-1 bg-zinc-900 text-white border border-white/10 px-8 py-4 rounded-2xl transition-all duration-300 hover:bg-zinc-800 hover:scale-[1.02]">
+                                    <div class="flex items-center gap-2 font-bold">
+                                        <iconify-icon icon="solar:download-bold" class="text-xl"></iconify-icon>
+                                        .deb
+                                    </div>
+                                    <span class="text-[10px] uppercase tracking-tighter text-zinc-500">DEBIAN, UBUNTU</span>
+                                </a>
+                                <span class="text-xs font-mono text-zinc-600 uppercase">OR</span>
+                                <a href="https://github.com/xeoniii/openmusic/releases/latest/download/OpenMusic-0.6.0-1.x86_64.rpm" class="group flex flex-col items-center gap-1 bg-zinc-900 text-white border border-white/10 px-8 py-4 rounded-2xl transition-all duration-300 hover:bg-zinc-800 hover:scale-[1.02]">
+                                    <div class="flex items-center gap-2 font-bold">
+                                        <iconify-icon icon="solar:download-bold" class="text-xl"></iconify-icon>
+                                        .rpm
+                                    </div>
+                                    <span class="text-[10px] uppercase tracking-tighter text-zinc-500">FEDORA, RHEL</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="mt-8">
+                            <a href="https://github.com/xeoniii/openmusic" class="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-white transition-colors" target="_blank" rel="noopener noreferrer">
+                                <iconify-icon icon="simple-icons:github"></iconify-icon>
+                                View source on GitHub
+                            </a>
+                        </div>
+                    </div>
+
+                    <script>
+                        function switchPlatform(platform) {
+                            // Tabs
+                            document.querySelectorAll('.platform-tab').forEach(tab => {
+                                tab.classList.remove('border-white/20', 'bg-white/5', 'text-white');
+                                tab.classList.add('border-white/5', 'bg-white/[0.02]', 'text-zinc-400');
+                                tab.querySelector('iconify-icon').classList.remove('text-white');
+                            });
+
+                            const activeTab = document.getElementById('tab-' + platform);
+                            activeTab.classList.add('border-white/20', 'bg-white/5', 'text-white');
+                            activeTab.classList.remove('border-white/5', 'bg-white/[0.02]', 'text-zinc-400');
+                            activeTab.querySelector('iconify-icon').classList.add('text-white');
+
+                            // Content
+                            document.querySelectorAll('.platform-content').forEach(content => {
+                                content.classList.add('hidden');
+                            });
+
+                            document.getElementById('download-' + platform).classList.remove('hidden');
+                            
+                            if (platform === 'windows') {
+                                document.getElementById('alert-windows').classList.remove('hidden');
+                            }
+                        }
+                    </script>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-white/5 px-6 py-12 bg-[#09090b]">
+        <div class="mx-auto max-w-6xl flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+            <a href="../" class="text-xl font-semibold tracking-tighter text-white">
+                xeoniii.<span class="text-zinc-600">dev</span>
+            </a>
+            <p class="text-xs font-mono text-zinc-600">
+                © 2026 xeoniii.dev — ALL RIGHTS RESERVED
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>
