@@ -26,11 +26,53 @@
             </a>
             
             <div class="hidden md:flex items-center gap-8 text-sm font-medium">
-                <a href="#details" class="hover:text-white transition-colors duration-200">Details</a>
-                <a href="#projects" class="hover:text-white transition-colors duration-200">Projects</a>
+                <a href="#details" class="nav-link hover:text-white transition-colors duration-200">Details</a>
+                <a href="#projects" class="nav-link hover:text-white transition-colors duration-200">Projects</a>
             </div>
         </div>
     </nav>
+
+    <script>
+        // Handle nav link clicks
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').split('#')[1];
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    const navHeight = 64;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                    // Clear hash from URL without reloading
+                    history.pushState(null, null, window.location.pathname);
+                }
+            });
+        });
+
+        // Handle hash on page load (for cross-page links like ../#projects)
+        window.addEventListener('load', () => {
+            if (window.location.hash) {
+                const targetId = window.location.hash.substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    const navHeight = 64;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight;
+                    
+                    // Small delay to ensure layout is ready
+                    setTimeout(() => {
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                        history.pushState(null, null, window.location.pathname);
+                    }, 100);
+                }
+            }
+        });
+    </script>
 
     <main class="relative pt-20 md:pt-32 overflow-hidden">
         <!-- Background Glow -->
