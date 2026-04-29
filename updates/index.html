@@ -1,58 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>xeoniii.dev</title>
+    <title>Updates | xeoniii.dev</title>
+
+    <!-- Social Embeds -->
+    <meta property="og:title" content="Latest Updates | xeoniii.dev">
+    <meta property="og:description" content="Latest release notes and project updates from xeoniii.dev.">
+    <meta property="og:image" content="https://xeoniii.github.io/preview.png">
+    <meta property="og:url" content="https://xeoniii.github.io/updates/">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#09090b">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.iconify.design/iconify-icon/2.0.0/iconify-icon.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="icon" type="image/svg+xml" href="https://github.githubassets.com/favicons/favicon.svg">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
 </head>
-<body class="bg-[#09090b] text-zinc-400 antialiased selection:bg-white/10 selection:text-white" style="font-family: 'Inter', sans-serif;">
+
+<body class="bg-[#09090b] text-zinc-400 antialiased selection:bg-white/10 selection:text-white"
+    style="font-family: 'Inter', sans-serif;">
 
     <!-- Navigation -->
     <nav class="fixed top-0 inset-x-0 z-50 border-b border-white/5 bg-[#09090b]/80 backdrop-blur-md">
         <div class="mx-auto max-w-6xl px-6 h-16 flex items-center justify-between">
-            <a href="#" class="text-lg font-semibold tracking-tighter text-white">
+            <a href="../" class="text-lg font-semibold tracking-tighter text-white">
                 xeoniii.<span class="text-zinc-500">dev</span>
             </a>
-            
-            <div class="hidden md:flex items-center gap-8 text-sm font-medium">
-                <a href="../index.html#details" class="hover:text-white transition-colors duration-200">Details</a>
-                <a href="../index.html#projects" class="hover:text-white transition-colors duration-200">Projects</a>
-            </div>
 
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+                <a href="../#details" class="hover:text-white transition-colors duration-200">Details</a>
+                <a href="../#projects" class="hover:text-white transition-colors duration-200">Projects</a>
+                <a href="#" class="text-white">Updates</a>
+            </div>
         </div>
     </nav>
 
-    <main class="relative pt-32 overflow-hidden">
+    <main class="relative pt-32 overflow-hidden min-h-screen">
         <!-- Background Glow -->
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-white/[0.02] rounded-full blur-[120px] pointer-events-none"></div>
+        <div
+            class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-white/[0.02] rounded-full blur-[120px] pointer-events-none">
+        </div>
 
-        <!-- Hero Section -->
-        <section class="relative px-6 py-24 mx-auto max-w-6xl flex flex-col items-left text-left z-10">
-                <a href="../index.html" class="group flex items-center w-fit gap-2 bg-white text-zinc-950 px-6 py-3 rounded-full text-sm font-semibold hover:bg-zinc-200 transition-colors duration-200">
-                    Go Back
-                </a>
+        <section class="relative px-6 py-12 md:py-24 mx-auto max-w-4xl z-10">
+            <a href="../"
+                class="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-white transition-colors mb-12 group">
+                <iconify-icon icon="solar:arrow-left-linear"
+                    class="text-lg group-hover:-translate-x-1 transition-transform"></iconify-icon>
+                Back to Home
+            </a>
+
+            <div class="mb-16">
+                <h1 class="text-4xl md:text-6xl font-semibold tracking-tighter text-white mb-4">Latest Updates</h1>
+                <p class="text-lg text-zinc-500">Changelogs and release notes for my recent projects.</p>
+            </div>
+
+            <div class="space-y-12">
+                <!-- OpenMusic Update -->
+                <div class="relative pl-8 border-l border-white/10">
+                    <div class="absolute -left-1.5 top-0 w-3 h-3 rounded-full bg-white border-4 border-[#09090b]"></div>
+                    <div class="flex flex-wrap items-center gap-4 mb-6">
+                        <span
+                            class="px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[10px] font-mono text-white uppercase tracking-wider">OpenMusic</span>
+                        <span class="text-sm font-mono text-zinc-500">v0.6.0</span>
+                    </div>
+                    <h2 class="text-2xl font-semibold text-white mb-6 tracking-tight">The Harbour Update</h2>
+                    <div class="bg-white/[0.02] border border-white/5 rounded-3xl p-6 md:p-8">
+                        <ul class="space-y-4 text-zinc-300">
+                            <li class="flex gap-3">
+                                <iconify-icon icon="solar:check-circle-bold"
+                                    class="text-zinc-500 mt-1 shrink-0"></iconify-icon>
+                                <span>Added the new <strong>Harbour menu</strong>: Download songs in high quality from
+                                    multiple providers with embedded metadata.</span>
+                            </li>
+                            <li class="flex gap-3">
+                                <iconify-icon icon="solar:check-circle-bold"
+                                    class="text-zinc-500 mt-1 shrink-0"></iconify-icon>
+                                <span>Added <strong>Fetch Metadata</strong> button in the edit metadata section.</span>
+                            </li>
+                            <li class="flex gap-3">
+                                <iconify-icon icon="solar:check-circle-bold"
+                                    class="text-zinc-500 mt-1 shrink-0"></iconify-icon>
+                                <span>Fixed many bugs and improved performance.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- OpenStocks Update -->
+                <div class="relative pl-8 border-l border-white/10">
+                    <div class="absolute -left-1.5 top-0 w-3 h-3 rounded-full bg-zinc-700 border-4 border-[#09090b]">
+                    </div>
+                    <div class="flex flex-wrap items-center gap-4 mb-6">
+                        <span
+                            class="px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[10px] font-mono text-white uppercase tracking-wider">OpenStock</span>
+                        <span class="text-sm font-mono text-zinc-500">v1.30.1</span>
+                    </div>
+                    <h2 class="text-2xl font-semibold text-white mb-6 tracking-tight">Personalized Experience</h2>
+                    <div class="bg-white/[0.02] border border-white/5 rounded-3xl p-6 md:p-8">
+                        <ul class="grid md:grid-cols-2 gap-6 text-zinc-300">
+                            <li class="space-y-1">
+                                <span class="text-white font-medium block">Dark Mode</span>
+                                <p class="text-sm text-zinc-500">Seamlessly switch between Light and Dark themes from
+                                    the side menu.</p>
+                            </li>
+                            <li class="space-y-1">
+                                <span class="text-white font-medium block">Logo Customization</span>
+                                <p class="text-sm text-zinc-500">Upload a custom logo to the navigation drawer for your
+                                    shop branding.</p>
+                            </li>
+                            <li class="space-y-1">
+                                <span class="text-white font-medium block">PDF Receipts</span>
+                                <p class="text-sm text-zinc-500">Generate professional 80mm thermal-style PDF receipts
+                                    for any sale.</p>
+                            </li>
+                            <li class="space-y-1">
+                                <span class="text-white font-medium block">Dual Modes</span>
+                                <p class="text-sm text-zinc-500">Secure "Sales Mode" for staff use vs "Personal Mode"
+                                    for owners.</p>
+                            </li>
+                            <li class="space-y-1">
+                                <span class="text-white font-medium block">Password Protection</span>
+                                <p class="text-sm text-zinc-500">Customizable security for mode switching and sensitive
+                                    deletions.</p>
+                            </li>
+                            <li class="space-y-1">
+                                <span class="text-white font-medium block">Markdown About</span>
+                                <p class="text-sm text-zinc-500">Integrated Markdown rendering for a clean and detailed
+                                    app info screen.</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Xeon's Katanas Update -->
+                <div class="relative pl-8 border-l border-white/10">
+                    <div class="absolute -left-1.5 top-0 w-3 h-3 rounded-full bg-zinc-700 border-4 border-[#09090b]">
+                    </div>
+                    <div class="flex flex-wrap items-center gap-4 mb-6">
+                        <span
+                            class="px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[10px] font-mono text-white uppercase tracking-wider">Xeon's
+                            Katanas</span>
+                        <span class="text-sm font-mono text-zinc-500">v3.26.1</span>
+                    </div>
+                    <h2 class="text-2xl font-semibold text-white mb-6 tracking-tight">Optimization Update</h2>
+                    <div class="bg-white/[0.02] border border-white/5 rounded-3xl p-6 md:p-8">
+                        <ul class="space-y-4 text-zinc-300">
+                            <li class="flex gap-3">
+                                <iconify-icon icon="solar:check-circle-bold"
+                                    class="text-zinc-500 mt-1 shrink-0"></iconify-icon>
+                                <span>Updated compatibility for <strong>Minecraft 26.1.x</strong>.</span>
+                            </li>
+                            <li class="flex gap-3">
+                                <iconify-icon icon="solar:check-circle-bold"
+                                    class="text-zinc-500 mt-1 shrink-0"></iconify-icon>
+                                <span>Reduced file size by <strong>50%</strong> by removing unnecessary text in language
+                                    files.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </section>
-
-
     </main>
 
     <!-- Footer -->
     <footer class="border-t border-white/5 px-6 py-12 bg-[#09090b]">
-        <div class="mx-auto max-w-6xl flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-            <a href="#" class="text-xl font-semibold tracking-tighter text-white">
+        <div
+            class="mx-auto max-w-6xl flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+            <a href="../" class="text-xl font-semibold tracking-tighter text-white">
                 xeoniii.<span class="text-zinc-600">dev</span>
             </a>
-            <p class="text-xs font-mono text-zinc-600" style="font-family: 'JetBrains Mono', monospace;">
+            <p class="text-xs font-mono text-zinc-600">
                 © 2026 xeoniii.dev — ALL RIGHTS RESERVED
             </p>
         </div>
     </footer>
 
 </body>
+
 </html>

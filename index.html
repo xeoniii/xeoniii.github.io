@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>xeoniii.dev | Software Developer</title>
-    
+
     <!-- Social Embeds -->
     <meta property="og:title" content="xeoniii.dev | Software Developer">
     <meta property="og:description" content="Portfolio of xeoniii, featuring OpenMusic, OpenStocks, and more.">
@@ -34,10 +34,11 @@
             <a href="#" class="text-lg font-semibold tracking-tighter text-white">
                 xeoniii.<span class="text-zinc-500">dev</span>
             </a>
-            
+
             <div class="hidden md:flex items-center gap-8 text-sm font-medium">
                 <a href="#details" class="nav-link hover:text-white transition-colors duration-200">Details</a>
                 <a href="#projects" class="nav-link hover:text-white transition-colors duration-200">Projects</a>
+                <a href="updates/" class="hover:text-white transition-colors duration-200">Updates</a>
             </div>
         </div>
     </nav>
@@ -45,7 +46,7 @@
     <script>
         // Handle nav link clicks
         document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
+            link.addEventListener('click', function (e) {
                 e.preventDefault();
                 const targetId = this.getAttribute('href').split('#')[1];
                 const targetElement = document.getElementById(targetId);
@@ -70,7 +71,7 @@
                 if (targetElement) {
                     const navHeight = 64;
                     const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight;
-                    
+
                     // Small delay to ensure layout is ready
                     setTimeout(() => {
                         window.scrollTo({
