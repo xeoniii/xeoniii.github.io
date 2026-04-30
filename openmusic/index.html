@@ -83,6 +83,215 @@
                         </div>
                     </div>
 
+                    <!-- Gallery Section -->
+                    <div class="relative mt-20 mb-24 -mx-6 md:-mx-20 group">
+                        <div id="gallery-container" class="flex overflow-x-auto gap-4 md:gap-8 px-[10%] md:px-[20%] pb-12 scroll-smooth no-scrollbar snap-x snap-mandatory">
+                            <!-- Image 3 -->
+                            <div class="min-w-full md:min-w-[85%] snap-center transition-all duration-500 scale-[0.9] opacity-40 gallery-slide">
+                                <div class="rounded-[2rem] md:rounded-[3rem] border border-white/10 bg-white/5 overflow-hidden aspect-video shadow-2xl cursor-zoom-in" onclick="openLightbox(0)">
+                                    <img src="assets/openmusic-3.png" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Image 2 -->
+                            <div class="min-w-full md:min-w-[85%] snap-center transition-all duration-500 scale-[0.9] opacity-40 gallery-slide">
+                                <div class="rounded-[2rem] md:rounded-[3rem] border border-white/10 bg-white/5 overflow-hidden aspect-video shadow-2xl cursor-zoom-in" onclick="openLightbox(1)">
+                                    <img src="assets/openmusic-2.png" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Image 1 (HOME) -->
+                            <div class="min-w-full md:min-w-[85%] snap-center transition-all duration-500 scale-[0.9] opacity-40 gallery-slide active">
+                                <div class="rounded-[2rem] md:rounded-[3rem] border border-white/10 bg-white/5 overflow-hidden aspect-video shadow-2xl cursor-zoom-in" onclick="openLightbox(2)">
+                                    <img src="assets/openmusic-1.png" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Image 4 -->
+                            <div class="min-w-full md:min-w-[85%] snap-center transition-all duration-500 scale-[0.9] opacity-40 gallery-slide">
+                                <div class="rounded-[2rem] md:rounded-[3rem] border border-white/10 bg-white/5 overflow-hidden aspect-video shadow-2xl cursor-zoom-in" onclick="openLightbox(3)">
+                                    <img src="assets/openmusic-4.png" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <!-- Image 5 -->
+                            <div class="min-w-full md:min-w-[85%] snap-center transition-all duration-500 scale-[0.9] opacity-40 gallery-slide">
+                                <div class="rounded-[2rem] md:rounded-[3rem] border border-white/10 bg-white/5 overflow-hidden aspect-video shadow-2xl cursor-zoom-in" onclick="openLightbox(4)">
+                                    <img src="assets/openmusic-5.png" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Arrows (Desktop) -->
+                        <div class="hidden md:flex absolute top-1/2 -translate-y-1/2 inset-x-4 justify-between pointer-events-none">
+                            <button onclick="scrollGallery('left')" class="p-4 rounded-full bg-zinc-950/50 backdrop-blur-xl border border-white/10 text-white pointer-events-auto hover:bg-white hover:text-black transition-all duration-300">
+                                <iconify-icon icon="solar:alt-arrow-left-linear" class="text-2xl"></iconify-icon>
+                            </button>
+                            <button onclick="scrollGallery('right')" class="p-4 rounded-full bg-zinc-950/50 backdrop-blur-xl border border-white/10 text-white pointer-events-auto hover:bg-white hover:text-black transition-all duration-300">
+                                <iconify-icon icon="solar:alt-arrow-right-linear" class="text-2xl"></iconify-icon>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Lightbox Modal -->
+                    <div id="lightbox" class="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl hidden transition-opacity duration-300 opacity-0">
+                        <div id="lightbox-container" class="w-full h-full flex overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth">
+                            <div class="min-w-full h-full flex items-center justify-center p-6 md:p-32 snap-center overflow-hidden" onclick="closeLightbox()">
+                                <img src="assets/openmusic-3.png" class="max-w-[90%] max-h-[75%] md:max-h-[80%] object-contain rounded-2xl md:rounded-[2rem] shadow-2xl pointer-events-auto transition-transform duration-300 origin-center" style="transform: scale(1); cursor: zoom-in;" onclick="toggleZoom(event, this)">
+                            </div>
+                            <div class="min-w-full h-full flex items-center justify-center p-6 md:p-32 snap-center overflow-hidden" onclick="closeLightbox()">
+                                <img src="assets/openmusic-2.png" class="max-w-[90%] max-h-[75%] md:max-h-[80%] object-contain rounded-2xl md:rounded-[2rem] shadow-2xl pointer-events-auto transition-transform duration-300 origin-center" style="transform: scale(1); cursor: zoom-in;" onclick="toggleZoom(event, this)">
+                            </div>
+                            <div class="min-w-full h-full flex items-center justify-center p-6 md:p-32 snap-center overflow-hidden" onclick="closeLightbox()">
+                                <img src="assets/openmusic-1.png" class="max-w-[90%] max-h-[75%] md:max-h-[80%] object-contain rounded-2xl md:rounded-[2rem] shadow-2xl pointer-events-auto transition-transform duration-300 origin-center" style="transform: scale(1); cursor: zoom-in;" onclick="toggleZoom(event, this)">
+                            </div>
+                            <div class="min-w-full h-full flex items-center justify-center p-6 md:p-32 snap-center overflow-hidden" onclick="closeLightbox()">
+                                <img src="assets/openmusic-4.png" class="max-w-[90%] max-h-[75%] md:max-h-[80%] object-contain rounded-2xl md:rounded-[2rem] shadow-2xl pointer-events-auto transition-transform duration-300 origin-center" style="transform: scale(1); cursor: zoom-in;" onclick="toggleZoom(event, this)">
+                            </div>
+                            <div class="min-w-full h-full flex items-center justify-center p-6 md:p-32 snap-center overflow-hidden" onclick="closeLightbox()">
+                                <img src="assets/openmusic-5.png" class="max-w-[90%] max-h-[75%] md:max-h-[80%] object-contain rounded-2xl md:rounded-[2rem] shadow-2xl pointer-events-auto transition-transform duration-300 origin-center" style="transform: scale(1); cursor: zoom-in;" onclick="toggleZoom(event, this)">
+                            </div>
+                        </div>
+
+                        <!-- Lightbox Nav (PC) -->
+                        <div class="hidden md:flex absolute top-1/2 -translate-y-1/2 inset-x-8 justify-between pointer-events-none">
+                            <button onclick="event.stopPropagation(); navigateLightbox('left')" class="p-5 rounded-full bg-white/5 border border-white/10 text-white pointer-events-auto hover:bg-white hover:text-black transition-all">
+                                <iconify-icon icon="solar:alt-arrow-left-linear" class="text-3xl"></iconify-icon>
+                            </button>
+                            <button onclick="event.stopPropagation(); navigateLightbox('right')" class="p-5 rounded-full bg-white/5 border border-white/10 text-white pointer-events-auto hover:bg-white hover:text-black transition-all">
+                                <iconify-icon icon="solar:alt-arrow-right-linear" class="text-3xl"></iconify-icon>
+                            </button>
+                        </div>
+
+                        <div class="absolute bottom-10 inset-x-0 text-center pointer-events-none">
+                            <div id="lightbox-caption" class="text-white/40 md:text-white/60 font-mono text-[10px] md:text-xs uppercase tracking-[0.3em] px-6"></div>
+                        </div>
+                    </div>
+
+                    <style>
+                        .no-scrollbar::-webkit-scrollbar { display: none; }
+                        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+                        .gallery-slide.active { transform: scale(1); opacity: 1; }
+                    </style>
+
+                    <script>
+                        const galleryImages = [
+                            "Playlist view",
+                            "Library view",
+                            "Main Dashboard",
+                            "Lyrics Page",
+                            "Online Harbour"
+                        ];
+
+                        function scrollGallery(direction) {
+                            const container = document.getElementById('gallery-container');
+                            const slideWidth = container.querySelector('.gallery-slide').offsetWidth;
+                            const maxScroll = container.scrollWidth - container.offsetWidth;
+                            
+                            if (direction === 'right' && container.scrollLeft >= maxScroll - 50) {
+                                container.scrollTo({ left: 0, behavior: 'smooth' });
+                            } else if (direction === 'left' && container.scrollLeft <= 50) {
+                                container.scrollTo({ left: maxScroll, behavior: 'smooth' });
+                            } else {
+                                container.scrollBy({ left: direction === 'left' ? -slideWidth : slideWidth, behavior: 'smooth' });
+                            }
+                        }
+
+                        function updateActiveSlide() {
+                            const container = document.getElementById('gallery-container');
+                            const slides = container.querySelectorAll('.gallery-slide');
+                            const containerCenter = container.scrollLeft + container.offsetWidth / 2;
+                            
+                            slides.forEach((slide, index) => {
+                                const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
+                                if (Math.abs(containerCenter - slideCenter) < slide.offsetWidth / 2) {
+                                    slide.classList.add('active');
+                                } else {
+                                    slide.classList.remove('active');
+                                }
+                            });
+                        }
+
+                        function openLightbox(index) {
+                            const lightbox = document.getElementById('lightbox');
+                            const container = document.getElementById('lightbox-container');
+                            
+                            lightbox.classList.remove('hidden');
+                            document.body.style.overflow = 'hidden';
+                            
+                            // Reset all zooms when opening
+                            container.querySelectorAll('img').forEach(img => {
+                                img.style.transform = 'scale(1)';
+                                img.style.cursor = 'zoom-in';
+                                img.parentElement.classList.remove('overflow-auto');
+                                img.parentElement.classList.add('overflow-hidden');
+                            });
+
+                            // Scroll to correct image immediately
+                            const slide = container.children[index];
+                            container.scrollTo({ left: slide.offsetLeft, behavior: 'instant' });
+                            updateLightboxCaption();
+
+                            setTimeout(() => {
+                                lightbox.classList.add('opacity-100');
+                            }, 10);
+                        }
+
+                        function closeLightbox() {
+                            const lightbox = document.getElementById('lightbox');
+                            lightbox.classList.remove('opacity-100');
+                            document.body.style.overflow = '';
+                            setTimeout(() => {
+                                lightbox.classList.add('hidden');
+                            }, 300);
+                        }
+
+                        function toggleZoom(e, img) {
+                            e.stopPropagation();
+                            const isZoomed = img.style.transform === 'scale(2)';
+                            
+                            if (isZoomed) {
+                                img.style.transform = 'scale(1)';
+                                img.style.cursor = 'zoom-in';
+                                img.parentElement.classList.remove('overflow-auto');
+                                img.parentElement.classList.add('overflow-hidden');
+                            } else {
+                                img.style.transform = 'scale(2)';
+                                img.style.cursor = 'zoom-out';
+                                img.parentElement.classList.remove('overflow-hidden');
+                                img.parentElement.classList.add('overflow-auto');
+                            }
+                        }
+
+                        function navigateLightbox(direction) {
+                            const container = document.getElementById('lightbox-container');
+                            const slideWidth = container.offsetWidth;
+                            const maxScroll = container.scrollWidth - container.offsetWidth;
+
+                            if (direction === 'right' && container.scrollLeft >= maxScroll - 10) {
+                                container.scrollTo({ left: 0, behavior: 'smooth' });
+                            } else if (direction === 'left' && container.scrollLeft <= 10) {
+                                container.scrollTo({ left: maxScroll, behavior: 'smooth' });
+                            } else {
+                                container.scrollBy({ left: direction === 'left' ? -slideWidth : slideWidth, behavior: 'smooth' });
+                            }
+                        }
+
+                        function updateLightboxCaption() {
+                            const container = document.getElementById('lightbox-container');
+                            const caption = document.getElementById('lightbox-caption');
+                            const index = Math.round(container.scrollLeft / container.offsetWidth);
+                            caption.textContent = galleryImages[index] || "";
+                        }
+
+                        document.getElementById('gallery-container').addEventListener('scroll', updateActiveSlide);
+                        document.getElementById('lightbox-container').addEventListener('scroll', updateLightboxCaption);
+                        
+                        window.addEventListener('load', () => {
+                            const container = document.getElementById('gallery-container');
+                            const homeSlide = container.children[2];
+                            const scrollPos = homeSlide.offsetLeft - (container.offsetWidth - homeSlide.offsetWidth) / 2;
+                            container.scrollTo({ left: scrollPos });
+                            updateActiveSlide();
+                        });
+                    </script>
+
                     <!-- Platform Selection Tabs -->
                     <div class="mt-12">
                         <div class="flex flex-wrap gap-4 mb-8">
