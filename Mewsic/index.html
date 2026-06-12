@@ -55,7 +55,7 @@
                 <div>
                     <h1 class="text-3xl md:text-6xl font-semibold tracking-tighter text-white mb-2">Mewsic</h1>
                     <div class="flex items-center gap-3">
-                        <span class="px-2 py-0.5 rounded border border-white/10 bg-white/5 text-[10px] font-mono text-zinc-400 uppercase tracking-wider">v0.8.2</span>
+                        <span class="px-2 py-0.5 rounded border border-white/10 bg-white/5 text-[10px] font-mono text-zinc-400 uppercase tracking-wider">v0.8.4</span>
                         <span class="px-2 py-0.5 rounded border border-green-500/20 bg-green-500/5 text-[10px] font-mono text-green-500 uppercase tracking-wider">GPL v3.0</span>
                         <span class="px-2 py-0.5 rounded border border-amber-500/20 bg-amber-500/5 text-[10px] font-mono text-amber-500 uppercase tracking-wider">Beta</span>
                         <span class="text-xs font-mono text-zinc-600">Cross-Platform Desktop</span>
@@ -279,25 +279,33 @@
                         <div class="mb-12">
                             <div class="flex items-center gap-3 mb-6">
                                 <h2 class="text-xl font-bold text-white uppercase tracking-tight">Latest Changelog</h2>
-                                <span class="px-2 py-0.5 rounded border border-amber-500/20 bg-amber-500/5 text-[10px] font-mono text-amber-500 uppercase tracking-wider">v0.8.2 Beta</span>
+                                <span class="px-2 py-0.5 rounded border border-amber-500/20 bg-amber-500/5 text-[10px] font-mono text-amber-500 uppercase tracking-wider">v0.8.4 Beta</span>
                             </div>
                             <div class="bg-white/[0.02] border border-white/5 rounded-3xl p-8">
                                 <ul class="grid md:grid-cols-2 gap-x-12 gap-y-8 text-zinc-300">
                                     <li class="space-y-1">
-                                        <span class="text-amber-500 font-medium block">Vertical Layout Support</span>
-                                        <p class="text-sm text-zinc-500 leading-relaxed">Added support for vertical windows; removed size limiter so the app now seamlessly adjusts to your layout.</p>
+                                        <span class="text-amber-500 font-medium block">Revamped Lyrics Page</span>
+                                        <p class="text-sm text-zinc-500 leading-relaxed">Now supports seamless transition to any line of a song.</p>
                                     </li>
                                     <li class="space-y-1">
-                                        <span class="text-amber-500 font-medium block">10-Band Equalizer</span>
-                                        <p class="text-sm text-zinc-500 leading-relaxed">The new 10-band equalizer is now fully accessible to all regular users!</p>
+                                        <span class="text-amber-500 font-medium block">Lyrics Synchronizer</span>
+                                        <p class="text-sm text-zinc-500 leading-relaxed">Added a built-in lyrics synchronizer for an enhanced listening experience.</p>
                                     </li>
                                     <li class="space-y-1">
-                                        <span class="text-amber-500 font-medium block">Grid View Expansion</span>
-                                        <p class="text-sm text-zinc-500 leading-relaxed">Added Grid view to playlists and returned it to the Home view for better navigation.</p>
+                                        <span class="text-amber-500 font-medium block">Performance Optimizations</span>
+                                        <p class="text-sm text-zinc-500 leading-relaxed">Under-the-hood optimizations for smoother usage of the app.</p>
                                     </li>
                                     <li class="space-y-1">
-                                        <span class="text-amber-500 font-medium block">UI Adaptations</span>
-                                        <p class="text-sm text-zinc-500 leading-relaxed">Updated various UI elements to properly support the new resizing and layout changes.</p>
+                                        <span class="text-amber-500 font-medium block">Playback Fixes</span>
+                                        <p class="text-sm text-zinc-500 leading-relaxed">Fixed a bug where skipping in songs resulted in it snapping back to the same time.</p>
+                                    </li>
+                                    <li class="space-y-1">
+                                        <span class="text-amber-500 font-medium block">DSP Bypass</span>
+                                        <p class="text-sm text-zinc-500 leading-relaxed">Added a mode that bypasses the DSP engine specifically for Bluetooth devices.</p>
+                                    </li>
+                                    <li class="space-y-1">
+                                        <span class="text-amber-500 font-medium block">Windows Fixes</span>
+                                        <p class="text-sm text-zinc-500 leading-relaxed">Fixed Harbour terminal bug and permanently removed .exe installers.</p>
                                     </li>
                                 </ul>
                                 <div class="mt-8 pt-8 border-t border-white/5">
@@ -345,12 +353,12 @@
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <span class="bg-amber-500/10 text-amber-500 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Beta</span>
-                                    <span class="text-[10px] font-mono text-zinc-600">v0.8.2 x64</span>
+                                    <span class="text-[10px] font-mono text-zinc-600">v0.8.4 x64</span>
                                 </div>
                             </div>
                             
                             <div class="flex flex-col sm:flex-row items-center gap-6">
-                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic_0.8.2_x64_en-US.msi" class="w-full sm:w-auto group flex flex-col items-center gap-1 bg-white text-zinc-950 px-10 py-5 rounded-2xl transition-all duration-300 hover:bg-zinc-200 hover:scale-[1.02]">
+                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic_0.8.4_x64_en-US.msi" class="w-full sm:w-auto group flex flex-col items-center gap-1 bg-white text-zinc-950 px-10 py-5 rounded-2xl transition-all duration-300 hover:bg-zinc-200 hover:scale-[1.02]">
                                     <div class="flex items-center gap-2 font-bold text-lg tracking-tight">
                                         Windows 10, 11 (Recommended)
                                     </div>
@@ -359,16 +367,6 @@
                                         Download .msi
                                     </span>
                                 </a>
-                                <span class="text-xs font-mono text-zinc-600 uppercase">OR</span>
-                                <div class="w-full sm:w-auto flex flex-col items-center gap-1 bg-zinc-900/50 text-zinc-600 border border-white/5 px-10 py-5 rounded-2xl cursor-not-allowed">
-                                    <div class="flex items-center gap-2 font-bold text-lg tracking-tight">
-                                        Temporarily Removed
-                                    </div>
-                                    <span class="text-[10px] uppercase tracking-tighter opacity-50 text-zinc-700 flex items-center gap-1">
-                                        <iconify-icon icon="solar:forbidden-circle-bold" class="text-sm"></iconify-icon>
-                                        .exe unavailable
-                                    </span>
-                                </div>
                             </div>
                         </div>
 
@@ -380,12 +378,12 @@
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <span class="bg-amber-500/10 text-amber-500 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Beta</span>
-                                    <span class="text-[10px] font-mono text-zinc-600">v0.8.2 MacOS</span>
+                                    <span class="text-[10px] font-mono text-zinc-600">v0.8.4 MacOS</span>
                                 </div>
                             </div>
 
                             <div class="flex flex-col sm:flex-row items-center gap-6">
-                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic_0.8.2_aarch64.dmg" class="w-full sm:w-auto group flex flex-col items-center gap-1 bg-white text-zinc-950 px-10 py-5 rounded-2xl transition-all duration-300 hover:bg-zinc-200 hover:scale-[1.02]">
+                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic_0.8.4_aarch64.dmg" class="w-full sm:w-auto group flex flex-col items-center gap-1 bg-white text-zinc-950 px-10 py-5 rounded-2xl transition-all duration-300 hover:bg-zinc-200 hover:scale-[1.02]">
                                     <div class="flex items-center gap-2 font-bold text-lg tracking-tight">
                                         MacOS 11+ (Apple Silicon)
                                     </div>
@@ -395,7 +393,7 @@
                                     </span>
                                 </a>
                                 <span class="text-xs font-mono text-zinc-600 uppercase">OR</span>
-                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic_0.8.2_x64.dmg" class="w-full sm:w-auto group flex flex-col items-center gap-1 bg-zinc-900 text-white border border-white/10 px-10 py-5 rounded-2xl transition-all duration-300 hover:bg-zinc-800 hover:scale-[1.02]">
+                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic_0.8.4_x64.dmg" class="w-full sm:w-auto group flex flex-col items-center gap-1 bg-zinc-900 text-white border border-white/10 px-10 py-5 rounded-2xl transition-all duration-300 hover:bg-zinc-800 hover:scale-[1.02]">
                                     <div class="flex items-center gap-2 font-bold text-lg tracking-tight">
                                         MacOS 11+ (Intel)
                                     </div>
@@ -415,12 +413,12 @@
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <span class="bg-amber-500/10 text-amber-500 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Beta</span>
-                                    <span class="text-[10px] font-mono text-zinc-600">v0.8.2 amd64</span>
+                                    <span class="text-[10px] font-mono text-zinc-600">v0.8.4 amd64</span>
                                 </div>
                             </div>
 
                             <div class="flex flex-wrap items-center gap-6">
-                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic_0.8.2_amd64.AppImage" class="group flex flex-col items-center gap-1 bg-white text-zinc-950 px-8 py-4 rounded-2xl transition-all duration-300 hover:bg-zinc-200 hover:scale-[1.02]">
+                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic_0.8.4_amd64.AppImage" class="group flex flex-col items-center gap-1 bg-white text-zinc-950 px-8 py-4 rounded-2xl transition-all duration-300 hover:bg-zinc-200 hover:scale-[1.02]">
                                     <div class="flex items-center gap-2 font-bold tracking-tight">
                                         Ubuntu, Fedora
                                     </div>
@@ -430,7 +428,7 @@
                                     </span>
                                 </a>
                                 <span class="text-xs font-mono text-zinc-600 uppercase">OR</span>
-                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic_0.8.2_amd64.deb" class="group flex flex-col items-center gap-1 bg-zinc-900 text-white border border-white/10 px-8 py-4 rounded-2xl transition-all duration-300 hover:bg-zinc-800 hover:scale-[1.02]">
+                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic_0.8.4_amd64.deb" class="group flex flex-col items-center gap-1 bg-zinc-900 text-white border border-white/10 px-8 py-4 rounded-2xl transition-all duration-300 hover:bg-zinc-800 hover:scale-[1.02]">
                                     <div class="flex items-center gap-2 font-bold tracking-tight">
                                         Debian, Ubuntu
                                     </div>
@@ -440,7 +438,7 @@
                                     </span>
                                 </a>
                                 <span class="text-xs font-mono text-zinc-600 uppercase">OR</span>
-                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic-0.8.2-1.x86_64.rpm" class="group flex flex-col items-center gap-1 bg-zinc-900 text-white border border-white/10 px-8 py-4 rounded-2xl transition-all duration-300 hover:bg-zinc-800 hover:scale-[1.02]">
+                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic-0.8.4-1.x86_64.rpm" class="group flex flex-col items-center gap-1 bg-zinc-900 text-white border border-white/10 px-8 py-4 rounded-2xl transition-all duration-300 hover:bg-zinc-800 hover:scale-[1.02]">
                                     <div class="flex items-center gap-2 font-bold tracking-tight">
                                         Fedora, RHEL
                                     </div>
