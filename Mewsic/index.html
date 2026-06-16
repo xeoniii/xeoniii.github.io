@@ -55,7 +55,7 @@
                 <div>
                     <h1 class="text-3xl md:text-6xl font-semibold tracking-tighter text-white mb-2">Mewsic</h1>
                     <div class="flex items-center gap-3">
-                        <span class="px-2 py-0.5 rounded border border-white/10 bg-white/5 text-[10px] font-mono text-zinc-400 uppercase tracking-wider">v0.9.2</span>
+                        <span class="px-2 py-0.5 rounded border border-white/10 bg-white/5 text-[10px] font-mono text-zinc-400 uppercase tracking-wider">v0.9.3</span>
                         <span class="px-2 py-0.5 rounded border border-green-500/20 bg-green-500/5 text-[10px] font-mono text-green-500 uppercase tracking-wider">GPL v3.0</span>
                         <span class="px-2 py-0.5 rounded border border-amber-500/20 bg-amber-500/5 text-[10px] font-mono text-amber-500 uppercase tracking-wider">Beta</span>
                         <span class="text-xs font-mono text-zinc-600">Cross-Platform Desktop</span>
@@ -279,25 +279,13 @@
                         <div class="mb-12">
                             <div class="flex items-center gap-3 mb-6">
                                 <h2 class="text-xl font-bold text-white uppercase tracking-tight">Latest Changelog</h2>
-                                <span class="px-2 py-0.5 rounded border border-amber-500/20 bg-amber-500/5 text-[10px] font-mono text-amber-500 uppercase tracking-wider">v0.9.2 Beta</span>
+                                <span class="px-2 py-0.5 rounded border border-amber-500/20 bg-amber-500/5 text-[10px] font-mono text-amber-500 uppercase tracking-wider">v0.9.3 Hotfix</span>
                             </div>
                             <div class="bg-white/[0.02] border border-white/5 rounded-3xl p-8">
                                 <ul class="grid md:grid-cols-2 gap-x-12 gap-y-8 text-zinc-300">
                                     <li class="space-y-1">
-                                        <span class="text-amber-500 font-medium block">Plugin Support</span>
-                                        <p class="text-sm text-zinc-500 leading-relaxed">Added plugin support for Mewsic! PluginAPI will be published soon after everything is added.</p>
-                                    </li>
-                                    <li class="space-y-1">
-                                        <span class="text-amber-500 font-medium block">Minecraft Mod Integration</span>
-                                        <p class="text-sm text-zinc-500 leading-relaxed">Minecraft mod integration as a Plugin. Mod is coming soon.</p>
-                                    </li>
-                                    <li class="space-y-1">
-                                        <span class="text-amber-500 font-medium block">Playlist Sharing</span>
-                                        <p class="text-sm text-zinc-500 leading-relaxed">Share playlist button is back, idk how it got removed.</p>
-                                    </li>
-                                    <li class="space-y-1">
-                                        <span class="text-amber-500 font-medium block">Bug Fixes</span>
-                                        <p class="text-sm text-zinc-500 leading-relaxed">Various bug fixes.</p>
+                                        <span class="text-amber-500 font-medium block">Minecraft Bridge Fix</span>
+                                        <p class="text-sm text-zinc-500 leading-relaxed">Fixed a critical problem that caused the Minecraft bridge plugin to not work.</p>
                                     </li>
                                 </ul>
                                 <div class="mt-8 pt-8 border-t border-white/5">
@@ -339,18 +327,18 @@
                         <!-- Download Sections (Platform Specific) -->
                         <div id="download-windows" class="platform-content p-8 rounded-3xl border border-white/10 bg-white/[0.02] relative overflow-hidden">
                             <div class="flex items-center justify-between mb-8">
-                                <div class="flex items-center gap-2 text-xs font-mono text-zinc-500 uppercase tracking-widest">
+                                <div class="hidden">
                                     <iconify-icon icon="solar:shield-check-bold" class="text-sm"></iconify-icon>
                                     SHA256: 90901bc2269329...
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <span class="bg-amber-500/10 text-amber-500 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Beta</span>
-                                    <span class="text-[10px] font-mono text-zinc-600">v0.9.2 x64</span>
+                                    <span class="text-[10px] font-mono text-zinc-600">v0.9.3 x64</span>
                                 </div>
                             </div>
                             
                             <div class="flex flex-col sm:flex-row items-center gap-6">
-                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic_0.9.2_x64_en-US.msi" class="w-full sm:w-auto group flex flex-col items-center gap-1 bg-white text-zinc-950 px-10 py-5 rounded-2xl transition-all duration-300 hover:bg-zinc-200 hover:scale-[1.02]">
+                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic_0.9.3_x64_en-US.msi" class="w-full sm:w-auto group flex flex-col items-center gap-1 bg-white text-zinc-950 px-10 py-5 rounded-2xl transition-all duration-300 hover:bg-zinc-200 hover:scale-[1.02]">
                                     <div class="flex items-center gap-2 font-bold text-lg tracking-tight">
                                         Windows 10, 11 (Recommended)
                                     </div>
@@ -364,18 +352,18 @@
 
                         <div id="download-macos" class="platform-content hidden p-8 rounded-3xl border border-white/10 bg-white/[0.02] relative overflow-hidden">
                             <div class="flex items-center justify-between mb-8">
-                                <div class="flex items-center gap-2 text-xs font-mono text-zinc-500 uppercase tracking-widest">
+                                <div class="hidden">
                                     <iconify-icon icon="solar:shield-check-bold" class="text-sm"></iconify-icon>
                                     SHA256: d4f64bbf603cc2...
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <span class="bg-amber-500/10 text-amber-500 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Beta</span>
-                                    <span class="text-[10px] font-mono text-zinc-600">v0.9.2 MacOS</span>
+                                    <span class="text-[10px] font-mono text-zinc-600">v0.9.3 MacOS</span>
                                 </div>
                             </div>
 
                             <div class="flex flex-col sm:flex-row items-center gap-6">
-                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic_0.9.2_aarch64.dmg" class="w-full sm:w-auto group flex flex-col items-center gap-1 bg-white text-zinc-950 px-10 py-5 rounded-2xl transition-all duration-300 hover:bg-zinc-200 hover:scale-[1.02]">
+                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic_0.9.3_aarch64.dmg" class="w-full sm:w-auto group flex flex-col items-center gap-1 bg-white text-zinc-950 px-10 py-5 rounded-2xl transition-all duration-300 hover:bg-zinc-200 hover:scale-[1.02]">
                                     <div class="flex items-center gap-2 font-bold text-lg tracking-tight">
                                         MacOS 11+ (Apple Silicon)
                                     </div>
@@ -385,7 +373,7 @@
                                     </span>
                                 </a>
                                 <span class="text-xs font-mono text-zinc-600 uppercase">OR</span>
-                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic_0.9.2_x64.dmg" class="w-full sm:w-auto group flex flex-col items-center gap-1 bg-zinc-900 text-white border border-white/10 px-10 py-5 rounded-2xl transition-all duration-300 hover:bg-zinc-800 hover:scale-[1.02]">
+                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic_0.9.3_x64.dmg" class="w-full sm:w-auto group flex flex-col items-center gap-1 bg-zinc-900 text-white border border-white/10 px-10 py-5 rounded-2xl transition-all duration-300 hover:bg-zinc-800 hover:scale-[1.02]">
                                     <div class="flex items-center gap-2 font-bold text-lg tracking-tight">
                                         MacOS 11+ (Intel)
                                     </div>
@@ -399,18 +387,18 @@
 
                         <div id="download-linux" class="platform-content hidden p-8 rounded-3xl border border-white/10 bg-white/[0.02] relative overflow-hidden">
                             <div class="flex items-center justify-between mb-8">
-                                <div class="flex items-center gap-2 text-xs font-mono text-zinc-500 uppercase tracking-widest">
+                                <div class="hidden">
                                     <iconify-icon icon="solar:shield-check-bold" class="text-sm"></iconify-icon>
                                     SHA256: f6b11ea1b13277...
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <span class="bg-amber-500/10 text-amber-500 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Beta</span>
-                                    <span class="text-[10px] font-mono text-zinc-600">v0.9.2 amd64</span>
+                                    <span class="text-[10px] font-mono text-zinc-600">v0.9.3 amd64</span>
                                 </div>
                             </div>
 
                             <div class="flex flex-wrap items-center gap-6">
-                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic_0.9.2_amd64.AppImage" class="group flex flex-col items-center gap-1 bg-white text-zinc-950 px-8 py-4 rounded-2xl transition-all duration-300 hover:bg-zinc-200 hover:scale-[1.02]">
+                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic_0.9.3_amd64.AppImage" class="group flex flex-col items-center gap-1 bg-white text-zinc-950 px-8 py-4 rounded-2xl transition-all duration-300 hover:bg-zinc-200 hover:scale-[1.02]">
                                     <div class="flex items-center gap-2 font-bold tracking-tight">
                                         Ubuntu, Fedora
                                     </div>
@@ -420,7 +408,7 @@
                                     </span>
                                 </a>
                                 <span class="text-xs font-mono text-zinc-600 uppercase">OR</span>
-                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic_0.9.2_amd64.deb" class="group flex flex-col items-center gap-1 bg-zinc-900 text-white border border-white/10 px-8 py-4 rounded-2xl transition-all duration-300 hover:bg-zinc-800 hover:scale-[1.02]">
+                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic_0.9.3_amd64.deb" class="group flex flex-col items-center gap-1 bg-zinc-900 text-white border border-white/10 px-8 py-4 rounded-2xl transition-all duration-300 hover:bg-zinc-800 hover:scale-[1.02]">
                                     <div class="flex items-center gap-2 font-bold tracking-tight">
                                         Debian, Ubuntu
                                     </div>
@@ -430,7 +418,7 @@
                                     </span>
                                 </a>
                                 <span class="text-xs font-mono text-zinc-600 uppercase">OR</span>
-                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic-0.9.2-1.x86_64.rpm" class="group flex flex-col items-center gap-1 bg-zinc-900 text-white border border-white/10 px-8 py-4 rounded-2xl transition-all duration-300 hover:bg-zinc-800 hover:scale-[1.02]">
+                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic-0.9.3-1.x86_64.rpm" class="group flex flex-col items-center gap-1 bg-zinc-900 text-white border border-white/10 px-8 py-4 rounded-2xl transition-all duration-300 hover:bg-zinc-800 hover:scale-[1.02]">
                                     <div class="flex items-center gap-2 font-bold tracking-tight">
                                         Fedora, RHEL
                                     </div>
