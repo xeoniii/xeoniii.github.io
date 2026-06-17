@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mewsic Plugin API | xeoniii.dev</title>
+
+    <!-- Social Embeds -->
+    <meta property="og:title" content="Mewsic Plugin API | xeoniii.dev">
+    <meta property="og:description" content="Documentation for the Mewsic Plugin API.">
+    <meta property="og:url" content="https://xeoniii.github.io/Mewsic/API/">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#09090b">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/2.0.0/iconify-icon.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" type="image/svg+xml" href="https://github.githubassets.com/favicons/favicon.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    
+    <style>
+        .prose pre {
+            border-radius: 0.75rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .prose code:not(pre code) {
+            color: #fde047;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 0.125rem 0.25rem;
+            border-radius: 0.25rem;
+            font-size: 0.875em;
+        }
+    </style>
+</head>
+<body class="bg-[#09090b] text-zinc-400 antialiased selection:bg-white/10 selection:text-white" style="font-family: 'Inter', sans-serif;">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 inset-x-0 z-50 border-b border-white/5 bg-[#09090b]/80 backdrop-blur-md">
+        <div class="mx-auto max-w-6xl px-6 h-16 flex items-center justify-between">
+            <a href="../../" class="text-lg font-semibold tracking-tighter text-white">
+                xeoniii.<span class="text-zinc-500">dev</span>
+            </a>
+            <div class="flex items-center gap-8 text-sm font-medium">
+                <a href="../../#projects" class="hover:text-white transition-colors duration-200">Projects</a>
+                <a href="../../updates/" class="hover:text-white transition-colors duration-200">Updates</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="relative pt-32 overflow-hidden min-h-screen">
+        <!-- Background Glow -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-white/[0.02] rounded-full blur-[120px] pointer-events-none"></div>
+
+        <section class="relative px-6 py-24 mx-auto max-w-4xl z-10">
+            <a href="../" class="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-white transition-colors mb-12 group">
+                <iconify-icon icon="solar:arrow-left-linear" class="text-lg group-hover:-translate-x-1 transition-transform"></iconify-icon>
+                Back to Mewsic
+            </a>
+
+            <div class="flex flex-col gap-8">
+                <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
+                    <div class="w-16 h-16 md:w-20 md:h-20 rounded-2xl md:rounded-3xl border border-white/10 bg-white/5 flex items-center justify-center shrink-0">
+                        <iconify-icon icon="solar:code-bold" class="text-3xl md:text-5xl text-white"></iconify-icon>
+                    </div>
+                    <div>
+                        <h1 class="text-3xl md:text-5xl font-semibold tracking-tighter text-white mb-2">Mewsic Plugin API</h1>
+                        <div class="flex items-center gap-3">
+                            <span class="px-2 py-0.5 rounded border border-white/10 bg-white/5 text-[10px] font-mono text-zinc-400 uppercase tracking-wider">v0.9.4</span>
+                            <span class="text-xs font-mono text-zinc-600">Documentation</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="prose prose-invert max-w-none prose-headings:text-white prose-a:text-amber-500 hover:prose-a:text-amber-400 prose-pre:bg-white/5 prose-pre:border prose-pre:border-white/10">
+                    <p class="text-lg leading-relaxed text-zinc-300">
+                        Welcome to the Mewsic Plugin API! Mewsic exposes a global <code>window.Mewsic</code> object to allow plugins to interact with the application state, control playback, query the library, interact with the UI, and listen to application events.
+                    </p>
+
+                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">Accessing the API</h2>
+                    <p>The API is globally available on the <code>window</code> object:</p>
+                    <pre><code class="language-javascript">const mewsic = window.Mewsic;</code></pre>
+
+                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">1. Application Information</h2>
+                    <h3 class="text-xl font-medium mt-6 mb-3"><code>Mewsic.version</code></h3>
+                    <p>Returns the current version of the Mewsic application as a string.</p>
+                    <pre><code class="language-javascript">console.log(window.Mewsic.version); // e.g. "0.9.4"</code></pre>
+
+                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">2. Player Controls</h2>
+                    <p>The <code>Mewsic.player</code> object provides properties and methods to control and inspect playback state.</p>
+                    
+                    <h3 class="text-xl font-medium mt-8 mb-4">Properties</h3>
+                    <ul class="space-y-3 list-disc pl-5">
+                        <li><strong><code>currentTrack</code></strong>: <code>Track | null</code><br><span class="text-zinc-400">Returns the currently playing track object.</span></li>
+                        <li><strong><code>isPlaying</code></strong>: <code>boolean</code><br><span class="text-zinc-400">Returns <code>true</code> if media is currently playing.</span></li>
+                        <li><strong><code>volume</code></strong>: <code>number</code><br><span class="text-zinc-400">Returns the current volume level (0.0 to 1.0).</span></li>
+                        <li><strong><code>queue</code></strong>: <code>Track[]</code><br><span class="text-zinc-400">Returns an array of tracks currently in the queue.</span></li>
+                        <li><strong><code>currentTime</code></strong>: <code>number</code><br><span class="text-zinc-400">Returns the current playback time in seconds.</span></li>
+                        <li><strong><code>shuffleEnabled</code></strong>: <code>boolean</code><br><span class="text-zinc-400">Returns <code>true</code> if shuffle mode is enabled.</span></li>
+                        <li><strong><code>repeatMode</code></strong>: <code>"off" | "one" | "all"</code><br><span class="text-zinc-400">Returns the current repeat mode state.</span></li>
+                        <li><strong><code>currentPlaylistName</code></strong>: <code>string | null</code><br><span class="text-zinc-400">Returns the name of the playlist currently playing, or <code>null</code> if the playback source is not a playlist.</span></li>
+                    </ul>
+
+                    <h3 class="text-xl font-medium mt-8 mb-4">Methods</h3>
+                    <ul class="space-y-3 list-disc pl-5">
+                        <li><strong><code>play()</code></strong><br><span class="text-zinc-400">Resumes playback.</span></li>
+                        <li><strong><code>pause()</code></strong><br><span class="text-zinc-400">Pauses playback.</span></li>
+                        <li><strong><code>togglePlay()</code></strong><br><span class="text-zinc-400">Toggles between play and pause states.</span></li>
+                        <li><strong><code>next()</code></strong><br><span class="text-zinc-400">Skips to the next track in the queue.</span></li>
+                        <li><strong><code>prev()</code></strong><br><span class="text-zinc-400">Returns to the previous track in the queue.</span></li>
+                        <li><strong><code>seek(time: number)</code></strong><br><span class="text-zinc-400">Seeks to the specified <code>time</code> in seconds within the current track.</span></li>
+                        <li><strong><code>setVolume(volume: number)</code></strong><br><span class="text-zinc-400">Sets the volume level. <code>volume</code> should be a number between <code>0.0</code> and <code>1.0</code>.</span></li>
+                        <li><strong><code>toggleShuffle()</code></strong><br><span class="text-zinc-400">Toggles the shuffle state.</span></li>
+                        <li><strong><code>setRepeatMode(mode: "off" | "one" | "all")</code></strong><br><span class="text-zinc-400">Sets the repeat mode explicitly.</span></li>
+                        <li><strong><code>playTrack(trackId: string)</code></strong><br><span class="text-zinc-400">Immediately plays a track from the library given its <code>trackId</code>. Replaces the current queue with the library queue.</span></li>
+                        <li><strong><code>setQueue(tracks: Track[], startIndex = 0)</code></strong><br><span class="text-zinc-400">Overrides the current queue with a given array of <code>Track</code> objects, starting playback at the specified <code>startIndex</code>.</span></li>
+                        <li><strong><code>addToQueue(track: Track)</code></strong><br><span class="text-zinc-400">Appends a single <code>Track</code> object to the end of the current queue.</span></li>
+                        <li><strong><code>clearQueue()</code></strong><br><span class="text-zinc-400">Clears the playback queue and stops playing.</span></li>
+                    </ul>
+
+                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">3. Library Access</h2>
+                    <p>The <code>Mewsic.library</code> object gives read-only access to user tracks and playlists, along with helper methods.</p>
+                    
+                    <h3 class="text-xl font-medium mt-8 mb-4">Properties</h3>
+                    <ul class="space-y-3 list-disc pl-5">
+                        <li><strong><code>tracks</code></strong>: <code>Track[]</code><br><span class="text-zinc-400">Returns all tracks available in the user's library.</span></li>
+                        <li><strong><code>playlists</code></strong>: <code>Playlist[]</code><br><span class="text-zinc-400">Returns all playlists available in the user's library.</span></li>
+                    </ul>
+
+                    <h3 class="text-xl font-medium mt-8 mb-4">Methods</h3>
+                    <ul class="space-y-3 list-disc pl-5">
+                        <li><strong><code>playPlaylist(playlistId: string)</code></strong><br><span class="text-zinc-400">Immediately starts playing the specified playlist by ID, updating the queue.</span></li>
+                        <li><strong><code>search(query: string): Track[]</code></strong><br><span class="text-zinc-400">Searches the library by track title, artist, or album and returns an array of matching <code>Track</code> objects.</span></li>
+                    </ul>
+
+                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">4. UI Interactions</h2>
+                    <p>The <code>Mewsic.ui</code> object allows you to control the application's appearance and prompt feedback to the user.</p>
+
+                    <h3 class="text-xl font-medium mt-8 mb-4">Properties</h3>
+                    <ul class="space-y-3 list-disc pl-5">
+                        <li><strong><code>activeView</code></strong>: <code>string</code><br><span class="text-zinc-400">Returns the currently active main view.</span></li>
+                    </ul>
+
+                    <h3 class="text-xl font-medium mt-8 mb-4">Methods</h3>
+                    <ul class="space-y-3 list-disc pl-5">
+                        <li><strong><code>addNotification(message: string, type: "info" | "success" | "error" = "info", duration = 5000, title?: string)</code></strong><br><span class="text-zinc-400">Displays a toast notification to the user.</span></li>
+                        <li><strong><code>setTheme(theme: "dark" | "light")</code></strong><br><span class="text-zinc-400">Sets the application's visual theme.</span></li>
+                        <li><strong><code>setAccentColor(color: string)</code></strong><br><span class="text-zinc-400">Changes the global application accent color (can be a standard CSS color value).</span></li>
+                        <li><strong><code>setView(view: string)</code></strong><br><span class="text-zinc-400">Changes the main active view of the application (e.g. 'library', 'settings').</span></li>
+                    </ul>
+
+                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">5. Event System</h2>
+                    <p>The <code>Mewsic.events</code> object allows plugins to listen and react to application state changes.</p>
+
+                    <h3 class="text-xl font-medium mt-8 mb-4">Methods</h3>
+                    <ul class="space-y-3 list-disc pl-5">
+                        <li><strong><code>on(event: string, callback: Function)</code></strong><br><span class="text-zinc-400">Subscribes a <code>callback</code> function to the specified <code>event</code>.</span></li>
+                        <li><strong><code>off(event: string, callback: Function)</code></strong><br><span class="text-zinc-400">Unsubscribes a previously registered <code>callback</code> from the specified <code>event</code>.</span></li>
+                    </ul>
+
+                    <h3 class="text-xl font-medium mt-8 mb-4">Available Events</h3>
+                    <ul class="space-y-3 list-disc pl-5">
+                        <li><strong><code>track_changed</code></strong><br><span class="text-zinc-400">Fired when the current track changes.<br><em>Payload</em>: <code>Track | null</code></span></li>
+                        <li><strong><code>playback_state_changed</code></strong><br><span class="text-zinc-400">Fired when playback is paused or resumed.<br><em>Payload</em>: <code>boolean</code> (isPlaying)</span></li>
+                        <li><strong><code>volume_changed</code></strong><br><span class="text-zinc-400">Fired when the volume level changes.<br><em>Payload</em>: <code>number</code> (volume)</span></li>
+                        <li><strong><code>time_changed</code></strong><br><span class="text-zinc-400">Fired when the playback time updates.<br><em>Payload</em>: <code>number</code> (currentTime)</span></li>
+                        <li><strong><code>shuffle_changed</code></strong><br><span class="text-zinc-400">Fired when shuffle mode is toggled.<br><em>Payload</em>: <code>boolean</code></span></li>
+                        <li><strong><code>repeat_changed</code></strong><br><span class="text-zinc-400">Fired when repeat mode changes.<br><em>Payload</em>: <code>"off" | "one" | "all"</code></span></li>
+                        <li><strong><code>view_changed</code></strong><br><span class="text-zinc-400">Fired when the active UI view changes.<br><em>Payload</em>: <code>string</code> (activeView)</span></li>
+                        <li><strong><code>playlist_changed</code></strong><br><span class="text-zinc-400">Fired when the active playback queue source changes to a new playlist.<br><em>Payload</em>: <code>string | null</code> (playlistName)</span></li>
+                    </ul>
+
+                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">Example Usage</h2>
+                    <p>Here is a basic example of how a plugin might listen to track changes and display a notification:</p>
+                    <pre><code class="language-javascript">// Ensure Mewsic API is available
+if (window.Mewsic) {
+  // Listen for track changes
+  window.Mewsic.events.on("track_changed", (track) => {
+    if (track) {
+      window.Mewsic.ui.addNotification(
+        `Now Playing: ${track.title} by ${track.artist}`,
+        "info",
+        3000,
+        "Plugin Alert"
+      );
+    }
+  });
+
+  // Example: Play the next track when a specific action occurs
+  const skipToNext = () => {
+    window.Mewsic.player.next();
+  };
+}</code></pre>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-white/5 px-6 py-12 bg-[#09090b]">
+        <div class="mx-auto max-w-6xl flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+            <a href="../../" class="text-xl font-semibold tracking-tighter text-white">
+                xeoniii.<span class="text-zinc-600">dev</span>
+            </a>
+            <p class="text-xs font-mono text-zinc-600">
+                © 2026 xeoniii.dev — ALL RIGHTS RESERVED
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+</body>
+</html>
