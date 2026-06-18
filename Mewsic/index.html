@@ -331,6 +331,10 @@
                                 <iconify-icon icon="simple-icons:linux" class="text-xl"></iconify-icon>
                                 <span class="font-medium">Linux</span>
                             </button>
+                            <button onclick="switchPlatform('minecraft')" id="tab-minecraft" class="platform-tab flex items-center gap-2 px-6 py-3 rounded-xl border border-white/5 bg-white/[0.02] text-zinc-400 hover:text-white transition-all duration-200">
+                                <iconify-icon icon="mdi:minecraft" class="text-xl"></iconify-icon>
+                                <span class="font-medium">Minecraft Mod</span>
+                            </button>
                         </div>
 
                         <!-- Alert Box -->
@@ -444,6 +448,29 @@
                                     <span class="text-[10px] uppercase tracking-tighter text-zinc-500 flex items-center gap-1">
                                         <iconify-icon icon="solar:download-bold" class="text-sm"></iconify-icon>
                                         .rpm
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div id="download-minecraft" class="platform-content hidden p-8 rounded-3xl border border-white/10 bg-white/[0.02] relative overflow-hidden">
+                            <div class="flex items-center justify-between mb-8">
+                                <div class="hidden">
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="bg-amber-500/10 text-amber-500 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">v1.0</span>
+                                    <span class="px-2 py-0.5 rounded border border-purple-500/20 bg-purple-500/5 text-[11px] font-bold text-purple-400 tracking-wider">Fabric 1.21.11</span>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-wrap items-center gap-6">
+                                <a href="https://github.com/xeoniii/Mewsic/releases/download/v0.9.6/mewsic-bridge-1.0.jar" class="group flex flex-col items-center gap-1 bg-white text-zinc-950 px-8 py-4 rounded-2xl transition-all duration-300 hover:bg-zinc-200 hover:scale-[1.02]">
+                                    <div class="flex items-center gap-2 font-bold tracking-tight">
+                                        Mewsic Bridge Mod
+                                    </div>
+                                    <span class="text-[10px] uppercase tracking-tighter opacity-70 flex items-center gap-1">
+                                        <iconify-icon icon="solar:download-bold" class="text-sm"></iconify-icon>
+                                        .jar
                                     </span>
                                 </a>
                             </div>
