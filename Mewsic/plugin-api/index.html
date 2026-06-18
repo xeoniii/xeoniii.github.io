@@ -8,7 +8,7 @@
     <!-- Social Embeds -->
     <meta property="og:title" content="Mewsic Plugin API | xeoniii.dev">
     <meta property="og:description" content="Documentation for the Mewsic Plugin API.">
-    <meta property="og:url" content="https://xeoniii.github.io/Mewsic/API/">
+    <meta property="og:url" content="https://xeoniii.github.io/Mewsic/plugin-api/">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#09090b">
 
@@ -70,7 +70,7 @@
                     <div>
                         <h1 class="text-3xl md:text-5xl font-semibold tracking-tighter text-white mb-2">Mewsic Plugin API</h1>
                         <div class="flex items-center gap-3">
-                            <span class="px-2 py-0.5 rounded border border-white/10 bg-white/5 text-[10px] font-mono text-zinc-400 uppercase tracking-wider">v0.9.4</span>
+                            <span class="px-2 py-0.5 rounded border border-white/10 bg-white/5 text-[10px] font-mono text-zinc-400 uppercase tracking-wider">v0.9.6</span>
                             <span class="text-xs font-mono text-zinc-600">Documentation</span>
                         </div>
                     </div>
@@ -88,7 +88,7 @@
                     <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">1. Application Information</h2>
                     <h3 class="text-xl font-medium mt-6 mb-3"><code>Mewsic.version</code></h3>
                     <p>Returns the current version of the Mewsic application as a string.</p>
-                    <pre><code class="language-javascript">console.log(window.Mewsic.version); // e.g. "0.9.4"</code></pre>
+                    <pre><code class="language-javascript">console.log(window.Mewsic.version); // e.g. "0.9.6"</code></pre>
 
                     <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">2. Player Controls</h2>
                     <p>The <code>Mewsic.player</code> object provides properties and methods to control and inspect playback state.</p>
@@ -113,13 +113,16 @@
                         <li><strong><code>next()</code></strong><br><span class="text-zinc-400">Skips to the next track in the queue.</span></li>
                         <li><strong><code>prev()</code></strong><br><span class="text-zinc-400">Returns to the previous track in the queue.</span></li>
                         <li><strong><code>seek(time: number)</code></strong><br><span class="text-zinc-400">Seeks to the specified <code>time</code> in seconds within the current track.</span></li>
-                        <li><strong><code>setVolume(volume: number)</code></strong><br><span class="text-zinc-400">Sets the volume level. <code>volume</code> should be a number between <code>0.0</code> and <code>1.0</code>.</span></li>
-                        <li><strong><code>toggleShuffle()</code></strong><br><span class="text-zinc-400">Toggles the shuffle state.</span></li>
-                        <li><strong><code>setRepeatMode(mode: "off" | "one" | "all")</code></strong><br><span class="text-zinc-400">Sets the repeat mode explicitly.</span></li>
-                        <li><strong><code>playTrack(trackId: string)</code></strong><br><span class="text-zinc-400">Immediately plays a track from the library given its <code>trackId</code>. Replaces the current queue with the library queue.</span></li>
-                        <li><strong><code>setQueue(tracks: Track[], startIndex = 0)</code></strong><br><span class="text-zinc-400">Overrides the current queue with a given array of <code>Track</code> objects, starting playback at the specified <code>startIndex</code>.</span></li>
-                        <li><strong><code>addToQueue(track: Track)</code></strong><br><span class="text-zinc-400">Appends a single <code>Track</code> object to the end of the current queue.</span></li>
-                        <li><strong><code>clearQueue()</code></strong><br><span class="text-zinc-400">Clears the playback queue and stops playing.</span></li>
+                        <li><strong><code>setVolume(volume: number)</code></strong><br><span class="text-zinc-400">Sets the player volume (0.0 to 1.0).</span></li>
+                        <li><strong><code>fadeVolume(targetVolume: number, duration: number)</code></strong><br><span class="text-zinc-400">Smoothly fades the volume to <code>targetVolume</code> over the specified <code>duration</code> (in milliseconds). Useful for crossfading or sleep timers.</span></li>
+                        <li><strong><code>setPlaybackRate(speed: number)</code></strong><br><span class="text-zinc-400">Sets the playback speed multiplier.</span></li>
+                        <li><strong><code>toggleShuffle()</code></strong><br><span class="text-zinc-400">Toggles the shuffle state of the current queue.</span></li>
+                        <li><strong><code>setRepeatMode(mode: "off" | "one" | "all")</code></strong><br><span class="text-zinc-400">Sets the queue repetition behavior.</span></li>
+                        <li><strong><code>getState()</code></strong><br><span class="text-zinc-400">Returns a snapshot of the entire player state. Useful for initial synchronization.</span></li>
+                        <li><strong><code>playTrack(trackId: string): Promise&lt;void&gt;</code></strong><br><span class="text-zinc-400">Locates a track by ID in the library and immediately plays it, restructuring the queue around it.</span></li>
+                        <li><strong><code>setQueue(tracks: Track[], startIndex?: number): Promise&lt;void&gt;</code></strong><br><span class="text-zinc-400">Replaces the current queue with a new array of <code>Track</code> objects and begins playback at the given <code>startIndex</code>.</span></li>
+                        <li><strong><code>addToQueue(track: Track)</code></strong><br><span class="text-zinc-400">Appends a single <code>Track</code> to the end of the current queue.</span></li>
+                        <li><strong><code>clearQueue()</code></strong><br><span class="text-zinc-400">Stops playback and clears the active queue.</span></li>
                     </ul>
 
                     <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">3. Library Access</h2>
@@ -143,23 +146,38 @@
                     <h3 class="text-xl font-medium mt-8 mb-4">Properties</h3>
                     <ul class="space-y-3 list-disc pl-5">
                         <li><strong><code>activeView</code></strong>: <code>string</code><br><span class="text-zinc-400">Returns the currently active main view.</span></li>
+                        <li><strong><code>registry</code></strong>: <code>Object</code><br><span class="text-zinc-400">Access to the internal UI element maps. (Read-Only)</span></li>
                     </ul>
 
                     <h3 class="text-xl font-medium mt-8 mb-4">Methods</h3>
                     <ul class="space-y-3 list-disc pl-5">
-                        <li><strong><code>addNotification(message: string, type: "info" | "success" | "error" = "info", duration = 5000, title?: string)</code></strong><br><span class="text-zinc-400">Displays a toast notification to the user.</span></li>
-                        <li><strong><code>setTheme(theme: "dark" | "light")</code></strong><br><span class="text-zinc-400">Sets the application's visual theme.</span></li>
-                        <li><strong><code>setAccentColor(color: string)</code></strong><br><span class="text-zinc-400">Changes the global application accent color (can be a standard CSS color value).</span></li>
-                        <li><strong><code>setView(view: string)</code></strong><br><span class="text-zinc-400">Changes the main active view of the application (e.g. 'library', 'settings').</span></li>
+                        <li><strong><code>addNotification(message: string, type?: "info" | "success" | "error", duration?: number, title?: string)</code></strong><br><span class="text-zinc-400">Triggers a toast notification in the application. Default duration is 5000ms.</span></li>
+                        <li><strong><code>setTheme(theme: "dark" | "light")</code></strong><br><span class="text-zinc-400">Forces the application color scheme.</span></li>
+                        <li><strong><code>setAccentColor(colorHex: string)</code></strong><br><span class="text-zinc-400">Updates the global CSS accent color across the app.</span></li>
+                        <li><strong><code>setView(viewId: string)</code></strong><br><span class="text-zinc-400">Navigates the main application window to the specified view.</span></li>
+                        <li><strong><code>registerSidebarComponent(id: string, config: { name: string; icon: string; viewId: string })</code></strong><br><span class="text-zinc-400">Injects a new tab into the left sidebar. Icon must be an inline SVG string.</span></li>
+                        <li><strong><code>registerTab(id: string, config: { render: (container: HTMLElement) =&gt; void; cleanup?: () =&gt; void })</code></strong><br><span class="text-zinc-400">Registers a custom view that can be navigated to.</span></li>
+                        <li><strong><code>registerOverlay(id: string, domElement: HTMLElement)</code></strong><br><span class="text-zinc-400">Injects a persistent, floating DOM element over the entire application.</span></li>
+                        <li><strong><code>removeOverlay(id: string)</code></strong><br><span class="text-zinc-400">Removes a previously registered overlay.</span></li>
                     </ul>
 
-                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">5. Event System</h2>
+                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">5. Storage Access</h2>
+                    <p>The <code>Mewsic.storage</code> object is a sandboxed key-value store specific to your plugin. Data is persisted securely and will not collide with other plugins.</p>
+
+                    <h3 class="text-xl font-medium mt-8 mb-4">Methods</h3>
+                    <ul class="space-y-3 list-disc pl-5">
+                        <li><strong><code>set(pluginId: string, key: string, value: any)</code></strong><br><span class="text-zinc-400">Stores a value for the given key.</span></li>
+                        <li><strong><code>get(pluginId: string, key: string): any</code></strong><br><span class="text-zinc-400">Retrieves the value for the given key.</span></li>
+                        <li><strong><code>remove(pluginId: string, key: string)</code></strong><br><span class="text-zinc-400">Removes the stored value for the given key.</span></li>
+                    </ul>
+
+                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">6. Event System</h2>
                     <p>The <code>Mewsic.events</code> object allows plugins to listen and react to application state changes.</p>
 
                     <h3 class="text-xl font-medium mt-8 mb-4">Methods</h3>
                     <ul class="space-y-3 list-disc pl-5">
-                        <li><strong><code>on(event: string, callback: Function)</code></strong><br><span class="text-zinc-400">Subscribes a <code>callback</code> function to the specified <code>event</code>.</span></li>
-                        <li><strong><code>off(event: string, callback: Function)</code></strong><br><span class="text-zinc-400">Unsubscribes a previously registered <code>callback</code> from the specified <code>event</code>.</span></li>
+                        <li><strong><code>on(eventName: string, callback: Function)</code></strong><br><span class="text-zinc-400">Subscribes a <code>callback</code> function to the specified <code>eventName</code>.</span></li>
+                        <li><strong><code>off(eventName: string, callback: Function)</code></strong><br><span class="text-zinc-400">Unsubscribes a previously registered <code>callback</code> from the specified <code>eventName</code>.</span></li>
                     </ul>
 
                     <h3 class="text-xl font-medium mt-8 mb-4">Available Events</h3>
@@ -171,6 +189,7 @@
                         <li><strong><code>shuffle_changed</code></strong><br><span class="text-zinc-400">Fired when shuffle mode is toggled.<br><em>Payload</em>: <code>boolean</code></span></li>
                         <li><strong><code>repeat_changed</code></strong><br><span class="text-zinc-400">Fired when repeat mode changes.<br><em>Payload</em>: <code>"off" | "one" | "all"</code></span></li>
                         <li><strong><code>view_changed</code></strong><br><span class="text-zinc-400">Fired when the active UI view changes.<br><em>Payload</em>: <code>string</code> (activeView)</span></li>
+                        <li><strong><code>queue_changed</code></strong><br><span class="text-zinc-400">Fired when the active queue changes.<br><em>Payload</em>: <code>Track[]</code></span></li>
                         <li><strong><code>playlist_changed</code></strong><br><span class="text-zinc-400">Fired when the active playback queue source changes to a new playlist.<br><em>Payload</em>: <code>string | null</code> (playlistName)</span></li>
                     </ul>
 
