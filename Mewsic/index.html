@@ -54,7 +54,7 @@
                 </div>
                 <div>
                     <h1 class="text-3xl md:text-6xl font-semibold tracking-tighter text-white mb-2">Mewsic</h1>
-                    <div class="flex items-center gap-3">
+                    <div class="flex flex-wrap items-center gap-3">
                         <span class="px-2 py-0.5 rounded border border-white/10 bg-white/5 text-[10px] font-mono text-zinc-400 uppercase tracking-wider">v0.9.6</span>
                         <span class="px-2 py-0.5 rounded border border-green-500/20 bg-green-500/5 text-[10px] font-mono text-green-500 uppercase tracking-wider">GPL v3.0</span>
                         <span class="px-2 py-0.5 rounded border border-amber-500/20 bg-amber-500/5 text-[10px] font-mono text-amber-500 uppercase tracking-wider">Beta</span>
@@ -77,12 +77,12 @@
                     </div>
                     
                     <div class="grid md:grid-cols-2 gap-6 mt-12">
-                        <div class="p-6 rounded-2xl border border-white/5 bg-white/[0.01]">
-                            <h3 class="text-white font-semibold mb-3 flex items-center gap-2">
-                                <iconify-icon icon="solar:bolt-bold" class="text-zinc-500"></iconify-icon>
-                                Built for Speed
-                            </h3>
-                            <p class="text-sm">Leveraging Rust's performance for audio processing and file management, ensuring a lag-free experience even with massive libraries.</p>
+                        <div class="p-6 rounded-2xl border border-white/5 bg-white/[0.01] flex flex-col justify-center">
+                            <span id="download-count-text" class="text-4xl md:text-5xl font-semibold text-white tracking-tighter mb-2">...</span>
+                            <span class="text-[10px] font-mono text-zinc-500 uppercase tracking-widest flex items-center gap-1.5">
+                                <iconify-icon icon="solar:download-bold" class="text-sm"></iconify-icon>
+                                Total Downloads
+                            </span>
                         </div>
                         <div class="p-6 rounded-2xl border border-white/5 bg-white/[0.01]">
                             <h3 class="text-white font-semibold mb-3 flex items-center gap-2">
@@ -514,6 +514,44 @@
                                 document.getElementById('alert-windows').classList.remove('hidden');
                             }
                         }
+
+                        async function fetchDownloads() {
+                            try {
+                                const response = await fetch('https://api.github.com/repos/xeoniii/Mewsic/releases');
+                                const releases = await response.json();
+                                let totalDownloads = 0;
+                                releases.forEach(release => {
+                                    release.assets.forEach(asset => {
+                                        totalDownloads += asset.download_count;
+                                    });
+                                });
+                                
+                                if (totalDownloads > 0) {
+                                    const countText = document.getElementById('download-count-text');
+                                    if (countText) {
+                                        let currentCount = 0;
+                                        const duration = 1000;
+                                        const steps = 30;
+                                        const stepTime = duration / steps;
+                                        const increment = totalDownloads / steps;
+                                        
+                                        const timer = setInterval(() => {
+                                            currentCount += increment;
+                                            if (currentCount >= totalDownloads) {
+                                                countText.innerText = totalDownloads.toLocaleString();
+                                                clearInterval(timer);
+                                            } else {
+                                                countText.innerText = Math.floor(currentCount).toLocaleString();
+                                            }
+                                        }, stepTime);
+                                    }
+                                }
+                            } catch (error) {
+                                console.error('Error fetching download count:', error);
+                            }
+                        }
+
+                        document.addEventListener('DOMContentLoaded', fetchDownloads);
                     </script>
                 </div>
             </div>
