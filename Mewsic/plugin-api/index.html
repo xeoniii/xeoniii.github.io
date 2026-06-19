@@ -70,7 +70,7 @@
                     <div>
                         <h1 class="text-3xl md:text-5xl font-semibold tracking-tighter text-white mb-2">Mewsic Plugin API</h1>
                         <div class="flex items-center gap-3">
-                            <span class="px-2 py-0.5 rounded border border-white/10 bg-white/5 text-[10px] font-mono text-zinc-400 uppercase tracking-wider">v0.9.6</span>
+                            <span class="px-2 py-0.5 rounded border border-white/10 bg-white/5 text-[10px] font-mono text-zinc-400 uppercase tracking-wider">v0.9.7</span>
                             <span class="text-xs font-mono text-zinc-600">Documentation</span>
                         </div>
                     </div>
@@ -78,142 +78,757 @@
 
                 <div class="prose prose-invert max-w-none prose-headings:text-white prose-a:text-amber-500 hover:prose-a:text-amber-400 prose-pre:bg-white/5 prose-pre:border prose-pre:border-white/10">
                     <p class="text-lg leading-relaxed text-zinc-300">
-                        Welcome to the Mewsic Plugin API! Mewsic exposes a global <code>window.Mewsic</code> object to allow plugins to interact with the application state, control playback, query the library, interact with the UI, and listen to application events.
+                        Plugins are plain JavaScript files placed in Mewsic's plugin directory. They run inside the app's webview and have full access to the <code>window.Mewsic</code> global the moment the app has loaded.
                     </p>
 
-                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">Accessing the API</h2>
-                    <p>The API is globally available on the <code>window</code> object:</p>
-                    <pre><code class="language-javascript">const mewsic = window.Mewsic;</code></pre>
+                    <pre><code class="language-javascript">// Basic plugin entry point
+console.log("Hello from my plugin!", window.Mewsic.version);</code></pre>
 
-                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">1. Application Information</h2>
-                    <h3 class="text-xl font-medium mt-6 mb-3"><code>Mewsic.version</code></h3>
-                    <p>Returns the current version of the Mewsic application as a string.</p>
-                    <pre><code class="language-javascript">console.log(window.Mewsic.version); // e.g. "0.9.6"</code></pre>
+                    <p class="mt-8 text-zinc-300">The API is split into seven namespaces:</p>
 
-                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">2. Player Controls</h2>
-                    <p>The <code>Mewsic.player</code> object provides properties and methods to control and inspect playback state.</p>
-                    
-                    <h3 class="text-xl font-medium mt-8 mb-4">Properties</h3>
-                    <ul class="space-y-3 list-disc pl-5">
-                        <li><strong><code>currentTrack</code></strong>: <code>Track | null</code><br><span class="text-zinc-400">Returns the currently playing track object.</span></li>
-                        <li><strong><code>isPlaying</code></strong>: <code>boolean</code><br><span class="text-zinc-400">Returns <code>true</code> if media is currently playing.</span></li>
-                        <li><strong><code>volume</code></strong>: <code>number</code><br><span class="text-zinc-400">Returns the current volume level (0.0 to 1.0).</span></li>
-                        <li><strong><code>queue</code></strong>: <code>Track[]</code><br><span class="text-zinc-400">Returns an array of tracks currently in the queue.</span></li>
-                        <li><strong><code>currentTime</code></strong>: <code>number</code><br><span class="text-zinc-400">Returns the current playback time in seconds.</span></li>
-                        <li><strong><code>shuffleEnabled</code></strong>: <code>boolean</code><br><span class="text-zinc-400">Returns <code>true</code> if shuffle mode is enabled.</span></li>
-                        <li><strong><code>repeatMode</code></strong>: <code>"off" | "one" | "all"</code><br><span class="text-zinc-400">Returns the current repeat mode state.</span></li>
-                        <li><strong><code>currentPlaylistName</code></strong>: <code>string | null</code><br><span class="text-zinc-400">Returns the name of the playlist currently playing, or <code>null</code> if the playback source is not a playlist.</span></li>
-                    </ul>
+                    <div class="overflow-x-auto my-6">
+                        <table class="w-full text-left border-collapse border border-white/10 text-sm">
+                            <thead>
+                                <tr class="bg-white/5 border-b border-white/10">
+                                    <th class="p-3 font-semibold text-white">Namespace</th>
+                                    <th class="p-3 font-semibold text-white">Purpose</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5">
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">Mewsic.player</td>
+                                    <td class="p-3 text-zinc-400">Playback control and queue management</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">Mewsic.library</td>
+                                    <td class="p-3 text-zinc-400">Track and playlist CRUD</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">Mewsic.audio</td>
+                                    <td class="p-3 text-zinc-400">DSP — EQ, reverb, speed, presets</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">Mewsic.ui</td>
+                                    <td class="p-3 text-zinc-400">Views, overlays, search providers, CSS injection</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">Mewsic.settings</td>
+                                    <td class="p-3 text-zinc-400">App settings — read and write</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">Mewsic.storage</td>
+                                    <td class="p-3 text-zinc-400">Isolated per-plugin key-value persistence</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">Mewsic.events</td>
+                                    <td class="p-3 text-zinc-400">Subscribe to system events and emit custom ones</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-                    <h3 class="text-xl font-medium mt-8 mb-4">Methods</h3>
-                    <ul class="space-y-3 list-disc pl-5">
-                        <li><strong><code>play()</code></strong><br><span class="text-zinc-400">Resumes playback.</span></li>
-                        <li><strong><code>pause()</code></strong><br><span class="text-zinc-400">Pauses playback.</span></li>
-                        <li><strong><code>togglePlay()</code></strong><br><span class="text-zinc-400">Toggles between play and pause states.</span></li>
-                        <li><strong><code>next()</code></strong><br><span class="text-zinc-400">Skips to the next track in the queue.</span></li>
-                        <li><strong><code>prev()</code></strong><br><span class="text-zinc-400">Returns to the previous track in the queue.</span></li>
-                        <li><strong><code>seek(time: number)</code></strong><br><span class="text-zinc-400">Seeks to the specified <code>time</code> in seconds within the current track.</span></li>
-                        <li><strong><code>setVolume(volume: number)</code></strong><br><span class="text-zinc-400">Sets the player volume (0.0 to 1.0).</span></li>
-                        <li><strong><code>fadeVolume(targetVolume: number, duration: number)</code></strong><br><span class="text-zinc-400">Smoothly fades the volume to <code>targetVolume</code> over the specified <code>duration</code> (in milliseconds). Useful for crossfading or sleep timers.</span></li>
-                        <li><strong><code>setPlaybackRate(speed: number)</code></strong><br><span class="text-zinc-400">Sets the playback speed multiplier.</span></li>
-                        <li><strong><code>toggleShuffle()</code></strong><br><span class="text-zinc-400">Toggles the shuffle state of the current queue.</span></li>
-                        <li><strong><code>setRepeatMode(mode: "off" | "one" | "all")</code></strong><br><span class="text-zinc-400">Sets the queue repetition behavior.</span></li>
-                        <li><strong><code>getState()</code></strong><br><span class="text-zinc-400">Returns a snapshot of the entire player state. Useful for initial synchronization.</span></li>
-                        <li><strong><code>playTrack(trackId: string): Promise&lt;void&gt;</code></strong><br><span class="text-zinc-400">Locates a track by ID in the library and immediately plays it, restructuring the queue around it.</span></li>
-                        <li><strong><code>setQueue(tracks: Track[], startIndex?: number): Promise&lt;void&gt;</code></strong><br><span class="text-zinc-400">Replaces the current queue with a new array of <code>Track</code> objects and begins playback at the given <code>startIndex</code>.</span></li>
-                        <li><strong><code>addToQueue(track: Track)</code></strong><br><span class="text-zinc-400">Appends a single <code>Track</code> to the end of the current queue.</span></li>
-                        <li><strong><code>clearQueue()</code></strong><br><span class="text-zinc-400">Stops playback and clears the active queue.</span></li>
-                    </ul>
+                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">Mewsic.player</h2>
 
-                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">3. Library Access</h2>
-                    <p>The <code>Mewsic.library</code> object gives read-only access to user tracks and playlists, along with helper methods.</p>
-                    
-                    <h3 class="text-xl font-medium mt-8 mb-4">Properties</h3>
-                    <ul class="space-y-3 list-disc pl-5">
-                        <li><strong><code>tracks</code></strong>: <code>Track[]</code><br><span class="text-zinc-400">Returns all tracks available in the user's library.</span></li>
-                        <li><strong><code>playlists</code></strong>: <code>Playlist[]</code><br><span class="text-zinc-400">Returns all playlists available in the user's library.</span></li>
-                    </ul>
+                    <h3 class="text-xl font-medium mt-6 mb-3">Getters</h3>
+                    <div class="overflow-x-auto my-6">
+                        <table class="w-full text-left border-collapse border border-white/10 text-sm">
+                            <thead>
+                                <tr class="bg-white/5 border-b border-white/10">
+                                    <th class="p-3 font-semibold text-white">Property</th>
+                                    <th class="p-3 font-semibold text-white">Type</th>
+                                    <th class="p-3 font-semibold text-white">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5">
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">currentTrack</td>
+                                    <td class="p-3 font-mono text-zinc-300">Track | null</td>
+                                    <td class="p-3 text-zinc-400">The active track object</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">isPlaying</td>
+                                    <td class="p-3 font-mono text-zinc-300">boolean</td>
+                                    <td class="p-3 text-zinc-400">Whether audio is playing</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">volume</td>
+                                    <td class="p-3 font-mono text-zinc-300">number</td>
+                                    <td class="p-3 text-zinc-400">Current volume (0–1)</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">queue</td>
+                                    <td class="p-3 font-mono text-zinc-300">Track[]</td>
+                                    <td class="p-3 text-zinc-400">The active play queue</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">queueIndex</td>
+                                    <td class="p-3 font-mono text-zinc-300">number</td>
+                                    <td class="p-3 text-zinc-400">Index of the current track in the queue</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">currentTime</td>
+                                    <td class="p-3 font-mono text-zinc-300">number</td>
+                                    <td class="p-3 text-zinc-400">Playhead position in seconds</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">duration</td>
+                                    <td class="p-3 font-mono text-zinc-300">number</td>
+                                    <td class="p-3 text-zinc-400">Active track duration in seconds</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">shuffleEnabled</td>
+                                    <td class="p-3 font-mono text-zinc-300">boolean</td>
+                                    <td class="p-3 text-zinc-400">Whether shuffle is on</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">repeatMode</td>
+                                    <td class="p-3 font-mono text-zinc-300">"off" | "one" | "all"</td>
+                                    <td class="p-3 text-zinc-400">Current repeat mode</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">currentPlaylistName</td>
+                                    <td class="p-3 font-mono text-zinc-300">string | null</td>
+                                    <td class="p-3 text-zinc-400">Name of the active playlist, or null</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-                    <h3 class="text-xl font-medium mt-8 mb-4">Methods</h3>
-                    <ul class="space-y-3 list-disc pl-5">
-                        <li><strong><code>playPlaylist(playlistId: string)</code></strong><br><span class="text-zinc-400">Immediately starts playing the specified playlist by ID, updating the queue.</span></li>
-                        <li><strong><code>search(query: string): Track[]</code></strong><br><span class="text-zinc-400">Searches the library by track title, artist, or album and returns an array of matching <code>Track</code> objects.</span></li>
-                    </ul>
+                    <h3 class="text-xl font-medium mt-6 mb-3">Methods</h3>
+                    <pre><code class="language-javascript">Mewsic.player.play()
+Mewsic.player.pause()
+Mewsic.player.togglePlay()
+Mewsic.player.next()
+Mewsic.player.prev()
+Mewsic.player.seek(seconds)
+Mewsic.player.skipForward(seconds = 5)
+Mewsic.player.skipBackward(seconds = 5)
+Mewsic.player.setVolume(0.0 - 1.0)
+Mewsic.player.toggleMute()
+Mewsic.player.fadeVolume(targetVolume, durationMs)
+Mewsic.player.setPlaybackRate(speed)   // 0.5 - 2.0
+Mewsic.player.toggleShuffle()
+Mewsic.player.setRepeatMode("off" | "one" | "all")
+Mewsic.player.getState()               // snapshot of all player state</code></pre>
 
-                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">4. UI Interactions</h2>
-                    <p>The <code>Mewsic.ui</code> object allows you to control the application's appearance and prompt feedback to the user.</p>
+                    <h3 class="text-xl font-medium mt-6 mb-3">Queue management</h3>
+                    <pre><code class="language-javascript">// Play a local track by its ID
+await Mewsic.player.playTrack("track-id");
 
-                    <h3 class="text-xl font-medium mt-8 mb-4">Properties</h3>
-                    <ul class="space-y-3 list-disc pl-5">
-                        <li><strong><code>activeView</code></strong>: <code>string</code><br><span class="text-zinc-400">Returns the currently active main view.</span></li>
-                        <li><strong><code>registry</code></strong>: <code>Object</code><br><span class="text-zinc-400">Access to the internal UI element maps. (Read-Only)</span></li>
-                    </ul>
+// Play a virtual/remote track directly
+await Mewsic.player.playVirtualTrack({
+  id: "spotify:track:4PTG3Z6ehGkBF3zIqYQGSy",
+  title: "Stay",
+  artist: "The Kid LAROI",
+  album: "F*CK LOVE 3",
+  duration: 141,
+  filePath: "https://open.spotify.com/track/4PTG3Z6ehGkBF3zIqYQGSy",
+  isVirtual: true,
+  provider: "virtual",
+  coverArt: "https://i.scdn.co/image/..."
+});
 
-                    <h3 class="text-xl font-medium mt-8 mb-4">Methods</h3>
-                    <ul class="space-y-3 list-disc pl-5">
-                        <li><strong><code>addNotification(message: string, type?: "info" | "success" | "error", duration?: number, title?: string)</code></strong><br><span class="text-zinc-400">Triggers a toast notification in the application. Default duration is 5000ms.</span></li>
-                        <li><strong><code>setTheme(theme: "dark" | "light")</code></strong><br><span class="text-zinc-400">Forces the application color scheme.</span></li>
-                        <li><strong><code>setAccentColor(colorHex: string)</code></strong><br><span class="text-zinc-400">Updates the global CSS accent color across the app.</span></li>
-                        <li><strong><code>setView(viewId: string)</code></strong><br><span class="text-zinc-400">Navigates the main application window to the specified view.</span></li>
-                        <li><strong><code>registerSidebarComponent(id: string, config: { name: string; icon: string; viewId: string })</code></strong><br><span class="text-zinc-400">Injects a new tab into the left sidebar. Icon must be an inline SVG string.</span></li>
-                        <li><strong><code>registerTab(id: string, config: { render: (container: HTMLElement) =&gt; void; cleanup?: () =&gt; void })</code></strong><br><span class="text-zinc-400">Registers a custom view that can be navigated to.</span></li>
-                        <li><strong><code>registerOverlay(id: string, domElement: HTMLElement)</code></strong><br><span class="text-zinc-400">Injects a persistent, floating DOM element over the entire application.</span></li>
-                        <li><strong><code>removeOverlay(id: string)</code></strong><br><span class="text-zinc-400">Removes a previously registered overlay.</span></li>
-                    </ul>
+// Replace the whole queue
+await Mewsic.player.setQueue(tracks, startIndex);
 
-                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">5. Storage Access</h2>
-                    <p>The <code>Mewsic.storage</code> object is a sandboxed key-value store specific to your plugin. Data is persisted securely and will not collide with other plugins.</p>
+Mewsic.player.addToQueue(track);
+Mewsic.player.removeFromQueue("track-id");
+Mewsic.player.clearQueue();</code></pre>
 
-                    <h3 class="text-xl font-medium mt-8 mb-4">Methods</h3>
-                    <ul class="space-y-3 list-disc pl-5">
-                        <li><strong><code>set(pluginId: string, key: string, value: any)</code></strong><br><span class="text-zinc-400">Stores a value for the given key.</span></li>
-                        <li><strong><code>get(pluginId: string, key: string): any</code></strong><br><span class="text-zinc-400">Retrieves the value for the given key.</span></li>
-                        <li><strong><code>remove(pluginId: string, key: string)</code></strong><br><span class="text-zinc-400">Removes the stored value for the given key.</span></li>
-                    </ul>
+                    <h3 class="text-xl font-medium mt-6 mb-3">Stream resolvers</h3>
+                    <p class="text-zinc-400 mb-4">
+                        Plugins can intercept playback of remote URLs (Spotify, SoundCloud, custom schemes, etc.) and resolve them to a playable direct audio URL before the audio engine loads them.
+                    </p>
+                    <pre><code class="language-javascript">Mewsic.player.registerResolver(async (url) => {
+  if (!url.startsWith("https://open.spotify.com/")) return null;
 
-                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">6. Event System</h2>
-                    <p>The <code>Mewsic.events</code> object allows plugins to listen and react to application state changes.</p>
-
-                    <h3 class="text-xl font-medium mt-8 mb-4">Methods</h3>
-                    <ul class="space-y-3 list-disc pl-5">
-                        <li><strong><code>on(eventName: string, callback: Function)</code></strong><br><span class="text-zinc-400">Subscribes a <code>callback</code> function to the specified <code>eventName</code>.</span></li>
-                        <li><strong><code>off(eventName: string, callback: Function)</code></strong><br><span class="text-zinc-400">Unsubscribes a previously registered <code>callback</code> from the specified <code>eventName</code>.</span></li>
-                    </ul>
-
-                    <h3 class="text-xl font-medium mt-8 mb-4">Available Events</h3>
-                    <ul class="space-y-3 list-disc pl-5">
-                        <li><strong><code>track_changed</code></strong><br><span class="text-zinc-400">Fired when the current track changes.<br><em>Payload</em>: <code>Track | null</code></span></li>
-                        <li><strong><code>playback_state_changed</code></strong><br><span class="text-zinc-400">Fired when playback is paused or resumed.<br><em>Payload</em>: <code>boolean</code> (isPlaying)</span></li>
-                        <li><strong><code>volume_changed</code></strong><br><span class="text-zinc-400">Fired when the volume level changes.<br><em>Payload</em>: <code>number</code> (volume)</span></li>
-                        <li><strong><code>time_changed</code></strong><br><span class="text-zinc-400">Fired when the playback time updates.<br><em>Payload</em>: <code>number</code> (currentTime)</span></li>
-                        <li><strong><code>shuffle_changed</code></strong><br><span class="text-zinc-400">Fired when shuffle mode is toggled.<br><em>Payload</em>: <code>boolean</code></span></li>
-                        <li><strong><code>repeat_changed</code></strong><br><span class="text-zinc-400">Fired when repeat mode changes.<br><em>Payload</em>: <code>"off" | "one" | "all"</code></span></li>
-                        <li><strong><code>view_changed</code></strong><br><span class="text-zinc-400">Fired when the active UI view changes.<br><em>Payload</em>: <code>string</code> (activeView)</span></li>
-                        <li><strong><code>queue_changed</code></strong><br><span class="text-zinc-400">Fired when the active queue changes.<br><em>Payload</em>: <code>Track[]</code></span></li>
-                        <li><strong><code>playlist_changed</code></strong><br><span class="text-zinc-400">Fired when the active playback queue source changes to a new playlist.<br><em>Payload</em>: <code>string | null</code> (playlistName)</span></li>
-                    </ul>
-
-                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">Example Usage</h2>
-                    <p>Here is a basic example of how a plugin might listen to track changes and display a notification:</p>
-                    <pre><code class="language-javascript">// Ensure Mewsic API is available
-if (window.Mewsic) {
-  // Listen for track changes
-  window.Mewsic.events.on("track_changed", (track) => {
-    if (track) {
-      window.Mewsic.ui.addNotification(
-        `Now Playing: ${track.title} by ${track.artist}`,
-        "info",
-        3000,
-        "Plugin Alert"
-      );
-    }
-  });
-
-  // Example: Play the next track when a specific action occurs
-  const skipToNext = () => {
-    window.Mewsic.player.next();
+  const streamUrl = await mySpotifyProxy.resolve(url);
+  return {
+    url: streamUrl,           // required - direct playable audio URL
+    title: "Stay",            // optional - overrides track metadata
+    artist: "The Kid LAROI",
+    duration: 141,
+    coverArt: "https://..."
   };
+});</code></pre>
+                    <p class="text-zinc-400 mt-4">
+                        Multiple resolvers can be registered. They are tried in order; the first non-null result wins.
+                    </p>
+
+                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">Mewsic.library</h2>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">Getters</h3>
+                    <div class="overflow-x-auto my-6">
+                        <table class="w-full text-left border-collapse border border-white/10 text-sm">
+                            <thead>
+                                <tr class="bg-white/5 border-b border-white/10">
+                                    <th class="p-3 font-semibold text-white">Property</th>
+                                    <th class="p-3 font-semibold text-white">Type</th>
+                                    <th class="p-3 font-semibold text-white">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5">
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">tracks</td>
+                                    <td class="p-3 font-mono text-zinc-300">Track[]</td>
+                                    <td class="p-3 text-zinc-400">All tracks (local + virtual)</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">virtualTracks</td>
+                                    <td class="p-3 font-mono text-zinc-300">Track[]</td>
+                                    <td class="p-3 text-zinc-400">Only virtual tracks</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">playlists</td>
+                                    <td class="p-3 font-mono text-zinc-300">Playlist[]</td>
+                                    <td class="p-3 text-zinc-400">All playlists</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">musicDir</td>
+                                    <td class="p-3 font-mono text-zinc-300">string</td>
+                                    <td class="p-3 text-zinc-400">Path to the user's music folder</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">isScanning</td>
+                                    <td class="p-3 font-mono text-zinc-300">boolean</td>
+                                    <td class="p-3 text-zinc-400">Whether a library scan is in progress</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">Track methods</h3>
+                    <pre><code class="language-javascript">Mewsic.library.getTrack("track-id");           // Track | null
+Mewsic.library.addTracks([...tracks]);
+Mewsic.library.updateTrack(track);
+Mewsic.library.addVirtualTrack(track);         // adds with isVirtual: true
+Mewsic.library.removeVirtualTrack("track-id");</code></pre>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">Playlist methods</h3>
+                    <pre><code class="language-javascript">Mewsic.library.getPlaylist("playlist-id");                    // Playlist | null
+Mewsic.library.getPlaylistTracks("playlist-id");              // Track[]
+Mewsic.library.addPlaylist(playlist);
+Mewsic.library.updatePlaylist(playlist);
+Mewsic.library.removePlaylist("playlist-id");
+Mewsic.library.addTrackToPlaylist("track-id", "playlist-id");
+Mewsic.library.removeTrackFromPlaylist("track-id", "playlist-id");
+Mewsic.library.playPlaylist("playlist-id", startIndex = 0);</code></pre>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">Search</h3>
+                    <pre><code class="language-javascript">const results = Mewsic.library.search("daft punk");
+// searches title, artist, and album across all tracks</code></pre>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">Download</h3>
+                    <p class="text-zinc-400 mb-4">
+                        Triggers Mewsic's built-in yt-dlp downloader to save a URL to the user's music folder.
+                    </p>
+                    <pre><code class="language-javascript">await Mewsic.library.downloadTrack({
+  title: "Get Lucky",
+  artist: "Daft Punk",
+  album: "Random Access Memories",
+  coverArt: "https://...",
+  url: "https://www.youtube.com/watch?v=5NV6Rdv1a3I",
+  onProgress: (pct) => console.log(`${pct}% done`)
+});</code></pre>
+
+                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">Mewsic.audio</h2>
+                    <p class="text-zinc-400 mb-4">Full read and write access to the DSP chain.</p>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">Getters</h3>
+                    <div class="overflow-x-auto my-6">
+                        <table class="w-full text-left border-collapse border border-white/10 text-sm">
+                            <thead>
+                                <tr class="bg-white/5 border-b border-white/10">
+                                    <th class="p-3 font-semibold text-white">Property</th>
+                                    <th class="p-3 font-semibold text-white">Type</th>
+                                    <th class="p-3 font-semibold text-white">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5">
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">reverbEnabled</td>
+                                    <td class="p-3 font-mono text-zinc-300">boolean</td>
+                                    <td class="p-3 text-zinc-400">Whether reverb is active</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">reverbStrength</td>
+                                    <td class="p-3 font-mono text-zinc-300">number</td>
+                                    <td class="p-3 text-zinc-400">Reverb wet mix (0–1)</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">bassBoost</td>
+                                    <td class="p-3 font-mono text-zinc-300">number</td>
+                                    <td class="p-3 text-zinc-400">Bass boost in dB</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">volumeBoost</td>
+                                    <td class="p-3 font-mono text-zinc-300">number</td>
+                                    <td class="p-3 text-zinc-400">Volume multiplier (0.5–3)</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">playbackSpeed</td>
+                                    <td class="p-3 font-mono text-zinc-300">number</td>
+                                    <td class="p-3 text-zinc-400">Playback rate (0.5–2.0)</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">eqGains</td>
+                                    <td class="p-3 font-mono text-zinc-300">number[]</td>
+                                    <td class="p-3 text-zinc-400">10 EQ band gains in dB</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">activePresetId</td>
+                                    <td class="p-3 font-mono text-zinc-300">string | null</td>
+                                    <td class="p-3 text-zinc-400">Currently applied preset ID</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">presets</td>
+                                    <td class="p-3 font-mono text-zinc-300">AudioPreset[]</td>
+                                    <td class="p-3 text-zinc-400">All saved presets</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">Methods</h3>
+                    <pre><code class="language-javascript">Mewsic.audio.setReverb(enabled, strength?)    // strength 0.0 - 1.0
+Mewsic.audio.setBassBoost(db)
+Mewsic.audio.setVolumeBoost(multiplier)       // 0.5 - 3.0
+Mewsic.audio.setPlaybackSpeed(speed)          // 0.5 - 2.0
+Mewsic.audio.setEqGain(bandIndex, db)         // 0 - 9
+Mewsic.audio.setEqGains([...10 values])       // set all bands at once
+Mewsic.audio.resetEq()
+Mewsic.audio.resetAll()                       // reset EQ + all effects to defaults
+Mewsic.audio.applyPreset("preset-id")
+Mewsic.audio.savePreset("My Preset")
+Mewsic.audio.deletePreset("preset-id")
+Mewsic.audio.getState()                       // snapshot of all DSP state</code></pre>
+
+                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">Mewsic.ui</h2>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">Getters</h3>
+                    <div class="overflow-x-auto my-6">
+                        <table class="w-full text-left border-collapse border border-white/10 text-sm">
+                            <thead>
+                                <tr class="bg-white/5 border-b border-white/10">
+                                    <th class="p-3 font-semibold text-white">Property</th>
+                                    <th class="p-3 font-semibold text-white">Type</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5">
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">activeView</td>
+                                    <td class="p-3 font-mono text-zinc-300">string</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">theme</td>
+                                    <td class="p-3 font-mono text-zinc-300">"dark" | "light"</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">accentColor</td>
+                                    <td class="p-3 font-mono text-zinc-300">string</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">guiScale</td>
+                                    <td class="p-3 font-mono text-zinc-300">number</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">isFullscreen</td>
+                                    <td class="p-3 font-mono text-zinc-300">boolean</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">Navigation</h3>
+                    <pre><code class="language-javascript">Mewsic.ui.setView("library")         // any built-in view id
+Mewsic.ui.openLibrary()
+Mewsic.ui.openPlayer()
+Mewsic.ui.openSettings()
+Mewsic.ui.openPlaylist("playlist-id")
+Mewsic.ui.setSearchQuery("query")    // pre-fill the search bar</code></pre>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">Appearance</h3>
+                    <pre><code class="language-javascript">Mewsic.ui.setTheme("dark" | "light")
+Mewsic.ui.setAccentColor("mint")     // any AccentPreset id
+Mewsic.ui.setGuiScale(1.0)          // 0.75 - 1.5</code></pre>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">Notifications (toast)</h3>
+                    <pre><code class="language-javascript">const id = Mewsic.ui.addNotification("Synced!", "success", 3000, "Spotify");
+Mewsic.ui.dismissNotification(id);</code></pre>
+                    <p class="text-zinc-400 mt-4">
+                        <code>type</code> is <code>"info" | "success" | "error"</code>. Duration is in ms; <code>0</code> means persistent until dismissed.
+                    </p>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">Sidebar components</h3>
+                    <p class="text-zinc-400 mb-4">
+                        Registers a clickable icon in the sidebar that routes to a custom plugin view.
+                    </p>
+                    <pre><code class="language-javascript">Mewsic.ui.registerSidebarComponent("spotify", {
+  name: "Spotify",
+  icon: "&lt;svg&gt;...&lt;/svg&gt;",   // raw SVG string
+  viewId: "plugin:spotify"
+});
+
+Mewsic.ui.unregisterSidebarComponent("spotify");</code></pre>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">Custom tabs / views</h3>
+                    <p class="text-zinc-400 mb-4">
+                        The <code>viewId</code> used in <code>registerSidebarComponent</code> must match the id you register here.
+                    </p>
+                    <pre><code class="language-javascript">Mewsic.ui.registerTab("plugin:spotify", {
+  render: (container) => {
+    container.innerHTML = "&lt;h1&gt;Spotify&lt;/h1&gt;";
+  },
+  cleanup: () => {
+    // called when the tab is unregistered or the plugin is unloaded
+  }
+});
+
+Mewsic.ui.unregisterTab("plugin:spotify");</code></pre>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">Overlays</h3>
+                    <p class="text-zinc-400 mb-4">
+                        Appends a fixed DOM element over the entire app window. <code>pointerEvents</code> defaults to <code>none</code> so it does not block the UI unless you enable it explicitly.
+                    </p>
+                    <pre><code class="language-javascript">const el = document.createElement("div");
+el.textContent = "♫";
+el.style.pointerEvents = "auto";
+
+Mewsic.ui.registerOverlay("now-playing-badge", el);
+Mewsic.ui.removeOverlay("now-playing-badge");</code></pre>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">Search providers</h3>
+                    <p class="text-zinc-400 mb-4">
+                        Injects a custom search engine into the Harbour search dropdown.
+                    </p>
+                    <pre><code class="language-javascript">Mewsic.ui.registerSearchProvider("spotify", {
+  name: "Spotify",
+  search: async (query) => {
+    const results = await fetchSpotifyResults(query);
+    return results.map(t => ({
+      id: t.id,
+      title: t.name,
+      artist: t.artists[0].name,
+      album: t.album.name,
+      duration: Math.floor(t.duration_ms / 1000),
+      coverArt: t.album.images[0]?.url,
+      url: t.external_urls.spotify
+    }));
+  },
+  download: async (track, musicDir, onProgress) => {
+    const streamUrl = await resolveToYoutube(track.url);
+    await Mewsic.library.downloadTrack({
+      ...track,
+      url: streamUrl,
+      onProgress
+    });
+  }
+});
+
+Mewsic.ui.unregisterSearchProvider("spotify");</code></pre>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">CSS injection</h3>
+                    <pre><code class="language-javascript">Mewsic.ui.injectCSS("my-plugin", `
+  .sidebar { border-right: 2px solid hotpink; }
+`);
+
+Mewsic.ui.removeCSS("my-plugin");</code></pre>
+
+                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">Mewsic.settings</h2>
+                    <p class="text-zinc-400 mb-4">Read and write access to persistent app settings.</p>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">Getters</h3>
+                    <div class="overflow-x-auto my-6">
+                        <table class="w-full text-left border-collapse border border-white/10 text-sm">
+                            <thead>
+                                <tr class="bg-white/5 border-b border-white/10">
+                                    <th class="p-3 font-semibold text-white">Property</th>
+                                    <th class="p-3 font-semibold text-white">Type</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5">
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">theme</td>
+                                    <td class="p-3 font-mono text-zinc-300">"dark" | "light"</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">accentColor</td>
+                                    <td class="p-3 font-mono text-zinc-300">string</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">guiScale</td>
+                                    <td class="p-3 font-mono text-zinc-300">number</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">discordEnabled</td>
+                                    <td class="p-3 font-mono text-zinc-300">boolean</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">systemNotifications</td>
+                                    <td class="p-3 font-mono text-zinc-300">boolean</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">trayEnabled</td>
+                                    <td class="p-3 font-mono text-zinc-300">boolean</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">smoothScrollEnabled</td>
+                                    <td class="p-3 font-mono text-zinc-300">boolean</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">repeatMode</td>
+                                    <td class="p-3 font-mono text-zinc-300">"off" | "one" | "all"</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">shuffleEnabled</td>
+                                    <td class="p-3 font-mono text-zinc-300">boolean</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">libraryViewMode</td>
+                                    <td class="p-3 font-mono text-zinc-300">"grid" | "list"</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">homeViewMode</td>
+                                    <td class="p-3 font-mono text-zinc-300">"grid" | "list"</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">playlistViewMode</td>
+                                    <td class="p-3 font-mono text-zinc-300">"grid" | "list"</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">shortcuts</td>
+                                    <td class="p-3 font-mono text-zinc-300">ShortcutMap (copy)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">Setters</h3>
+                    <pre><code class="language-javascript">Mewsic.settings.setTheme("dark" | "light")
+Mewsic.settings.setAccentColor("violet")
+Mewsic.settings.setGuiScale(1.0)               // 0.75 - 1.5
+Mewsic.settings.setDiscordEnabled(true)
+Mewsic.settings.setSystemNotifications(false)
+Mewsic.settings.setTrayEnabled(true)           // also syncs with OS tray
+Mewsic.settings.setSmoothScrollEnabled(true)
+Mewsic.settings.setRepeatMode("all")
+Mewsic.settings.setShuffle(true)
+Mewsic.settings.setLibraryViewMode("grid")
+Mewsic.settings.setHomeViewMode("list")
+Mewsic.settings.setPlaylistViewMode("grid")
+
+// Remap a keyboard shortcut
+Mewsic.settings.setShortcut("togglePlay", "k")
+Mewsic.settings.setShortcut("volumeUp", "=", { ctrl: true })
+Mewsic.settings.resetShortcuts()</code></pre>
+                    <p class="text-zinc-400 mt-4">
+                        Valid shortcut action names: <code>togglePlay</code>, <code>skipForward</code>, <code>skipBackward</code>, <code>playNext</code>, <code>playPrev</code>, <code>volumeUp</code>, <code>volumeDown</code>.
+                    </p>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">Snapshot</h3>
+                    <pre><code class="language-javascript">const all = Mewsic.settings.get();
+// returns a plain object copy of all settings listed above</code></pre>
+
+                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">Mewsic.storage</h2>
+                    <p class="text-zinc-400 mb-4">
+                        Namespaced, per-plugin localStorage wrapper. All keys are isolated under <code>mewsic_plugin_&lt;pluginId&gt;_</code>.
+                    </p>
+                    <pre><code class="language-javascript">Mewsic.storage.set("my-plugin", "token", "ya29.a0...");
+const token = Mewsic.storage.get("my-plugin", "token");
+Mewsic.storage.remove("my-plugin", "token");
+
+// Inspect what a plugin has stored
+const keys = Mewsic.storage.keys("my-plugin");  // string[]
+
+// Wipe everything a plugin stored
+Mewsic.storage.clear("my-plugin");</code></pre>
+                    <p class="text-zinc-400 mt-4">
+                        Values are automatically JSON serialized on write and deserialized on read.
+                    </p>
+
+                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">Mewsic.events</h2>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">System events</h3>
+                    <p class="text-zinc-400 mb-4">Subscribe to changes happening inside the app.</p>
+                    <pre><code class="language-javascript">const handler = (track) => console.log("Now playing:", track?.title);
+Mewsic.events.on("track_changed", handler);
+Mewsic.events.off("track_changed", handler);
+
+// Auto-unsubscribe after the first call
+Mewsic.events.once("track_changed", (track) => {
+  console.log("First track loaded:", track?.title);
+});</code></pre>
+
+                    <div class="overflow-x-auto my-6">
+                        <table class="w-full text-left border-collapse border border-white/10 text-sm">
+                            <thead>
+                                <tr class="bg-white/5 border-b border-white/10">
+                                    <th class="p-3 font-semibold text-white">Event</th>
+                                    <th class="p-3 font-semibold text-white">Payload</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5">
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">track_changed</td>
+                                    <td class="p-3 font-mono text-zinc-300">Track | null</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">playback_state_changed</td>
+                                    <td class="p-3 font-mono text-zinc-300">boolean (isPlaying)</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">time_changed</td>
+                                    <td class="p-3 font-mono text-zinc-300">number (seconds)</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">volume_changed</td>
+                                    <td class="p-3 font-mono text-zinc-300">number (0–1)</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">shuffle_changed</td>
+                                    <td class="p-3 font-mono text-zinc-300">boolean</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">repeat_changed</td>
+                                    <td class="p-3 font-mono text-zinc-300">"off" | "one" | "all"</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">queue_changed</td>
+                                    <td class="p-3 font-mono text-zinc-300">Track[]</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">view_changed</td>
+                                    <td class="p-3 font-mono text-zinc-300">string (view id)</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">playlist_changed</td>
+                                    <td class="p-3 font-mono text-zinc-300">string | null (playlist name)</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">library_changed</td>
+                                    <td class="p-3 font-mono text-zinc-300">Track[]</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">playlists_changed</td>
+                                    <td class="p-3 font-mono text-zinc-300">Playlist[]</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">theme_changed</td>
+                                    <td class="p-3 font-mono text-zinc-300">"dark" | "light"</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">accent_changed</td>
+                                    <td class="p-3 font-mono text-zinc-300">string</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">reverb_changed</td>
+                                    <td class="p-3 font-mono text-zinc-300">{ enabled: boolean, strength: number }</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">bass_boost_changed</td>
+                                    <td class="p-3 font-mono text-zinc-300">number</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">volume_boost_changed</td>
+                                    <td class="p-3 font-mono text-zinc-300">number</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">playback_speed_changed</td>
+                                    <td class="p-3 font-mono text-zinc-300">number</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">eq_changed</td>
+                                    <td class="p-3 font-mono text-zinc-300">number[] (10 band gains)</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">track_loading</td>
+                                    <td class="p-3 font-mono text-zinc-300">{ trackId: string }</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">track_error</td>
+                                    <td class="p-3 font-mono text-zinc-300">{ trackId: string, error: string }</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">Custom inter-plugin events</h3>
+                    <p class="text-zinc-400 mb-4">
+                        Plugins can talk to each other through a separate custom event bus that doesn't interfere with system events.
+                    </p>
+                    <pre><code class="language-javascript">// Plugin A emits
+Mewsic.events.emit("my-plugin:sync-done", { count: 42 });
+
+// Plugin B listens
+Mewsic.events.onCustom("my-plugin:sync-done", (data) => {
+  console.log("Synced", data.count, "tracks");
+});
+
+Mewsic.events.offCustom("my-plugin:sync-done", handler);</code></pre>
+
+                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">Track object reference</h2>
+                    <pre><code class="language-typescript">interface Track {
+  id: string;
+  title: string;
+  artist: string;
+  album: string;
+  duration: number;        // seconds
+  filePath: string;        // local path or remote URL
+  coverArt?: string;
+  isVirtual?: boolean;     // true for remote/plugin-provided tracks
+  provider?: string;       // e.g. "virtual", "spotify"
+  genre?: string;
+  year?: number;
+  trackNumber?: number;
+  fileSize?: number;
+  bitrate?: number;
 }</code></pre>
+
+                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">Spotify integration example</h2>
+                    <p class="text-zinc-400 mb-4">A minimal sketch of what a Spotify plugin looks like end-to-end.</p>
+                    <pre><code class="language-javascript">// 1. Authenticate and get a token somehow (OAuth PKCE flow in an overlay, etc.)
+const token = Mewsic.storage.get("spotify", "access_token");
+
+// 2. Register a stream resolver so Spotify URLs play correctly
+Mewsic.player.registerResolver(async (url) => {
+  if (!url.includes("spotify.com/track")) return null;
+  const trackId = url.split("/track/")[1];
+  const streamUrl = await myProxy.getStreamUrl(trackId, token);
+  return { url: streamUrl };
+});
+
+// 3. Register a search provider in Harbour
+Mewsic.ui.registerSearchProvider("spotify", {
+  name: "Spotify",
+  search: async (query) => {
+    const res = await fetch(
+      `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    ).then(r => r.json());
+    return res.tracks.items.map(t => ({
+      id: t.id,
+      title: t.name,
+      artist: t.artists[0].name,
+      album: t.album.name,
+      duration: Math.floor(t.duration_ms / 1000),
+      coverArt: t.album.images[0]?.url,
+      url: t.external_urls.spotify
+    }));
+  }
+});
+
+// 4. Save a Spotify track to the Mewsic library (shows with a Virtual badge)
+Mewsic.library.addVirtualTrack({
+  id: "spotify:track:4PTG3Z6ehGkBF3zIqYQGSy",
+  title: "Stay",
+  artist: "The Kid LAROI",
+  album: "F*CK LOVE 3: OVER YOU",
+  duration: 141,
+  filePath: "https://open.spotify.com/track/4PTG3Z6ehGkBF3zIqYQGSy",
+  isVirtual: true,
+  provider: "virtual",
+  coverArt: "https://i.scdn.co/image/..."
+});
                 </div>
             </div>
         </section>
