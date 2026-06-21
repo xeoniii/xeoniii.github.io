@@ -70,7 +70,7 @@
                     <div>
                         <h1 class="text-3xl md:text-5xl font-semibold tracking-tighter text-white mb-2">Mewsic Plugin API</h1>
                         <div class="flex items-center gap-3">
-                            <span class="px-2 py-0.5 rounded border border-white/10 bg-white/5 text-[10px] font-mono text-zinc-400 uppercase tracking-wider">v0.9.7</span>
+                            <span class="px-2 py-0.5 rounded border border-white/10 bg-white/5 text-[10px] font-mono text-zinc-400 uppercase tracking-wider">v0.9.8</span>
                             <span class="text-xs font-mono text-zinc-600">Documentation</span>
                         </div>
                     </div>
@@ -311,7 +311,8 @@ Mewsic.library.addPlaylist(playlist);
 Mewsic.library.updatePlaylist(playlist);
 Mewsic.library.removePlaylist("playlist-id");
 Mewsic.library.addTrackToPlaylist("track-id", "playlist-id");
-Mewsic.library.removeTrackFromPlaylist("track-id", "playlist-id");
+Mewsic.library.removeTrackFromPlaylist(playlist, "track-id");
+await Mewsic.library.rehydratePlaylist(playlist);
 Mewsic.library.playPlaylist("playlist-id", startIndex = 0);</code></pre>
 
                     <h3 class="text-xl font-medium mt-6 mb-3">Search</h3>
@@ -453,8 +454,9 @@ Mewsic.ui.setAccentColor("mint")     // any AccentPreset id
 Mewsic.ui.setGuiScale(1.0)          // 0.75 - 1.5</code></pre>
 
                     <h3 class="text-xl font-medium mt-6 mb-3">Notifications (toast)</h3>
-                    <pre><code class="language-javascript">const id = Mewsic.ui.addNotification("Synced!", "success", 3000, "Spotify");
-Mewsic.ui.dismissNotification(id);</code></pre>
+                    <pre><code class="language-javascript">const id = Mewsic.ui.addNotification("Syncing...", "info", 0, true);
+Mewsic.ui.updateNotification(id, { message: "Synced!", type: "success", loading: false });
+Mewsic.ui.removeNotification(id);</code></pre>
                     <p class="text-zinc-400 mt-4">
                         <code>type</code> is <code>"info" | "success" | "error"</code>. Duration is in ms; <code>0</code> means persistent until dismissed.
                     </p>
