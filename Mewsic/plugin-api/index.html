@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,17 +18,20 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="icon" type="image/svg+xml" href="https://github.githubassets.com/favicons/favicon.svg">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
     <!-- syntax highlighting -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
-    
+
     <style>
         .prose pre {
             border-radius: 0.75rem;
             margin-top: 1.5rem;
             margin-bottom: 1.5rem;
         }
+
         .prose code:not(pre code) {
             color: #fde047;
             background-color: rgba(255, 255, 255, 0.05);
@@ -37,7 +41,9 @@
         }
     </style>
 </head>
-<body class="bg-[#09090b] text-zinc-400 antialiased selection:bg-white/10 selection:text-white" style="font-family: 'Inter', sans-serif;">
+
+<body class="bg-[#09090b] text-zinc-400 antialiased selection:bg-white/10 selection:text-white"
+    style="font-family: 'Inter', sans-serif;">
 
     <!-- Navigation -->
     <nav class="fixed top-0 inset-x-0 z-50 border-b border-white/5 bg-[#09090b]/80 backdrop-blur-md">
@@ -54,35 +60,215 @@
 
     <main class="relative pt-32 overflow-hidden min-h-screen">
         <!-- Background Glow -->
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-white/[0.02] rounded-full blur-[120px] pointer-events-none"></div>
+        <div
+            class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-white/[0.02] rounded-full blur-[120px] pointer-events-none">
+        </div>
 
         <section class="relative px-6 py-24 mx-auto max-w-4xl z-10">
-            <a href="../" class="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-white transition-colors mb-12 group">
-                <iconify-icon icon="solar:arrow-left-linear" class="text-lg group-hover:-translate-x-1 transition-transform"></iconify-icon>
+            <a href="../"
+                class="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-white transition-colors mb-12 group">
+                <iconify-icon icon="solar:arrow-left-linear"
+                    class="text-lg group-hover:-translate-x-1 transition-transform"></iconify-icon>
                 Back to Mewsic
             </a>
 
             <div class="flex flex-col gap-8">
                 <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
-                    <div class="w-16 h-16 md:w-20 md:h-20 rounded-2xl md:rounded-3xl border border-white/10 bg-white/5 flex items-center justify-center shrink-0">
+                    <div
+                        class="w-16 h-16 md:w-20 md:h-20 rounded-2xl md:rounded-3xl border border-white/10 bg-white/5 flex items-center justify-center shrink-0">
                         <iconify-icon icon="solar:code-bold" class="text-3xl md:text-5xl text-white"></iconify-icon>
                     </div>
                     <div>
-                        <h1 class="text-3xl md:text-5xl font-semibold tracking-tighter text-white mb-2">Mewsic Plugin API</h1>
+                        <h1 class="text-3xl md:text-5xl font-semibold tracking-tighter text-white mb-2">Mewsic Plugin
+                            API</h1>
                         <div class="flex items-center gap-3">
-                            <span class="px-2 py-0.5 rounded border border-white/10 bg-white/5 text-[10px] font-mono text-zinc-400 uppercase tracking-wider">v0.9.8</span>
+                            <span
+                                class="px-2 py-0.5 rounded border border-white/10 bg-white/5 text-[10px] font-mono text-zinc-400 uppercase tracking-wider">v0.9.9</span>
                             <span class="text-xs font-mono text-zinc-600">Documentation</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="prose prose-invert max-w-none prose-headings:text-white prose-a:text-amber-500 hover:prose-a:text-amber-400 prose-pre:bg-white/5 prose-pre:border prose-pre:border-white/10">
+                <div
+                    class="prose prose-invert max-w-none prose-headings:text-white prose-a:text-amber-500 hover:prose-a:text-amber-400 prose-pre:bg-white/5 prose-pre:border prose-pre:border-white/10">
                     <p class="text-lg leading-relaxed text-zinc-300">
-                        Plugins are plain JavaScript files placed in Mewsic's plugin directory. They run inside the app's webview and have full access to the <code>window.Mewsic</code> global the moment the app has loaded.
+                        Plugins are plain JavaScript files placed in Mewsic's plugin directory. They run inside the
+                        app's webview and have full access to the <code>window.Mewsic</code> global the moment the app
+                        has loaded.
                     </p>
 
                     <pre><code class="language-javascript">// Basic plugin entry point
 console.log("Hello from my plugin!", window.Mewsic.version);</code></pre>
+
+
+                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">Plugin Format</h2>
+                    <pre><code class="language-text">my-plugin.mewsic/
+├── manifest.json   required
+├── plugin.js       required
+└── styles.css      optional</code></pre>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">manifest.json</h3>
+                    <p class="text-zinc-400 mb-4">All fields except <code>id</code>, <code>name</code>, and
+                        <code>version</code> are optional.</p>
+                    <pre><code class="language-json">{
+  "id": "my-plugin",
+  "name": "My Plugin",
+  "version": "1.0.0",
+  "description": "A short description shown in the Plugins tab.",
+  "author": "your-name",
+  "homepage": "https://example.com",
+  "permissions": ["library", "audio", "settings"]
+}</code></pre>
+
+                    <div class="overflow-x-auto my-6">
+                        <table class="w-full text-left border-collapse border border-white/10 text-sm">
+                            <thead>
+                                <tr class="bg-white/5 border-b border-white/10">
+                                    <th class="p-3 font-semibold text-white">Field</th>
+                                    <th class="p-3 font-semibold text-white">Type</th>
+                                    <th class="p-3 font-semibold text-white">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5">
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">id</td>
+                                    <td class="p-3 font-mono text-zinc-300">string</td>
+                                    <td class="p-3 text-zinc-400">Unique identifier. Used for storage namespacing and
+                                        sidebar IDs. Use kebab-case.</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">name</td>
+                                    <td class="p-3 font-mono text-zinc-300">string</td>
+                                    <td class="p-3 text-zinc-400">Display name shown in the Plugins view.</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">version</td>
+                                    <td class="p-3 font-mono text-zinc-300">string</td>
+                                    <td class="p-3 text-zinc-400">Semver string, e.g. "1.0.0".</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">description</td>
+                                    <td class="p-3 font-mono text-zinc-300">string</td>
+                                    <td class="p-3 text-zinc-400">Short description.</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">author</td>
+                                    <td class="p-3 font-mono text-zinc-300">string</td>
+                                    <td class="p-3 text-zinc-400">Your name or handle.</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">homepage</td>
+                                    <td class="p-3 font-mono text-zinc-300">string</td>
+                                    <td class="p-3 text-zinc-400">URL to your plugin's page or repo.</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">permissions</td>
+                                    <td class="p-3 font-mono text-zinc-300">string[]</td>
+                                    <td class="p-3 text-zinc-400">Informational only — tells users what the plugin
+                                        touches. Not enforced.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">plugin.js</h3>
+                    <p class="text-zinc-400 mb-4">Plain JavaScript — no bundler required. Wrap everything in an IIFE to
+                        avoid polluting globals.</p>
+                    <pre><code class="language-javascript">(() => {
+  const M = window.Mewsic;
+  // your plugin code here
+})();</code></pre>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">styles.css</h3>
+                    <p class="text-zinc-400 mb-4">Any valid CSS. Gets injected into the app's <code>&lt;head&gt;</code>
+                        automatically when the plugin loads. You have access to all of Mewsic's CSS custom properties.
+                    </p>
+                    <details class="group border border-white/10 bg-[#09090b] rounded-xl my-6 overflow-hidden">
+                        <summary
+                            class="flex items-center justify-between p-4 cursor-pointer hover:bg-white/[0.02] transition-colors text-white font-medium select-none">
+                            <span class="flex items-center gap-2"><iconify-icon icon="solar:code-square-linear"
+                                    class="text-zinc-500"></iconify-icon> Css</span>
+                            <iconify-icon icon="solar:alt-arrow-down-linear"
+                                class="text-lg text-zinc-500 group-open:rotate-180 transition-transform"></iconify-icon>
+                        </summary>
+                        <div
+                            class="border-t border-white/10 bg-white/[0.02] [&>pre]:!m-0 [&>pre]:!rounded-none [&>pre]:!border-0">
+                            <pre><code class="language-css">/* Available CSS variables (sample) */
+/*
+  --accent            primary accent color
+  --accent-dim        darker shade of accent
+  --accent-bright     lighter shade of accent
+  --accent-muted      accent at low opacity (backgrounds)
+  --accent-glow       accent for glow/shadow effects
+  --text-accent       accent-colored text
+  --surface-base      app background
+  --surface-raised    card background
+  --surface-overlay   elevated panel background
+  --surface-glass     translucent glass background
+  --text-primary      main text
+  --text-secondary    secondary text
+  --text-muted        muted/hint text
+  --border-subtle     faint divider
+  --border-glass      glass border
+*/
+
+/* Example: add a glow to all playing cards */
+.music-card.playing {
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+
+/* Example: custom scrollbar color */
+::-webkit-scrollbar-thumb {
+  background: var(--accent-muted);
+}</code></pre>
+                        </div>
+                    </details>
+                    <p class="text-zinc-400 mt-4">Styles are removed when the plugin is uninstalled. Use specific
+                        selectors to avoid unintentionally overriding core UI.</p>
+
+                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">Installation</h2>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">Users — double-click install</h3>
+                    <p class="text-zinc-400 mb-4">Zip up the plugin folder and rename it to
+                        <code>pluginname.mewsic</code>. Double-clicking the file opens Mewsic and installs it
+                        automatically.</p>
+                    <pre><code class="language-bash">cd my-plugin.mewsic/
+zip -r ../my-plugin.mewsic manifest.json plugin.js styles.css</code></pre>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">Users — manual install</h3>
+                    <p class="text-zinc-400 mb-4">Copy the <code>.mewsic</code> folder to:</p>
+                    <div class="overflow-x-auto my-6">
+                        <table class="w-full text-left border-collapse border border-white/10 text-sm">
+                            <thead>
+                                <tr class="bg-white/5 border-b border-white/10">
+                                    <th class="p-3 font-semibold text-white">Platform</th>
+                                    <th class="p-3 font-semibold text-white">Path</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5">
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">Linux</td>
+                                    <td class="p-3 font-mono text-zinc-300">~/.config/mewsic/plugins/</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">macOS</td>
+                                    <td class="p-3 font-mono text-zinc-300">~/Library/Application
+                                        Support/dev.xeoniii.mewsic/plugins/</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">Windows</td>
+                                    <td class="p-3 font-mono text-zinc-300">%APPDATA%\dev.xeoniii.mewsic\plugins\</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="text-xl font-medium mt-6 mb-3">Developers — live editing</h3>
+                    <p class="text-zinc-400 mb-4">Drop the <code>.mewsic</code> folder in the plugin directory while
+                        Mewsic is running. Edit <code>plugin.js</code> and <code>styles.css</code> freely — changes
+                        apply on the next reload (<code>Ctrl+Shift+R</code>). No build step needed.</p>
+                    <pre><code class="language-bash">mkdir -p ~/.config/mewsic/plugins/my-plugin.mewsic
+# edit files, reload Mewsic to see changes</code></pre>
 
                     <p class="mt-8 text-zinc-300">The API is split into seven namespaces:</p>
 
@@ -212,7 +398,17 @@ Mewsic.player.setRepeatMode("off" | "one" | "all")
 Mewsic.player.getState()               // snapshot of all player state</code></pre>
 
                     <h3 class="text-xl font-medium mt-6 mb-3">Queue management</h3>
-                    <pre><code class="language-javascript">// Play a local track by its ID
+                    <details class="group border border-white/10 bg-[#09090b] rounded-xl my-6 overflow-hidden">
+                        <summary
+                            class="flex items-center justify-between p-4 cursor-pointer hover:bg-white/[0.02] transition-colors text-white font-medium select-none">
+                            <span class="flex items-center gap-2"><iconify-icon icon="solar:code-square-linear"
+                                    class="text-zinc-500"></iconify-icon> JavaScript</span>
+                            <iconify-icon icon="solar:alt-arrow-down-linear"
+                                class="text-lg text-zinc-500 group-open:rotate-180 transition-transform"></iconify-icon>
+                        </summary>
+                        <div
+                            class="border-t border-white/10 bg-white/[0.02] [&>pre]:!m-0 [&>pre]:!rounded-none [&>pre]:!border-0">
+                            <pre><code class="language-javascript">// Play a local track by its ID
 await Mewsic.player.playTrack("track-id");
 
 // Play a virtual/remote track directly
@@ -234,10 +430,13 @@ await Mewsic.player.setQueue(tracks, startIndex);
 Mewsic.player.addToQueue(track);
 Mewsic.player.removeFromQueue("track-id");
 Mewsic.player.clearQueue();</code></pre>
+                        </div>
+                    </details>
 
                     <h3 class="text-xl font-medium mt-6 mb-3">Stream resolvers</h3>
                     <p class="text-zinc-400 mb-4">
-                        Plugins can intercept playback of remote URLs (Spotify, SoundCloud, custom schemes, etc.) and resolve them to a playable direct audio URL before the audio engine loads them.
+                        Plugins can intercept playback of remote URLs (Spotify, SoundCloud, custom schemes, etc.) and
+                        resolve them to a playable direct audio URL before the audio engine loads them.
                     </p>
                     <pre><code class="language-javascript">Mewsic.player.registerResolver(async (url) => {
   if (!url.startsWith("https://open.spotify.com/")) return null;
@@ -298,11 +497,13 @@ Mewsic.player.clearQueue();</code></pre>
                     </div>
 
                     <h3 class="text-xl font-medium mt-6 mb-3">Track methods</h3>
-                    <pre><code class="language-javascript">Mewsic.library.getTrack("track-id");           // Track | null
+                    <pre><code class="language-javascript">Mewsic.library.getTrack("track-id");
+Mewsic.library.search("query");              // searches title, artist, album
 Mewsic.library.addTracks([...tracks]);
 Mewsic.library.updateTrack(track);
-Mewsic.library.addVirtualTrack(track);         // adds with isVirtual: true
-Mewsic.library.removeVirtualTrack("track-id");</code></pre>
+Mewsic.library.addVirtualTrack(track);       // shows Virtual badge in UI
+Mewsic.library.removeVirtualTrack("id");
+Mewsic.library.purgeVirtualTracks();         // deletes all virtual tracks from the library</code></pre>
 
                     <h3 class="text-xl font-medium mt-6 mb-3">Playlist methods</h3>
                     <pre><code class="language-javascript">Mewsic.library.getPlaylist("playlist-id");                    // Playlist | null
@@ -458,7 +659,8 @@ Mewsic.ui.setGuiScale(1.0)          // 0.75 - 1.5</code></pre>
 Mewsic.ui.updateNotification(id, { message: "Synced!", type: "success", loading: false });
 Mewsic.ui.removeNotification(id);</code></pre>
                     <p class="text-zinc-400 mt-4">
-                        <code>type</code> is <code>"info" | "success" | "error"</code>. Duration is in ms; <code>0</code> means persistent until dismissed.
+                        <code>type</code> is <code>"info" | "success" | "error"</code>. Duration is in ms;
+                        <code>0</code> means persistent until dismissed.
                     </p>
 
                     <h3 class="text-xl font-medium mt-6 mb-3">Sidebar components</h3>
@@ -475,7 +677,8 @@ Mewsic.ui.unregisterSidebarComponent("spotify");</code></pre>
 
                     <h3 class="text-xl font-medium mt-6 mb-3">Custom tabs / views</h3>
                     <p class="text-zinc-400 mb-4">
-                        The <code>viewId</code> used in <code>registerSidebarComponent</code> must match the id you register here.
+                        The <code>viewId</code> used in <code>registerSidebarComponent</code> must match the id you
+                        register here.
                     </p>
                     <pre><code class="language-javascript">Mewsic.ui.registerTab("plugin:spotify", {
   render: (container) => {
@@ -490,7 +693,8 @@ Mewsic.ui.unregisterTab("plugin:spotify");</code></pre>
 
                     <h3 class="text-xl font-medium mt-6 mb-3">Overlays</h3>
                     <p class="text-zinc-400 mb-4">
-                        Appends a fixed DOM element over the entire app window. <code>pointerEvents</code> defaults to <code>none</code> so it does not block the UI unless you enable it explicitly.
+                        Appends a fixed DOM element over the entire app window. <code>pointerEvents</code> defaults to
+                        <code>none</code> so it does not block the UI unless you enable it explicitly.
                     </p>
                     <pre><code class="language-javascript">const el = document.createElement("div");
 el.textContent = "♫";
@@ -503,7 +707,17 @@ Mewsic.ui.removeOverlay("now-playing-badge");</code></pre>
                     <p class="text-zinc-400 mb-4">
                         Injects a custom search engine into the Harbour search dropdown.
                     </p>
-                    <pre><code class="language-javascript">Mewsic.ui.registerSearchProvider("spotify", {
+                    <details class="group border border-white/10 bg-[#09090b] rounded-xl my-6 overflow-hidden">
+                        <summary
+                            class="flex items-center justify-between p-4 cursor-pointer hover:bg-white/[0.02] transition-colors text-white font-medium select-none">
+                            <span class="flex items-center gap-2"><iconify-icon icon="solar:code-square-linear"
+                                    class="text-zinc-500"></iconify-icon> JavaScript</span>
+                            <iconify-icon icon="solar:alt-arrow-down-linear"
+                                class="text-lg text-zinc-500 group-open:rotate-180 transition-transform"></iconify-icon>
+                        </summary>
+                        <div
+                            class="border-t border-white/10 bg-white/[0.02] [&>pre]:!m-0 [&>pre]:!rounded-none [&>pre]:!border-0">
+                            <pre><code class="language-javascript">Mewsic.ui.registerSearchProvider("spotify", {
   name: "Spotify",
   search: async (query) => {
     const results = await fetchSpotifyResults(query);
@@ -528,6 +742,8 @@ Mewsic.ui.removeOverlay("now-playing-badge");</code></pre>
 });
 
 Mewsic.ui.unregisterSearchProvider("spotify");</code></pre>
+                        </div>
+                    </details>
 
                     <h3 class="text-xl font-medium mt-6 mb-3">CSS injection</h3>
                     <pre><code class="language-javascript">Mewsic.ui.injectCSS("my-plugin", `
@@ -606,7 +822,17 @@ Mewsic.ui.removeCSS("my-plugin");</code></pre>
                     </div>
 
                     <h3 class="text-xl font-medium mt-6 mb-3">Setters</h3>
-                    <pre><code class="language-javascript">Mewsic.settings.setTheme("dark" | "light")
+                    <details class="group border border-white/10 bg-[#09090b] rounded-xl my-6 overflow-hidden">
+                        <summary
+                            class="flex items-center justify-between p-4 cursor-pointer hover:bg-white/[0.02] transition-colors text-white font-medium select-none">
+                            <span class="flex items-center gap-2"><iconify-icon icon="solar:code-square-linear"
+                                    class="text-zinc-500"></iconify-icon> JavaScript</span>
+                            <iconify-icon icon="solar:alt-arrow-down-linear"
+                                class="text-lg text-zinc-500 group-open:rotate-180 transition-transform"></iconify-icon>
+                        </summary>
+                        <div
+                            class="border-t border-white/10 bg-white/[0.02] [&>pre]:!m-0 [&>pre]:!rounded-none [&>pre]:!border-0">
+                            <pre><code class="language-javascript">Mewsic.settings.setTheme("dark" | "light")
 Mewsic.settings.setAccentColor("violet")
 Mewsic.settings.setGuiScale(1.0)               // 0.75 - 1.5
 Mewsic.settings.setDiscordEnabled(true)
@@ -623,8 +849,12 @@ Mewsic.settings.setPlaylistViewMode("grid")
 Mewsic.settings.setShortcut("togglePlay", "k")
 Mewsic.settings.setShortcut("volumeUp", "=", { ctrl: true })
 Mewsic.settings.resetShortcuts()</code></pre>
+                        </div>
+                    </details>
                     <p class="text-zinc-400 mt-4">
-                        Valid shortcut action names: <code>togglePlay</code>, <code>skipForward</code>, <code>skipBackward</code>, <code>playNext</code>, <code>playPrev</code>, <code>volumeUp</code>, <code>volumeDown</code>.
+                        Valid shortcut action names: <code>togglePlay</code>, <code>skipForward</code>,
+                        <code>skipBackward</code>, <code>playNext</code>, <code>playPrev</code>, <code>volumeUp</code>,
+                        <code>volumeDown</code>.
                     </p>
 
                     <h3 class="text-xl font-medium mt-6 mb-3">Snapshot</h3>
@@ -633,7 +863,8 @@ Mewsic.settings.resetShortcuts()</code></pre>
 
                     <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">Mewsic.storage</h2>
                     <p class="text-zinc-400 mb-4">
-                        Namespaced, per-plugin localStorage wrapper. All keys are isolated under <code>mewsic_plugin_&lt;pluginId&gt;_</code>.
+                        Namespaced, per-plugin localStorage wrapper. All keys are isolated under
+                        <code>mewsic_plugin_&lt;pluginId&gt;_</code>.
                     </p>
                     <pre><code class="language-javascript">Mewsic.storage.set("my-plugin", "token", "ya29.a0...");
 const token = Mewsic.storage.get("my-plugin", "token");
@@ -756,7 +987,8 @@ Mewsic.events.once("track_changed", (track) => {
 
                     <h3 class="text-xl font-medium mt-6 mb-3">Custom inter-plugin events</h3>
                     <p class="text-zinc-400 mb-4">
-                        Plugins can talk to each other through a separate custom event bus that doesn't interfere with system events.
+                        Plugins can talk to each other through a separate custom event bus that doesn't interfere with
+                        system events.
                     </p>
                     <pre><code class="language-javascript">// Plugin A emits
 Mewsic.events.emit("my-plugin:sync-done", { count: 42 });
@@ -768,8 +1000,19 @@ Mewsic.events.onCustom("my-plugin:sync-done", (data) => {
 
 Mewsic.events.offCustom("my-plugin:sync-done", handler);</code></pre>
 
-                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">Track object reference</h2>
-                    <pre><code class="language-typescript">interface Track {
+                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">Track object reference
+                    </h2>
+                    <details class="group border border-white/10 bg-[#09090b] rounded-xl my-6 overflow-hidden">
+                        <summary
+                            class="flex items-center justify-between p-4 cursor-pointer hover:bg-white/[0.02] transition-colors text-white font-medium select-none">
+                            <span class="flex items-center gap-2"><iconify-icon icon="solar:code-square-linear"
+                                    class="text-zinc-500"></iconify-icon> Typescript</span>
+                            <iconify-icon icon="solar:alt-arrow-down-linear"
+                                class="text-lg text-zinc-500 group-open:rotate-180 transition-transform"></iconify-icon>
+                        </summary>
+                        <div
+                            class="border-t border-white/10 bg-white/[0.02] [&>pre]:!m-0 [&>pre]:!rounded-none [&>pre]:!border-0">
+                            <pre><code class="language-typescript">interface Track {
   id: string;
   title: string;
   artist: string;
@@ -785,59 +1028,187 @@ Mewsic.events.offCustom("my-plugin:sync-done", handler);</code></pre>
   fileSize?: number;
   bitrate?: number;
 }</code></pre>
+                        </div>
+                    </details>
 
-                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">Spotify integration example</h2>
-                    <p class="text-zinc-400 mb-4">A minimal sketch of what a Spotify plugin looks like end-to-end.</p>
-                    <pre><code class="language-javascript">// 1. Authenticate and get a token somehow (OAuth PKCE flow in an overlay, etc.)
-const token = Mewsic.storage.get("spotify", "access_token");
+                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">Complete plugin example
+                    </h2>
+                    <p class="text-zinc-400 mb-4">This example demonstrates every major pattern — sidebar view, event
+                        listening, storage, DSP control, virtual tracks, and search.</p>
+                    <details class="group border border-white/10 bg-[#09090b] rounded-xl my-6 overflow-hidden">
+                        <summary
+                            class="flex items-center justify-between p-4 cursor-pointer hover:bg-white/[0.02] transition-colors text-white font-medium select-none">
+                            <span class="flex items-center gap-2"><iconify-icon icon="solar:code-square-linear"
+                                    class="text-zinc-500"></iconify-icon> JavaScript</span>
+                            <iconify-icon icon="solar:alt-arrow-down-linear"
+                                class="text-lg text-zinc-500 group-open:rotate-180 transition-transform"></iconify-icon>
+                        </summary>
+                        <div
+                            class="border-t border-white/10 bg-white/[0.02] [&>pre]:!m-0 [&>pre]:!rounded-none [&>pre]:!border-0">
+                            <pre><code class="language-javascript">(() => {
+  const M = window.Mewsic;
+  const ID = "demo-plugin";
 
-// 2. Register a stream resolver so Spotify URLs play correctly
-Mewsic.player.registerResolver(async (url) => {
-  if (!url.includes("spotify.com/track")) return null;
-  const trackId = url.split("/track/")[1];
-  const streamUrl = await myProxy.getStreamUrl(trackId, token);
-  return { url: streamUrl };
-});
+  // Persist a setting across sessions
+  let callCount = parseInt(M.storage.get(ID, "callCount") || "0", 10);
 
-// 3. Register a search provider in Harbour
-Mewsic.ui.registerSearchProvider("spotify", {
-  name: "Spotify",
-  search: async (query) => {
-    const res = await fetch(
-      `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track`,
-      { headers: { Authorization: `Bearer ${token}` } }
-    ).then(r => r.json());
-    return res.tracks.items.map(t => ({
-      id: t.id,
-      title: t.name,
-      artist: t.artists[0].name,
-      album: t.album.name,
-      duration: Math.floor(t.duration_ms / 1000),
-      coverArt: t.album.images[0]?.url,
-      url: t.external_urls.spotify
-    }));
-  }
-});
+  // React to track changes
+  M.events.on("track_changed", (track) => {
+    callCount++;
+    M.storage.set(ID, "callCount", callCount);
 
-// 4. Save a Spotify track to the Mewsic library (shows with a Virtual badge)
-Mewsic.library.addVirtualTrack({
-  id: "spotify:track:4PTG3Z6ehGkBF3zIqYQGSy",
-  title: "Stay",
-  artist: "The Kid LAROI",
-  album: "F*CK LOVE 3: OVER YOU",
-  duration: 141,
-  filePath: "https://open.spotify.com/track/4PTG3Z6ehGkBF3zIqYQGSy",
-  isVirtual: true,
-  provider: "virtual",
-  coverArt: "https://i.scdn.co/image/..."
-});</code></pre>
+    if (!track) return;
+
+    // Auto-apply a warm EQ whenever a track starts
+    M.audio.setEqGains([4, 3, 1, 0, 0, 0, 0, -1, -2, -3]);
+
+    // Show a toast with the track title
+    M.ui.addNotification(`Now playing: ${track.title}`, "info", 2000, "Demo Plugin");
+  });
+
+  // Add a virtual track to the library
+  M.library.addVirtualTrack({
+    id: `${ID}:example-001`,
+    title: "Example Stream",
+    artist: "Demo Artist",
+    album: "Plugin Tracks",
+    duration: 180,
+    filePath: "https://example.com/stream.mp3",
+    isVirtual: true,
+    provider: ID,
+    coverArt: ""
+  });
+
+  // Register a resolver — intercept plugin:// URLs
+  M.player.registerResolver(async (url) => {
+    if (!url.startsWith("plugin://demo/")) return null;
+    const id = url.replace("plugin://demo/", "");
+    return { url: `https://example.com/audio/${id}.mp3` };
+  });
+
+  // Register a search provider
+  M.ui.registerSearchProvider(ID, {
+    name: "Demo Source",
+    search: async (query) => {
+      // Replace with a real API call
+      return [{
+        id: `${ID}:search-result`,
+        title: `Result for "${query}"`,
+        artist: "Demo",
+        album: "",
+        duration: 120,
+        coverArt: "",
+        url: "plugin://demo/result"
+      }];
+    }
+  });
+
+  // Sidebar icon
+  M.ui.registerSidebarComponent(ID, {
+    name: "Demo Plugin",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <polygon points="5 3 19 12 5 21 5 3"/>
+    </svg>`,
+    viewId: `plugin:${ID}`
+  });
+
+  // Custom view
+  M.ui.registerTab(`plugin:${ID}`, {
+    render: (container) => {
+      container.innerHTML = "";
+      container.style.cssText = "padding:24px;color:var(--text-primary);font-family:inherit;";
+
+      const state = M.player.getState();
+      const settings = M.settings.get();
+
+      container.innerHTML = `
+        <h1 style="font-weight:800;font-size:1.4rem;margin-bottom:4px;">Demo Plugin</h1>
+        <p style="color:var(--text-muted);font-size:0.8rem;margin-bottom:24px;">
+          Showing all plugin API patterns
+        </p>
+
+        <div style="display:grid;gap:12px;">
+          <div style="padding:16px;background:var(--surface-raised);border-radius:14px;border:1px solid var(--border-subtle);">
+            <p style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-muted);font-weight:800;margin-bottom:8px;">Now Playing</p>
+            <p style="font-weight:700;">${state.currentTrack?.title ?? "Nothing"}</p>
+            <p style="font-size:0.82rem;color:var(--text-secondary);">${state.currentTrack?.artist ?? "—"}</p>
+          </div>
+
+          <div style="padding:16px;background:var(--surface-raised);border-radius:14px;border:1px solid var(--border-subtle);">
+            <p style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-muted);font-weight:800;margin-bottom:8px;">Stats</p>
+            <p style="font-size:0.85rem;">Tracks seen: <strong style="color:var(--text-accent);">${callCount}</strong></p>
+            <p style="font-size:0.85rem;">Theme: <strong>${settings.theme}</strong></p>
+          </div>
+
+          <div style="display:flex;gap:8px;">
+            <button id="dp-toggle-theme" style="flex:1;padding:10px;border-radius:12px;background:var(--accent-muted);border:none;color:var(--text-accent);font-weight:800;cursor:pointer;">
+              Toggle Theme
+            </button>
+            <button id="dp-reset-eq" style="flex:1;padding:10px;border-radius:12px;background:var(--surface-raised);border:1px solid var(--border-subtle);color:var(--text-secondary);font-weight:700;cursor:pointer;">
+              Reset EQ
+            </button>
+          </div>
+        </div>
+      `;
+
+      container.querySelector("#dp-toggle-theme").onclick = () => {
+        M.settings.setTheme(M.settings.theme === "dark" ? "light" : "dark");
+      };
+      container.querySelector("#dp-reset-eq").onclick = () => {
+        M.audio.resetEq();
+        M.ui.addNotification("EQ reset to flat", "info", 2000);
+      };
+    },
+    cleanup: () => {}
+  });
+
+  // Cross-plugin messaging example
+  M.events.emit(`${ID}:loaded`, { version: "1.0.0" });
+  M.events.onCustom(`${ID}:loaded`, (data) => {
+    console.log("[Demo Plugin] Received own load event:", data);
+  });
+
+  console.log("[Demo Plugin] Loaded. Track count:", callCount);
+})();</code></pre>
+                        </div>
+                    </details>
+
+                    <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">File associations</h2>
+                    <p class="text-zinc-400 mb-4">When installed via a built package (<code>.deb</code>,
+                        <code>.rpm</code>, <code>.msi</code>, <code>.dmg</code>), Mewsic registers as the default
+                        handler for:</p>
+
+                    <div class="overflow-x-auto my-6">
+                        <table class="w-full text-left border-collapse border border-white/10 text-sm">
+                            <thead>
+                                <tr class="bg-white/5 border-b border-white/10">
+                                    <th class="p-3 font-semibold text-white">Extension</th>
+                                    <th class="p-3 font-semibold text-white">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5">
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">.mewsic</td>
+                                    <td class="p-3 text-zinc-400">Install the plugin, show a reload prompt</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3 font-mono text-amber-500">.mp3, .flac, .wav, .ogg, .m4a, .aac, .opus,
+                                        .aiff, .aif, .wma</td>
+                                    <td class="p-3 text-zinc-400">Play the file immediately</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
             </div>
         </section>
     </main>
 
     <footer class="border-t border-white/5 px-6 py-12 bg-[#09090b]">
-        <div class="mx-auto max-w-6xl flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+        <div
+            class="mx-auto max-w-6xl flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
             <a href="../../" class="text-xl font-semibold tracking-tighter text-white">
                 xeoniii.<span class="text-zinc-600">dev</span>
             </a>
@@ -850,4 +1221,5 @@ Mewsic.library.addVirtualTrack({
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
 </body>
+
 </html>
