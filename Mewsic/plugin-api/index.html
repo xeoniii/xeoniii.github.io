@@ -53,7 +53,6 @@
             </a>
             <div class="flex items-center gap-8 text-sm font-medium">
                 <a href="../../#projects" class="hover:text-white transition-colors duration-200">projects</a>
-                <a href="../../updates/" class="hover:text-white transition-colors duration-200">updates</a>
             </div>
         </div>
     </nav>
@@ -109,7 +108,8 @@ console.log("Hello from my plugin!", window.Mewsic.version);</code></pre>
 
                     <h3 class="text-xl font-medium mt-6 mb-3">manifest.json</h3>
                     <p class="text-zinc-400 mb-4">All fields except <code>id</code>, <code>name</code>, and
-                        <code>version</code> are optional.</p>
+                        <code>version</code> are optional.
+                    </p>
                     <pre><code class="language-json">{
   "id": "my-plugin",
   "name": "My Plugin",
@@ -231,7 +231,8 @@ console.log("Hello from my plugin!", window.Mewsic.version);</code></pre>
                     <h3 class="text-xl font-medium mt-6 mb-3">Users — double-click install</h3>
                     <p class="text-zinc-400 mb-4">Zip up the plugin folder and rename it to
                         <code>pluginname.mewsic</code>. Double-clicking the file opens Mewsic and installs it
-                        automatically.</p>
+                        automatically.
+                    </p>
                     <pre><code class="language-bash">cd my-plugin.mewsic/
 zip -r ../my-plugin.mewsic manifest.json plugin.js styles.css</code></pre>
 
@@ -1177,7 +1178,8 @@ Mewsic.events.offCustom("my-plugin:sync-done", handler);</code></pre>
                     <h2 class="text-2xl font-semibold mt-12 mb-4 border-b border-white/10 pb-2">File associations</h2>
                     <p class="text-zinc-400 mb-4">When installed via a built package (<code>.deb</code>,
                         <code>.rpm</code>, <code>.msi</code>, <code>.dmg</code>), Mewsic registers as the default
-                        handler for:</p>
+                        handler for:
+                    </p>
 
                     <div class="overflow-x-auto my-6">
                         <table class="w-full text-left border-collapse border border-white/10 text-sm">
