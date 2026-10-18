@@ -8,17 +8,17 @@
 
     <!-- Social Embeds & SEO -->
     <meta name="description"
-        content="A modern, blazing fast offline music player for Android built with Kotlin and Jetpack Compose. High fidelity local playback, zero telemetry, Material You theming, and Wi-Fi sync with Mewsic desktop.">
+        content="A modern, blazing fast offline music player for Android built with Kotlin. High fidelity local playback, zero telemetry, and pure offline audio.">
     <meta property="og:title" content="Mewsic for Android | xeoniii.dev">
     <meta property="og:description"
-        content="A modern, blazing fast offline music player for Android built with Kotlin and Jetpack Compose. Zero telemetry, pure local playback.">
+        content="A modern, blazing fast offline music player for Android built with Kotlin. Zero telemetry, pure local playback.">
     <meta property="og:image" content="../Mewsic/preview.png">
     <meta property="og:url" content="https://xeoniii.github.io/mewsic-android/">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Mewsic for Android | xeoniii.dev">
     <meta name="twitter:description"
-        content="A modern, blazing fast offline music player for Android built with Kotlin and Jetpack Compose. Zero telemetry, pure local playback.">
+        content="A modern, blazing fast offline music player for Android built with Kotlin. Zero telemetry, pure local playback.">
     <meta name="theme-color" content="#09090b">
 
     <!-- Dependencies -->
@@ -35,30 +35,6 @@
         ::selection {
             background: rgba(255, 255, 255, 0.15);
             color: #ffffff;
-        }
-
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        .glow-emerald {
-            background: radial-gradient(circle at 50% 30%, rgba(16, 185, 129, 0.08) 0%, rgba(59, 130, 246, 0.04) 40%, transparent 70%);
-        }
-
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .glass-panel:hover {
-            border-color: rgba(255, 255, 255, 0.14);
         }
     </style>
 </head>
@@ -89,10 +65,8 @@
             </div>
 
             <nav class="flex items-center gap-6 sm:gap-8 text-sm font-medium">
-                <a href="#features" class="hover:text-white transition-colors duration-200">features</a>
                 <a href="#gallery" class="hover:text-white transition-colors duration-200">showcase</a>
-                <a href="#changelog"
-                    class="hidden md:inline-block hover:text-white transition-colors duration-200">roadmap</a>
+                <a href="#changelog" class="hover:text-white transition-colors duration-200">roadmap</a>
                 <a href="#downloads" class="hover:text-white transition-colors duration-200">downloads</a>
             </nav>
         </div>
@@ -184,7 +158,7 @@
                             <span class="w-1 h-1 rounded-full bg-zinc-500 animate-pulse"></span>
                             // visual showcase
                         </span>
-                        <h2 class="text-4xl md:text-6xl font-semibold tracking-tighter text-white">Sneak
+                        <h2 class="text-4xl md:text-6xl font-semibold tracking-tight text-white">Sneak
                             <br>peeks
                             <br>coming
                             <br>soon.
@@ -367,44 +341,7 @@
             </div>
         </section>
 
-
     </main>
-
-    <!-- Fullscreen Lightbox Modal -->
-    <div id="lightbox"
-        class="fixed inset-0 z-[100] bg-black/95 backdrop-blur-2xl hidden transition-opacity duration-300 opacity-0 flex flex-col items-center justify-center p-4 md:p-10"
-        onclick="closeLightbox()">
-
-        <!-- Lightbox Controls -->
-        <div class="absolute top-6 right-6 flex items-center gap-4 z-10" onclick="event.stopPropagation()">
-            <button onclick="closeLightbox()"
-                class="w-12 h-12 rounded-full bg-white/10 border border-white/20 text-white flex items-center justify-center hover:bg-white hover:text-black transition-all">
-                <iconify-icon icon="solar:close-circle-bold" class="text-2xl"></iconify-icon>
-            </button>
-        </div>
-
-        <!-- Lightbox Image Wrapper -->
-        <div class="relative max-w-6xl w-full h-[80vh] flex items-center justify-center"
-            onclick="event.stopPropagation()">
-            <img id="lightbox-img" src="../Mewsic/assets/Home.png" alt="Enlarged screenshot"
-                class="max-w-full max-h-full object-contain rounded-2xl shadow-2xl transition-transform duration-300 cursor-zoom-in"
-                onclick="toggleZoom(this)">
-
-            <!-- Arrows -->
-            <button onclick="navigateLightbox(-1)"
-                class="absolute left-2 md:-left-16 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 border border-white/20 text-white flex items-center justify-center hover:bg-white hover:text-black transition-all">
-                <iconify-icon icon="solar:alt-arrow-left-linear" class="text-2xl"></iconify-icon>
-            </button>
-            <button onclick="navigateLightbox(1)"
-                class="absolute right-2 md:-right-16 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 border border-white/20 text-white flex items-center justify-center hover:bg-white hover:text-black transition-all">
-                <iconify-icon icon="solar:alt-arrow-right-linear" class="text-2xl"></iconify-icon>
-            </button>
-        </div>
-
-        <div class="mt-4 text-xs font-mono text-zinc-500" style="font-family: 'JetBrains Mono', monospace;">
-            Press ESC to close • Click image to zoom • Use &larr; / &rarr; keys to browse
-        </div>
-    </div>
 
     <!-- Footer -->
     <footer class="border-t border-white/5 px-6 py-12 bg-[#09090b]">
@@ -429,152 +366,6 @@
             </p>
         </div>
     </footer>
-
-    <!-- Interactive Scripts -->
-    <script>
-        // Gallery Data
-        const galleryItems = [
-            {
-                src: '../Mewsic/assets/Home.png',
-                title: 'Home Dashboard',
-                desc: 'Modern music dashboard with quick access to your music, pinned playlists, and recently added tracks.'
-            },
-            {
-                src: '../Mewsic/assets/Library.png',
-                title: 'Local Music Library',
-                desc: 'Browse and search your full local library with instant filtering, album grouping, and metadata parsing.'
-            },
-            {
-                src: '../Mewsic/assets/Playlist.png',
-                title: 'Playlist Manager',
-                desc: 'Organize custom playlists with full drag-and-drop track reordering and effortless queue management.'
-            },
-            {
-                src: '../Mewsic/assets/Lyrics.png',
-                title: 'Synchronized Lyrics',
-                desc: 'Distraction-free typography with smooth real-time auto-scrolling synced to your audio playback.'
-            },
-            {
-                src: '../Mewsic/assets/Audio%20Engine.png',
-                title: 'Mewsic Audio Engine V3',
-                desc: 'Built-in DSP audio effects pipeline featuring Reverb, Bass Boost, and much more.'
-            },
-            {
-                src: '../Mewsic/assets/Harbour.png',
-                title: 'Harbour Downloader',
-                desc: 'Built-in track search and download tool to seamlessly fetch music into your local library.'
-            }
-        ];
-
-        let currentGalleryIndex = 0;
-
-        function switchGalleryTab(index) {
-            currentGalleryIndex = index;
-            const item = galleryItems[index];
-
-            const img = document.getElementById('gallery-display-img');
-            img.style.opacity = '0';
-
-            setTimeout(() => {
-                img.src = item.src;
-                document.getElementById('gallery-display-title').textContent = item.title;
-                document.getElementById('gallery-display-desc').textContent = item.desc;
-                img.style.opacity = '1';
-            }, 150);
-
-            // Update tab styles
-            document.querySelectorAll('.gallery-btn').forEach((btn, i) => {
-                if (i === index) {
-                    btn.classList.add('bg-white', 'text-zinc-950');
-                    btn.classList.remove('text-zinc-400');
-                } else {
-                    btn.classList.remove('bg-white', 'text-zinc-950');
-                    btn.classList.add('text-zinc-400');
-                }
-            });
-
-            // Update thumbnail borders
-            document.querySelectorAll('.thumbnail-btn').forEach((btn, i) => {
-                if (i === index) {
-                    btn.classList.add('border-white/40', 'opacity-100');
-                    btn.classList.remove('border-transparent', 'opacity-60');
-                } else {
-                    btn.classList.remove('border-white/40', 'opacity-100');
-                    btn.classList.add('border-transparent', 'opacity-60');
-                }
-            });
-        }
-
-        function navigateGallery(direction) {
-            let nextIndex = currentGalleryIndex + direction;
-            if (nextIndex < 0) nextIndex = galleryItems.length - 1;
-            if (nextIndex >= galleryItems.length) nextIndex = 0;
-            switchGalleryTab(nextIndex);
-        }
-
-        // Lightbox Functions
-        function openLightbox(index) {
-            currentGalleryIndex = index;
-            const item = galleryItems[index];
-            const lb = document.getElementById('lightbox');
-            const img = document.getElementById('lightbox-img');
-
-            img.src = item.src;
-            lb.classList.remove('hidden');
-            setTimeout(() => {
-                lb.classList.add('opacity-100');
-            }, 10);
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeLightbox() {
-            const lb = document.getElementById('lightbox');
-            lb.classList.remove('opacity-100');
-            setTimeout(() => {
-                lb.classList.add('hidden');
-            }, 300);
-            document.body.style.overflow = 'auto';
-        }
-
-        function navigateLightbox(direction) {
-            let nextIndex = currentGalleryIndex + direction;
-            if (nextIndex < 0) nextIndex = galleryItems.length - 1;
-            if (nextIndex >= galleryItems.length) nextIndex = 0;
-            currentGalleryIndex = nextIndex;
-
-            const img = document.getElementById('lightbox-img');
-            img.style.opacity = '0';
-            setTimeout(() => {
-                img.src = galleryItems[nextIndex].src;
-                img.style.opacity = '1';
-            }, 150);
-            switchGalleryTab(nextIndex);
-        }
-
-        let isZoomed = false;
-        function toggleZoom(img) {
-            isZoomed = !isZoomed;
-            if (isZoomed) {
-                img.style.transform = 'scale(1.5)';
-                img.classList.remove('cursor-zoom-in');
-                img.classList.add('cursor-zoom-out');
-            } else {
-                img.style.transform = 'scale(1)';
-                img.classList.remove('cursor-zoom-out');
-                img.classList.add('cursor-zoom-in');
-            }
-        }
-
-        // Keyboard navigation for Lightbox
-        window.addEventListener('keydown', (e) => {
-            const lb = document.getElementById('lightbox');
-            if (!lb.classList.contains('hidden')) {
-                if (e.key === 'Escape') closeLightbox();
-                if (e.key === 'ArrowLeft') navigateLightbox(-1);
-                if (e.key === 'ArrowRight') navigateLightbox(1);
-            }
-        });
-    </script>
 </body>
 
 </html>
