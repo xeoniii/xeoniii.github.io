@@ -1,674 +1,1224 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mewsic | xeoniii.dev</title>
+    <title>Mewsic | Modern Offline Music Player built with Rust & React</title>
 
-    <!-- Social Embeds -->
-    <meta property="og:title" content="Mewsic | xeoniii.dev">
+    <!-- Social Embeds & SEO -->
+    <meta name="description"
+        content="A modern, blazing fast offline music player built with Rust and React. High fidelity local playback, zero telemetry, cross-platform desktop audio for Windows, macOS, and Linux.">
+    <meta property="og:title" content="Mewsic | Modern Offline Music Player">
     <meta property="og:description"
-        content="A Modern Offline Music Player built with Rust and React. Available for Windows, Linux, and macOS.">
+        content="A modern, blazing fast offline music player built with Rust and React. Zero telemetry, pure local playback for Windows, macOS, and Linux.">
     <meta property="og:image" content="https://xeoniii.github.io/preview.png">
     <meta property="og:url" content="https://xeoniii.github.io/Mewsic/">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Mewsic | Modern Offline Music Player">
+    <meta name="twitter:description"
+        content="A modern, blazing fast offline music player built with Rust and React. Available for Windows, macOS, Linux, and Minecraft.">
     <meta name="theme-color" content="#09090b">
 
+    <!-- Dependencies -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.iconify.design/iconify-icon/2.0.0/iconify-icon.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="icon" type="image/svg+xml" href="https://github.githubassets.com/favicons/favicon.svg">
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
         rel="stylesheet">
+
+    <style>
+        ::selection {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .glow-purple {
+            background: radial-gradient(circle at 50% 30%, rgba(168, 85, 247, 0.08) 0%, rgba(59, 130, 246, 0.04) 40%, transparent 70%);
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(255, 255, 255, 0.14);
+        }
+    </style>
 </head>
 
 <body class="bg-[#09090b] text-zinc-400 antialiased selection:bg-white/10 selection:text-white"
     style="font-family: 'Inter', sans-serif;">
 
-    <!-- Navigation -->
-    <nav class="fixed top-0 inset-x-0 z-50 border-b border-white/5 bg-[#09090b]/80 backdrop-blur-md">
-        <div class="mx-auto max-w-6xl px-6 h-16 flex items-center justify-between">
-            <a href="../" class="text-lg font-semibold tracking-tighter text-white">
-                xeoniii.<span class="text-zinc-500">dev</span>
-            </a>
-            <div class="flex items-center gap-8 text-sm font-medium">
-                <a href="../#projects" class="hover:text-white transition-colors duration-200">projects</a>
-            </div>
-        </div>
-    </nav>
-
-    <main class="relative pt-32 overflow-hidden min-h-screen">
-        <!-- Background Glow -->
+    <!-- Background Ambient Glows -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div
-            class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-white/[0.02] rounded-full blur-[120px] pointer-events-none">
+            class="absolute -top-[200px] left-1/2 -translate-x-1/2 w-[900px] h-[600px] bg-purple-500/[0.04] rounded-full blur-[140px]">
         </div>
+        <div
+            class="absolute top-[800px] left-1/3 -translate-x-1/2 w-[600px] h-[600px] bg-blue-500/[0.03] rounded-full blur-[160px]">
+        </div>
+        <div class="absolute bottom-10 right-1/4 w-[700px] h-[500px] bg-emerald-500/[0.02] rounded-full blur-[160px]">
+        </div>
+    </div>
 
-        <section class="relative px-6 py-24 mx-auto max-w-4xl z-10">
-            <a href="../"
-                class="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-white transition-colors mb-12 group">
-                <iconify-icon icon="solar:arrow-left-linear"
-                    class="text-lg group-hover:-translate-x-1 transition-transform"></iconify-icon>
-                Back to Home
-            </a>
+    <!-- Navigation -->
+    <header class="fixed top-0 inset-x-0 z-50 border-b border-white/5 bg-[#09090b]/80 backdrop-blur-md">
+        <div class="mx-auto max-w-6xl px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <a href="../" class="text-base font-semibold tracking-tighter text-white flex items-center gap-2 group">
+                    <span class="text-zinc-500 group-hover:text-white transition-colors">&larr;</span>
+                    <span>xeoniii.<span class="text-zinc-500">dev</span></span>
+                </a>
+            </div>
+
+            <nav class="flex items-center gap-6 sm:gap-8 text-sm font-medium">
+                <a href="#features" class="hover:text-white transition-colors duration-200">features</a>
+                <a href="#gallery" class="hover:text-white transition-colors duration-200">showcase</a>
+                <a href="#changelog"
+                    class="hidden md:inline-block hover:text-white transition-colors duration-200">changelog</a>
+                <a href="#downloads" class="hover:text-white transition-colors duration-200">downloads</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="relative z-10 pt-28 md:pt-36">
+
+        <!-- Hero Section -->
+        <section class="px-6 mx-auto max-w-6xl text-center flex flex-col items-center">
+
+            <!-- Main Heading -->
+            <h1
+                class="text-5xl sm:text-7xl lg:text-8xl font-semibold tracking-tighter text-white mb-8 leading-[1.08] max-w-4xl">
+                Mewsic.
+                <span
+                    class="block text-3xl sm:text-5xl lg:text-6xl font-medium tracking-tight bg-gradient-to-r from-zinc-200 via-zinc-400 to-zinc-600 bg-clip-text text-transparent mt-2">
+                    listen uninterrupted.
+                </span>
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed mb-10 font-light">
+                A fast, offline-first local music player built with <span class="text-white font-medium">Rust</span> and
+                <span class="text-white font-medium">React</span>.
+                Instant playing, elegant design, and bit-perfect audio for your desktop.
+            </p>
+
+            <!-- Dynamic OS Primary CTA & Actions -->
+            <div class="flex flex-col sm:flex-row items-center gap-4 mb-6 w-full sm:w-auto">
+                <a id="hero-download-btn"
+                    href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic-Setup.exe"
+                    class="w-full sm:w-auto group flex items-center justify-center gap-3 bg-white text-zinc-950 px-8 py-4 rounded-full font-semibold text-base shadow-xl shadow-white/5 hover:bg-zinc-200 hover:scale-[1.02] active:scale-[0.99] transition-all duration-200">
+                    <iconify-icon id="hero-os-icon" icon="simple-icons:windows" class="text-xl"></iconify-icon>
+                    <span id="hero-btn-text">Download for Windows</span>
+                </a>
+
+                <a href="https://github.com/xeoniii/Mewsic" target="_blank" rel="noopener noreferrer"
+                    class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-4 rounded-full border border-white/10 bg-white/[0.02] text-zinc-300 hover:text-white hover:bg-white/5 hover:border-white/20 text-sm font-medium transition-all duration-200">
+                    <iconify-icon icon="simple-icons:github" class="text-lg"></iconify-icon>
+                    <span>GitHub</span>
+                </a>
+            </div>
+
+            <!-- Platform Detection Subtext -->
+            <p id="hero-detect-hint" class="text-xs font-mono text-zinc-600 mb-16"
+                style="font-family: 'JetBrains Mono', monospace;">
+                Auto-detected for <span class="text-zinc-400">Windows 64-bit</span> • Free &amp; Open Source (GPL v3.0)
+            </p>
 
 
-            <div class="flex flex-col gap-8">
-                <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
+            <!-- Stats Bar -->
+            <div
+                class="w-full max-w-xl mx-auto grid grid-cols-2 gap-4 p-6 rounded-3xl border border-white/5 bg-white/[0.01]">
+                <div class="flex flex-col items-center justify-center p-4">
+                    <span id="download-count-text"
+                        class="text-3xl md:text-5xl font-semibold text-white tracking-tighter mb-1">
+                        ...
+                    </span>
+                    <span
+                        class="text-[10px] font-mono text-zinc-500 uppercase tracking-widest flex items-center gap-1.5"
+                        style="font-family: 'JetBrains Mono', monospace;">
+                        <iconify-icon icon="solar:download-bold" class="text-emerald-400"></iconify-icon>
+                        Total Downloads
+                    </span>
+                </div>
+                <div class="flex flex-col items-center justify-center p-4">
+                    <span class="text-3xl md:text-5xl font-semibold text-white tracking-tighter mb-1">
+                        GPL v3.0
+                    </span>
+                    <span
+                        class="text-[10px] font-mono text-zinc-500 uppercase tracking-widest flex items-center gap-1.5"
+                        style="font-family: 'JetBrains Mono', monospace;">
+                        <iconify-icon icon="solar:code-bold" class="text-blue-400"></iconify-icon>
+                        Open Source
+                    </span>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Core Features Section -->
+        <section id="features" class="px-6 py-32 border-t border-white/5">
+            <div class="mx-auto max-w-6xl">
+
+                <div class="mb-16">
+                    <span
+                        class="inline-flex items-center gap-2 text-xs font-mono text-zinc-500 mb-6 px-3 py-1 rounded-full border border-white/10 bg-white/[0.02]"
+                        style="font-family: 'JetBrains Mono', monospace;">
+                        <span class="w-1 h-1 rounded-full bg-zinc-500 animate-pulse"></span>
+                        // architecture & features
+                    </span>
+                    <h2 class="text-4xl md:text-6xl font-semibold tracking-tighter text-white">Built for control.
+                    </h2>
+                    <p class="text-lg text-zinc-400 max-w-2xl mt-4 font-light">
+                        No subscription models, no ads. Just a sleek, modern desktop audio
+                        experience you own.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                    <!-- Feature 1 -->
                     <div
-                        class="w-16 h-16 md:w-20 md:h-20 rounded-2xl md:rounded-3xl border border-white/10 bg-white/5 flex items-center justify-center shrink-0">
-                        <iconify-icon icon="mynaui:music-square-solid"
-                            class="text-3xl md:text-5xl text-white"></iconify-icon>
+                        class="p-8 rounded-3xl border border-white/5 bg-white/[0.01] hover:border-white/15 transition-colors flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-2xl font-semibold tracking-tight text-white mb-3">Native Rust Audio Engine
+                            </h3>
+                            <p class="text-zinc-400 leading-relaxed text-sm">
+                                High performance audio playback pipeline built in Rust. With built-in audio effects
+                                like Reverb, Bass-boost and more!
+                            </p>
+                        </div>
+                        <div
+                            class="mt-8 pt-6 border-t border-white/5 flex items-center gap-2 text-xs font-mono text-zinc-500">
+                            <iconify-icon icon="solar:check-circle-bold" class="text-emerald-400"></iconify-icon>
+                            <span>Mewsic Audio Engine V3</span>
+                        </div>
                     </div>
+
+                    <!-- Feature 2 -->
+                    <div
+                        class="p-8 rounded-3xl border border-white/5 bg-white/[0.01] hover:border-white/15 transition-colors flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-2xl font-semibold tracking-tight text-white mb-3">Elegant UI Design
+                            </h3>
+                            <p class="text-zinc-400 leading-relaxed text-sm">
+                                A Clean and modern UI to make your listening experience even better.
+                                With support for custom accent colors and more coming soon!
+                            </p>
+                        </div>
+                        <div
+                            class="mt-8 pt-6 border-t border-white/5 flex items-center gap-2 text-xs font-mono text-zinc-500">
+                            <iconify-icon icon="solar:check-circle-bold" class="text-emerald-400"></iconify-icon>
+                            <span>React + Tauri</span>
+                        </div>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div
+                        class="p-8 rounded-3xl border border-white/5 bg-white/[0.01] hover:border-white/15 transition-colors flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-2xl font-semibold tracking-tight text-white mb-3">100% Offline*
+                            </h3>
+                            <p class="text-zinc-400 leading-relaxed text-sm">
+                                Your audio files are stored and used locally, no cloud calls or subscriptions.
+                                *optional features like Usage tracking, track downloading, album art fetching and song
+                                lyric fetching
+                                requires an active internet connection.
+                            </p>
+                        </div>
+                        <div
+                            class="mt-8 pt-6 border-t border-white/5 flex items-center gap-2 text-xs font-mono text-zinc-500">
+                            <iconify-icon icon="solar:check-circle-bold" class="text-emerald-400"></iconify-icon>
+                            <span>True Privacy</span>
+                        </div>
+                    </div>
+
+                    <!-- Feature 4: Plugin API -->
+                    <div
+                        class="p-8 rounded-3xl border border-white/5 bg-white/[0.01] hover:border-white/15 transition-colors flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-2xl font-semibold tracking-tight text-white mb-3">Mewsic Plugin API</h3>
+                            <p class="text-zinc-400 leading-relaxed text-sm">
+                                Want more features in Mewsic? Use Plugin to add more!
+                                Develop your own or find pre-made ones in the Mewsic Marketplace.
+                            </p>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-white/5 flex items-center justify-between">
+                            <a href="#features"
+                                class="text-xs font-mono text-purple-400 hover:text-purple-300 flex items-center gap-1.5 transition-colors">
+                                <span>Coming soon.</span>
+                                <iconify-icon icon="solar:arrow-right-linear"></iconify-icon>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Feature 5: Minecraft Fabric Bridge -->
+                    <div
+                        class="p-8 rounded-3xl border border-white/5 bg-white/[0.01] hover:border-white/15 transition-colors flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-2xl font-semibold tracking-tight text-white mb-3">Minecraft Bridge Mod</h3>
+                            <p class="text-zinc-400 leading-relaxed text-sm">
+                                Want to play music while playing minecraft? Control you entire library within minecraft
+                                using the Mewsic Bridge mod!
+                            </p>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-white/5 flex items-center justify-between">
+                            <a href="https://modrinth.com/mod/mewsic-bridge" target="_blank" rel="noopener noreferrer"
+                                class="text-xs font-mono text-[#1bd96a] hover:text-[#18c460] flex items-center gap-1.5 transition-colors">
+                                <span>View on Modrinth</span>
+                                <iconify-icon icon="solar:arrow-right-up-linear"></iconify-icon>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Feature 6: Mewsic Android Port -->
+                    <div
+                        class="p-8 rounded-3xl border border-white/5 bg-white/[0.01] hover:border-white/15 transition-colors flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-2xl font-semibold tracking-tight text-white mb-3">Mewsic for Android</h3>
+                            <p class="text-zinc-400 leading-relaxed text-sm">
+                                Due to high demand, I have started working on an android port of Mewsic!
+                                Might take some time to finish, but find it here.
+                            </p>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-white/5 flex items-center justify-between">
+                            <a href="../mewsic-android/"
+                                class="text-xs font-mono text-green-400 hover:text-green-300 flex items-center gap-1.5 transition-colors">
+                                <span>Android Port</span>
+                                <iconify-icon icon="solar:arrow-right-linear"></iconify-icon>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Interactive Showcase Gallery Section -->
+        <section id="gallery"
+            class="px-6 py-32 border-t border-white/5 bg-gradient-to-b from-white/[0.01] to-transparent">
+            <div class="mx-auto max-w-6xl">
+
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
                     <div>
-                        <h1 class="text-3xl md:text-6xl font-semibold tracking-tighter text-white mb-2">Mewsic</h1>
-                        <div class="flex flex-wrap items-center gap-3">
+                        <span
+                            class="inline-flex items-center gap-2 text-xs font-mono text-zinc-500 mb-6 px-3 py-1 rounded-full border border-white/10 bg-white/[0.02]"
+                            style="font-family: 'JetBrains Mono', monospace;">
+                            <span class="w-1 h-1 rounded-full bg-zinc-500 animate-pulse"></span>
+                            // visual showcase
+                        </span>
+                        <h2 class="text-4xl md:text-6xl font-semibold tracking-tighter text-white">Take a peek.</h2>
+                    </div>
+
+                    <!-- View Selector Tabs -->
+                    <div
+                        class="flex flex-wrap items-center gap-2 p-1.5 rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-md">
+                        <button onclick="switchGalleryTab(0)" id="gallery-tab-0"
+                            class="gallery-btn px-4 py-2 rounded-xl text-xs font-medium bg-white text-zinc-950 transition-all duration-200">
+                            Home
+                        </button>
+                        <button onclick="switchGalleryTab(1)" id="gallery-tab-1"
+                            class="gallery-btn px-4 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white transition-all duration-200">
+                            Library
+                        </button>
+                        <button onclick="switchGalleryTab(2)" id="gallery-tab-2"
+                            class="gallery-btn px-4 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white transition-all duration-200">
+                            Playlists
+                        </button>
+                        <button onclick="switchGalleryTab(3)" id="gallery-tab-3"
+                            class="gallery-btn px-4 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white transition-all duration-200">
+                            Lyrics
+                        </button>
+                        <button onclick="switchGalleryTab(4)" id="gallery-tab-4"
+                            class="gallery-btn px-4 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white transition-all duration-200">
+                            Audio Engine
+                        </button>
+                        <button onclick="switchGalleryTab(5)" id="gallery-tab-5"
+                            class="gallery-btn px-4 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white transition-all duration-200">
+                            Harbour
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Showcase Main Display -->
+                <div class="relative rounded-3xl border border-white/10 bg-[#09090b] overflow-hidden shadow-2xl">
+                    <div class="relative aspect-video overflow-hidden cursor-zoom-in"
+                        onclick="openLightbox(currentGalleryIndex)">
+                        <img id="gallery-display-img" src="assets/Home.png" alt="Mewsic Interface Screenshot"
+                            class="w-full h-full object-cover transition-opacity duration-300">
+
+                        <!-- Hover Overlay -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end justify-between p-8 pointer-events-none">
+                            <div>
+                                <h3 id="gallery-display-title"
+                                    class="text-xl md:text-2xl font-semibold text-white tracking-tight">
+                                    Home Dashboard
+                                </h3>
+                                <p id="gallery-display-desc" class="text-sm text-zinc-400 max-w-xl mt-1">
+                                    Modern music dashboard with quick access to your music, pinned playlists, and
+                                    recently played tracks.
+                                </p>
+                            </div>
                             <span
-                                class="px-2 py-0.5 rounded border border-white/10 bg-white/5 text-[10px] font-mono text-zinc-400 uppercase tracking-wider">v1.0.0-3</span>
-                            <span
-                                class="px-2 py-0.5 rounded border border-green-500/20 bg-green-500/5 text-[10px] font-mono text-green-500 uppercase tracking-wider">GPL
-                                v3.0</span>
-                            <span
-                                class="px-2 py-0.5 rounded border border-amber-500/20 bg-amber-500/5 text-[10px] font-mono text-amber-500 uppercase tracking-wider">Pre-Release</span>
-                            <span class="text-xs font-mono text-zinc-600">Cross-Platform Desktop</span>
+                                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/20 bg-black/60 text-xs font-mono text-white backdrop-blur-md">
+                                <iconify-icon icon="solar:magnifer-zoom-in-linear"></iconify-icon>
+                                Expand
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Slide Navigation Arrows -->
+                    <button onclick="navigateGallery(-1)" aria-label="Previous Slide"
+                        class="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-white/10 bg-zinc-950/70 backdrop-blur-md flex items-center justify-center text-white hover:bg-white hover:text-black transition-all">
+                        <iconify-icon icon="solar:alt-arrow-left-linear" class="text-xl"></iconify-icon>
+                    </button>
+                    <button onclick="navigateGallery(1)" aria-label="Next Slide"
+                        class="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full border border-white/10 bg-zinc-950/70 backdrop-blur-md flex items-center justify-center text-white hover:bg-white hover:text-black transition-all">
+                        <iconify-icon icon="solar:alt-arrow-right-linear" class="text-xl"></iconify-icon>
+                    </button>
+                </div>
+
+                <!-- Thumbnails bar -->
+                <div class="grid grid-cols-3 sm:grid-cols-6 gap-3 mt-4">
+                    <button onclick="switchGalleryTab(0)"
+                        class="thumbnail-btn rounded-xl overflow-hidden border-2 border-white/40 transition-all aspect-video">
+                        <img src="assets/Home.png" class="w-full h-full object-cover" alt="Home Thumbnail">
+                    </button>
+                    <button onclick="switchGalleryTab(1)"
+                        class="thumbnail-btn rounded-xl overflow-hidden border-2 border-transparent hover:border-white/20 opacity-60 hover:opacity-100 transition-all aspect-video">
+                        <img src="assets/Library.png" class="w-full h-full object-cover" alt="Library Thumbnail">
+                    </button>
+                    <button onclick="switchGalleryTab(2)"
+                        class="thumbnail-btn rounded-xl overflow-hidden border-2 border-transparent hover:border-white/20 opacity-60 hover:opacity-100 transition-all aspect-video">
+                        <img src="assets/Playlist.png" class="w-full h-full object-cover" alt="Playlist Thumbnail">
+                    </button>
+                    <button onclick="switchGalleryTab(3)"
+                        class="thumbnail-btn rounded-xl overflow-hidden border-2 border-transparent hover:border-white/20 opacity-60 hover:opacity-100 transition-all aspect-video">
+                        <img src="assets/Lyrics.png" class="w-full h-full object-cover" alt="Lyrics Thumbnail">
+                    </button>
+                    <button onclick="switchGalleryTab(4)"
+                        class="thumbnail-btn rounded-xl overflow-hidden border-2 border-transparent hover:border-white/20 opacity-60 hover:opacity-100 transition-all aspect-video">
+                        <img src="assets/Audio%20Engine.png" class="w-full h-full object-cover"
+                            alt="Audio Engine Thumbnail">
+                    </button>
+                    <button onclick="switchGalleryTab(5)"
+                        class="thumbnail-btn rounded-xl overflow-hidden border-2 border-transparent hover:border-white/20 opacity-60 hover:opacity-100 transition-all aspect-video">
+                        <img src="assets/Harbour.png" class="w-full h-full object-cover" alt="Harbour Thumbnail">
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Changelog Section -->
+        <section id="changelog" class="px-6 py-28 border-t border-white/5">
+            <div class="mx-auto max-w-6xl">
+
+                <div class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+                    <div>
+                        <span
+                            class="inline-flex items-center gap-2 text-xs font-mono text-zinc-500 mb-6 px-3 py-1 rounded-full border border-white/10 bg-white/[0.02]"
+                            style="font-family: 'JetBrains Mono', monospace;">
+                            <span class="w-1 h-1 rounded-full bg-emerald-400 animate-pulse"></span>
+                            // release notes
+                        </span>
+                        <h2 class="text-4xl md:text-6xl font-semibold tracking-tighter text-white">What's new in v1.0.0
+                        </h2>
+                    </div>
+                    <a href="https://github.com/xeoniii/Mewsic/releases" target="_blank" rel="noopener noreferrer"
+                        class="text-xs font-mono text-zinc-400 hover:text-white flex items-center gap-2 transition-colors">
+                        View full release archive on GitHub &rarr;
+                    </a>
+                </div>
+
+                <div class="p-8 md:p-12 rounded-3xl border border-white/10 bg-white/[0.01]">
+                    <div
+                        class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-8 mb-8 border-b border-white/5">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-mono text-zinc-500"
+                                style="font-family: 'JetBrains Mono', monospace;">
+                                commit - 5c54ae5
+                            </span>
+                        </div>
+                        <span class="text-xs font-mono text-zinc-400">Available for Windows, Linux and macOS</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-10 text-sm">
+                        <!-- Item 1 -->
+                        <div class="flex items-start gap-3">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-2 shrink-0"></span>
+                            <span class="text-zinc-300 leading-relaxed"><strong class="text-white font-medium">v1.0.0
+                                    Main Release!</strong></span>
+                        </div>
+
+                        <!-- Item 2 -->
+                        <div class="flex items-start gap-3">
+                            <span class="w-1.5 h-1.5 rounded-full bg-zinc-500 mt-2 shrink-0"></span>
+                            <span class="text-zinc-300 leading-relaxed">Fixed scaling issues with the interface scale
+                                slider.</span>
+                        </div>
+
+                        <!-- Item 3 -->
+                        <div class="flex items-start gap-3">
+                            <span class="w-1.5 h-1.5 rounded-full bg-zinc-500 mt-2 shrink-0"></span>
+                            <span class="text-zinc-300 leading-relaxed">Changes to Playlist view models.</span>
+                        </div>
+
+                        <!-- Item 4 -->
+                        <div class="flex items-start gap-3">
+                            <span class="w-1.5 h-1.5 rounded-full bg-zinc-500 mt-2 shrink-0"></span>
+                            <span class="text-zinc-300 leading-relaxed">Fixed tooltip location issues.</span>
+                        </div>
+
+                        <!-- Item 5 -->
+                        <div class="flex items-start gap-3">
+                            <span class="w-1.5 h-1.5 rounded-full bg-zinc-500 mt-2 shrink-0"></span>
+                            <span class="text-zinc-300 leading-relaxed">Revamped Lyrics UI.</span>
+                        </div>
+
+                        <!-- Item 6 -->
+                        <div class="flex items-start gap-3">
+                            <span class="w-1.5 h-1.5 rounded-full bg-zinc-500 mt-2 shrink-0"></span>
+                            <span class="text-zinc-300 leading-relaxed">Updated Harbour API to allow for much faster
+                                download speeds.</span>
+                        </div>
+
+                        <!-- Item 7 -->
+                        <div class="flex items-start gap-3">
+                            <span class="w-1.5 h-1.5 rounded-full bg-zinc-500 mt-2 shrink-0"></span>
+                            <span class="text-zinc-300 leading-relaxed">Fixed a bug causing songs with special
+                                characters such as # to not load any metadata.</span>
+                        </div>
+
+                        <!-- Item 8 -->
+                        <div class="flex items-start gap-3">
+                            <span class="w-1.5 h-1.5 rounded-full bg-zinc-500 mt-2 shrink-0"></span>
+                            <span class="text-zinc-300 leading-relaxed">Harbour dependencies now come bundled with the
+                                app for instant access.</span>
+                        </div>
+
+                        <!-- Item 9 -->
+                        <div class="flex items-start gap-3">
+                            <span class="w-1.5 h-1.5 rounded-full bg-zinc-500 mt-2 shrink-0"></span>
+                            <span class="text-zinc-300 leading-relaxed">Fixed issues with resizing window and
+                                borders.</span>
+                        </div>
+
+                        <!-- Item 10 -->
+                        <div class="flex items-start gap-3">
+                            <span class="w-1.5 h-1.5 rounded-full bg-zinc-500 mt-2 shrink-0"></span>
+                            <span class="text-zinc-300 leading-relaxed">Changes to cover art loading.</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="prose prose-invert max-w-none">
-                    <p class="text-xl leading-relaxed text-zinc-300">
-                        Mewsic is a modern, performance-driven offline music player built for the modern desktop.
-                        It combines the speed and safety of Rust with the flexibility of React to deliver a seamless
-                        listening experience.
-                    </p>
+            </div>
+        </section>
 
-                    <div class="mt-6">
+        <!-- Multi-Platform Download Matrix Section -->
+        <section id="downloads"
+            class="px-6 py-32 border-t border-white/5 bg-gradient-to-b from-white/[0.01] to-transparent">
+            <div class="mx-auto max-w-6xl">
+
+                <div class="mb-16 text-center max-w-3xl mx-auto">
+                    <h2 class="text-4xl md:text-6xl font-semibold tracking-tighter text-white mb-6">Get Mewsic for your
+                        device.</h2>
+                    <p class="text-lg text-zinc-400 leading-relaxed font-light">
+                        Mewsic packages are pre-compiled for standard desktop architectures. Select your
+                        operating system below to begin.
+                    </p>
+                </div>
+
+                <!-- Platform Tabs -->
+                <div class="flex flex-wrap justify-center gap-3 mb-10">
+                    <button onclick="switchPlatform('windows')" id="tab-windows"
+                        class="platform-tab flex items-center gap-2.5 px-6 py-3.5 rounded-2xl border border-white/20 bg-white/5 text-white transition-all duration-200">
+                        <iconify-icon icon="simple-icons:windows" class="text-xl"></iconify-icon>
+                        <span class="font-medium text-sm">Windows</span>
+                    </button>
+                    <button onclick="switchPlatform('macos')" id="tab-macos"
+                        class="platform-tab flex items-center gap-2.5 px-6 py-3.5 rounded-2xl border border-white/5 bg-white/[0.02] text-zinc-400 hover:text-white transition-all duration-200">
+                        <iconify-icon icon="simple-icons:apple" class="text-xl"></iconify-icon>
+                        <span class="font-medium text-sm">macOS</span>
+                    </button>
+                    <button onclick="switchPlatform('linux')" id="tab-linux"
+                        class="platform-tab flex items-center gap-2.5 px-6 py-3.5 rounded-2xl border border-white/5 bg-white/[0.02] text-zinc-400 hover:text-white transition-all duration-200">
+                        <iconify-icon icon="simple-icons:linux" class="text-xl"></iconify-icon>
+                        <span class="font-medium text-sm">Linux</span>
+                    </button>
+                    <button onclick="switchPlatform('android')" id="tab-android"
+                        class="platform-tab flex items-center gap-2.5 px-6 py-3.5 rounded-2xl border border-white/5 bg-white/[0.02] text-zinc-400 hover:text-white transition-all duration-200">
+                        <iconify-icon icon="f7:logo-android" class="text-xl"></iconify-icon>
+                        <span class="font-medium text-sm">Android</span>
+                    </button>
+                </div>
+
+                <!-- Windows Section -->
+                <div id="download-windows" class="platform-content max-w-4xl mx-auto">
+                    <!-- SmartScreen Notice -->
+                    <div class="mb-6 p-6 rounded-2xl border border-blue-500/20 bg-blue-500/5 flex gap-4 items-start">
+                        <iconify-icon icon="solar:info-circle-bold"
+                            class="text-2xl text-blue-400 shrink-0 mt-0.5"></iconify-icon>
+                        <div>
+                            <h4 class="text-white font-medium text-sm mb-1">Windows SmartScreen Note</h4>
+                            <p class="text-xs text-zinc-400 leading-relaxed">
+                                Because Mewsic is an independent, community open-source binary without an expensive
+                                commercial EV certificate, Windows SmartScreen may show an "Unrecognized app" prompt.
+                                Click <span class="text-white font-semibold">More info</span> &rarr; <span
+                                    class="text-white font-semibold">Run anyway</span>. The software is 100% open source
+                                and verified safe on GitHub.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="p-8 md:p-12 rounded-3xl border border-white/10 bg-white/[0.02] relative">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+                            <div>
+                                <h3 class="text-2xl font-semibold text-white tracking-tight">Windows Installer</h3>
+                                <p class="text-sm text-zinc-400 mt-1">Windows 10 / Windows 11 (64-bit)</p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap items-center gap-4">
+                            <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic-Setup.msi"
+                                class="w-full sm:w-auto group flex items-center justify-center gap-3 bg-white text-zinc-950 px-8 py-4 rounded-2xl font-semibold text-base hover:bg-zinc-200 transition-all shadow-xl hover:scale-[1.01]">
+                                <iconify-icon icon="solar:download-bold" class="text-xl"></iconify-icon>
+                                <span>Download .msi</span>
+                                <span class="text-xs px-2 py-0.5 rounded bg-zinc-200 font-mono text-zinc-800">50.9
+                                    MB</span>
+                            </a>
+                            <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic-Setup.exe"
+                                class="w-full sm:w-auto group flex items-center justify-center gap-3 bg-zinc-900 border border-white/10 text-white px-8 py-4 rounded-2xl font-semibold text-base hover:bg-zinc-800 transition-all shadow-xl hover:scale-[1.01]">
+                                <iconify-icon icon="solar:download-bold" class="text-xl"></iconify-icon>
+                                <span>Download .exe</span>
+                                <span class="text-xs px-2 py-0.5 rounded bg-white/10 font-mono text-zinc-300">41.6
+                                    MB</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- macOS Section -->
+                <div id="download-macos" class="platform-content hidden max-w-4xl mx-auto">
+                    <div class="p-8 md:p-12 rounded-3xl border border-white/10 bg-white/[0.02]">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+                            <div>
+                                <h3 class="text-2xl font-semibold text-white tracking-tight">macOS Disk Images</h3>
+                                <p class="text-sm text-zinc-400 mt-1">macOS 11.0 Big Sur or later</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Apple Silicon -->
+                            <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic-arm64.dmg"
+                                class="group p-6 rounded-2xl border border-white/10 bg-white/[0.02] hover:bg-white/5 hover:border-white/20 transition-all flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center justify-between mb-3">
+                                        <iconify-icon icon="simple-icons:apple"
+                                            class="text-2xl text-white"></iconify-icon>
+                                        <span
+                                            class="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-zinc-300">Apple
+                                            Silicon</span>
+                                    </div>
+                                    <div class="text-base font-semibold text-white">Apple Silicon (M1 / M2 / M3 / M4)
+                                    </div>
+                                    <p class="text-xs text-zinc-400 mt-1">arm architecture.</p>
+                                </div>
+                                <div
+                                    class="mt-6 flex items-center justify-between text-xs font-semibold text-white group-hover:text-purple-300 transition-colors">
+                                    <div class="flex items-center gap-2">
+                                        <iconify-icon icon="solar:download-bold"></iconify-icon>
+                                        <span>Download .dmg</span>
+                                    </div>
+                                    <span class="font-mono text-zinc-400 text-[11px]">60.0 MB</span>
+                                </div>
+                            </a>
+
+                            <!-- Intel / Other Releases -->
+                            <a href="https://github.com/xeoniii/Mewsic/releases" target="_blank"
+                                rel="noopener noreferrer"
+                                class="group p-6 rounded-2xl border border-white/10 bg-white/[0.02] hover:bg-white/5 hover:border-white/20 transition-all flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center justify-between mb-3">
+                                        <iconify-icon icon="simple-icons:apple"
+                                            class="text-2xl text-white"></iconify-icon>
+                                        <span
+                                            class="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-zinc-300">GitHub
+                                            Releases</span>
+                                    </div>
+                                    <div class="text-base font-semibold text-white">All Releases &amp; Source</div>
+                                    <p class="text-xs text-zinc-400 mt-1">Intel Macs can run via Rosetta 2 or compile
+                                        directly from the open source repository.</p>
+                                </div>
+                                <div
+                                    class="mt-6 flex items-center gap-2 text-xs font-semibold text-white group-hover:text-purple-300 transition-colors">
+                                    <iconify-icon icon="solar:arrow-right-up-linear"></iconify-icon>
+                                    <span>Browse GitHub Releases</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Linux Section -->
+                <div id="download-linux" class="platform-content hidden max-w-4xl mx-auto">
+                    <div class="p-8 md:p-12 rounded-3xl border border-white/10 bg-white/[0.02]">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+                            <div>
+                                <h3 class="text-2xl font-semibold text-white tracking-tight">Linux Packages</h3>
+                                <p class="text-sm text-zinc-400 mt-1">Debian, Ubuntu, Fedora, Arch, and compatible
+                                    distributions</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Debian/Ubuntu -->
+                            <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic-Setup.deb"
+                                class="group p-6 rounded-2xl border border-white/10 bg-white/[0.02] hover:bg-white/5 hover:border-white/20 transition-all flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center justify-between mb-3">
+                                        <iconify-icon icon="simple-icons:debian"
+                                            class="text-2xl text-red-400"></iconify-icon>
+                                        <span
+                                            class="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-zinc-300">.deb</span>
+                                    </div>
+                                    <div class="text-base font-semibold text-white">Debian / Ubuntu / Mint</div>
+                                    <p class="text-xs text-zinc-400 mt-1">Debian package installer for
+                                        APT-based
+                                        distros.</p>
+                                </div>
+                                <div
+                                    class="mt-6 flex items-center justify-between text-xs font-semibold text-white group-hover:text-purple-300 transition-colors">
+                                    <div class="flex items-center gap-2">
+                                        <iconify-icon icon="solar:download-bold"></iconify-icon>
+                                        <span>Download .deb</span>
+                                    </div>
+                                    <span class="font-mono text-zinc-400 text-[11px]">39.5 MB</span>
+                                </div>
+                            </a>
+
+                            <!-- Fedora/RHEL -->
+                            <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic-Setup.rpm"
+                                class="group p-6 rounded-2xl border border-white/10 bg-white/[0.02] hover:bg-white/5 hover:border-white/20 transition-all flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center justify-between mb-3">
+                                        <iconify-icon icon="simple-icons:fedora"
+                                            class="text-2xl text-blue-400"></iconify-icon>
+                                        <span
+                                            class="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-zinc-300">.rpm</span>
+                                    </div>
+                                    <div class="text-base font-semibold text-white">Fedora / RHEL / openSUSE</div>
+                                    <p class="text-xs text-zinc-400 mt-1">RPM package installer for DNF
+                                        and Zypper-based
+                                        distributions.</p>
+                                </div>
+                                <div
+                                    class="mt-6 flex items-center justify-between text-xs font-semibold text-white group-hover:text-purple-300 transition-colors">
+                                    <div class="flex items-center gap-2">
+                                        <iconify-icon icon="solar:download-bold"></iconify-icon>
+                                        <span>Download .rpm</span>
+                                    </div>
+                                    <span class="font-mono text-zinc-400 text-[11px]">39.5 MB</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Minecraft Bridge Section -->
+                <div id="download-minecraft" class="platform-content hidden max-w-4xl mx-auto">
+                    <div class="p-8 md:p-12 rounded-3xl border border-white/10 bg-white/[0.02]">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+                            <div>
+                                <h3 class="text-2xl font-semibold text-white tracking-tight">Mewsic Bridge Mod</h3>
+                                <p class="text-sm text-zinc-400 mt-1">Sync and control Mewsic directly from inside
+                                    Minecraft</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span
+                                    class="px-2.5 py-1 rounded-full border border-purple-500/20 bg-purple-500/10 text-[11px] font-mono text-purple-400 tracking-wider font-semibold">Fabric
+                                    1.21.1+</span>
+                                <span
+                                    class="px-2.5 py-1 rounded-full border border-[#1bd96a]/20 bg-[#1bd96a]/10 text-[11px] font-mono text-[#1bd96a] uppercase tracking-wider font-semibold">Modrinth</span>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row items-center gap-6">
+                            <a href="https://modrinth.com/mod/mewsic-bridge" target="_blank" rel="noopener noreferrer"
+                                class="w-full sm:w-auto group flex items-center justify-center gap-3 bg-[#1bd96a] text-zinc-950 px-8 py-4 rounded-2xl font-bold text-base hover:bg-[#16bf5b] transition-all shadow-xl hover:scale-[1.01]">
+                                <iconify-icon icon="simple-icons:modrinth" class="text-xl"></iconify-icon>
+                                <span>Get on Modrinth</span>
+                            </a>
+                            <p class="text-xs text-zinc-400 leading-relaxed max-w-md">
+                                Requires the Fabric Loader and Fabric API. Automatically establishes an offline IPC
+                                bridge to your running Mewsic desktop instance.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Android Port Section -->
+                <div id="download-android" class="platform-content hidden max-w-4xl mx-auto">
+                    <div class="p-8 md:p-12 rounded-3xl border border-white/10 bg-white/[0.02]">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+                            <div>
+                                <h3 class="text-2xl font-semibold text-white tracking-tight">Mewsic-Android</h3>
+                                <p class="text-sm text-zinc-400 mt-1">Official Android port for Mewsic.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row items-center gap-6">
+                            <a href="../mewsic-android/"
+                                class="w-full sm:w-auto group flex items-center justify-center gap-3 bg-white text-zinc-950 px-8 py-4 rounded-2xl font-semibold text-base hover:bg-zinc-200 transition-all shadow-xl hover:scale-[1.01]">
+                                <span>Mewsic-Android Page</span>
+                            </a>
+                            <p class="text-xs text-zinc-400 leading-relaxed max-w-md">
+                                Due to high demand, mewsic-android has entered development, checkout its progress
+                                on
+                                its own page.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Terms and GPL Notice -->
+                <div class="mt-12 text-center text-xs text-zinc-500 max-w-md mx-auto leading-relaxed">
+                    By downloading or using Mewsic, you agree to our
+                    <a href="tos/"
+                        class="text-zinc-400 hover:text-white underline underline-offset-2 transition-colors">Terms of
+                        Service</a>
+                    and
+                    <a href="privacy/"
+                        class="text-zinc-400 hover:text-white underline underline-offset-2 transition-colors">Privacy
+                        Policy</a>.
+                    Licensed under GPL v3.0.
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Developer Banner Section -->
+        <section class="px-6 py-24 border-t border-white/5">
+            <div class="mx-auto max-w-6xl">
+                <div
+                    class="p-8 md:p-14 rounded-3xl border border-white/10 bg-gradient-to-r from-purple-950/20 via-zinc-900/40 to-transparent flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
+                    <div class="max-w-xl">
+                        <span
+                            class="inline-flex items-center gap-2 text-xs font-mono text-purple-400 mb-4 px-3 py-1 rounded-full border border-purple-500/20 bg-purple-500/5"
+                            style="font-family: 'JetBrains Mono', monospace;">
+                            <iconify-icon icon="solar:code-bold"></iconify-icon>
+                            For Developers
+                        </span>
+                        <h2 class="text-3xl md:text-4xl font-semibold tracking-tight text-white mb-4">
+                            Build plugins for Mewsic.
+                        </h2>
+                        <p class="text-zinc-400 text-sm leading-relaxed">
+                            Use the mewsic plugin-api documentation to customize mewsic and add features that you and
+                            the community might find useful.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
                         <a href="plugin-api/"
-                            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-white transition-all duration-200 text-sm font-medium">
-                            <iconify-icon icon="solar:code-bold" class="text-lg text-zinc-400"></iconify-icon>
-                            Plugin API Documentation
+                            class="w-full sm:w-auto flex items-center justify-center gap-2 bg-purple-600 text-white px-6 py-3.5 rounded-2xl font-semibold text-sm hover:bg-purple-500 transition-colors shadow-lg shadow-purple-600/20">
+                            <iconify-icon icon="solar:book-bookmark-bold" class="text-lg"></iconify-icon>
+                            <span>Plugin-API Documentation</span>
+                        </a>
+                        <a href="https://github.com/xeoniii/Mewsic" target="_blank" rel="noopener noreferrer"
+                            class="w-full sm:w-auto flex items-center justify-center gap-2 border border-white/10 bg-white/5 px-6 py-3.5 rounded-2xl font-medium text-sm text-zinc-300 hover:text-white hover:bg-white/10 transition-colors">
+                            <iconify-icon icon="simple-icons:github" class="text-lg"></iconify-icon>
+                            <span>View Source</span>
                         </a>
                     </div>
-
-                    <div class="grid md:grid-cols-2 gap-6 mt-12">
-                        <div class="p-6 rounded-2xl border border-white/5 bg-white/[0.01] flex flex-col justify-center">
-                            <span id="download-count-text"
-                                class="text-4xl md:text-5xl font-semibold text-white tracking-tighter mb-2">...</span>
-                            <span
-                                class="text-[10px] font-mono text-zinc-500 uppercase tracking-widest flex items-center gap-1.5">
-                                <iconify-icon icon="solar:download-bold" class="text-sm"></iconify-icon>
-                                Total Downloads
-                            </span>
-                        </div>
-                        <div class="p-6 rounded-2xl border border-white/5 bg-white/[0.01]">
-                            <h3 class="text-white font-semibold mb-3 flex items-center gap-2">
-                                <iconify-icon icon="solar:palette-bold" class="text-zinc-500"></iconify-icon>
-                                Modern UI
-                            </h3>
-                            <p class="text-sm">A clean, Material Design inspired interface that stays out of your way
-                                and lets your music take center stage.</p>
-                        </div>
-                    </div>
-
-                    <!-- Gallery Section -->
-                    <div class="relative mt-20 mb-24 -mx-6 md:-mx-20 group">
-                        <div id="gallery-container"
-                            class="flex overflow-x-auto gap-4 md:gap-8 px-[10%] md:px-[20%] pb-12 scroll-smooth no-scrollbar snap-x snap-mandatory">
-                            <!-- Image 3 -->
-                            <div
-                                class="min-w-full md:min-w-[85%] snap-center transition-all duration-500 scale-[0.9] opacity-40 gallery-slide">
-                                <div class="rounded-[2rem] md:rounded-[3rem] border border-white/10 bg-white/5 overflow-hidden aspect-video shadow-2xl cursor-zoom-in"
-                                    onclick="openLightbox(0)">
-                                    <img src="assets/mewsic-3.png" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <!-- Image 2 -->
-                            <div
-                                class="min-w-full md:min-w-[85%] snap-center transition-all duration-500 scale-[0.9] opacity-40 gallery-slide">
-                                <div class="rounded-[2rem] md:rounded-[3rem] border border-white/10 bg-white/5 overflow-hidden aspect-video shadow-2xl cursor-zoom-in"
-                                    onclick="openLightbox(1)">
-                                    <img src="assets/mewsic-2.png" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <!-- Image 1 (HOME) -->
-                            <div
-                                class="min-w-full md:min-w-[85%] snap-center transition-all duration-500 scale-[0.9] opacity-40 gallery-slide active">
-                                <div class="rounded-[2rem] md:rounded-[3rem] border border-white/10 bg-white/5 overflow-hidden aspect-video shadow-2xl cursor-zoom-in"
-                                    onclick="openLightbox(2)">
-                                    <img src="assets/mewsic-1.png" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <!-- Image 4 -->
-                            <div
-                                class="min-w-full md:min-w-[85%] snap-center transition-all duration-500 scale-[0.9] opacity-40 gallery-slide">
-                                <div class="rounded-[2rem] md:rounded-[3rem] border border-white/10 bg-white/5 overflow-hidden aspect-video shadow-2xl cursor-zoom-in"
-                                    onclick="openLightbox(3)">
-                                    <img src="assets/mewsic-4.png" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                            <!-- Image 5 -->
-                            <div
-                                class="min-w-full md:min-w-[85%] snap-center transition-all duration-500 scale-[0.9] opacity-40 gallery-slide">
-                                <div class="rounded-[2rem] md:rounded-[3rem] border border-white/10 bg-white/5 overflow-hidden aspect-video shadow-2xl cursor-zoom-in"
-                                    onclick="openLightbox(4)">
-                                    <img src="assets/mewsic-5.png" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Navigation Arrows (Desktop) -->
-                        <div
-                            class="hidden md:flex absolute top-1/2 -translate-y-1/2 inset-x-4 justify-between pointer-events-none">
-                            <button onclick="scrollGallery('left')"
-                                class="p-4 rounded-full bg-zinc-950/50 backdrop-blur-xl border border-white/10 text-white pointer-events-auto hover:bg-white hover:text-black transition-all duration-300">
-                                <iconify-icon icon="solar:alt-arrow-left-linear" class="text-2xl"></iconify-icon>
-                            </button>
-                            <button onclick="scrollGallery('right')"
-                                class="p-4 rounded-full bg-zinc-950/50 backdrop-blur-xl border border-white/10 text-white pointer-events-auto hover:bg-white hover:text-black transition-all duration-300">
-                                <iconify-icon icon="solar:alt-arrow-right-linear" class="text-2xl"></iconify-icon>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Lightbox Modal -->
-                    <div id="lightbox"
-                        class="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl hidden transition-opacity duration-300 opacity-0">
-                        <div id="lightbox-container"
-                            class="w-full h-full flex overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth">
-                            <div class="min-w-full h-full flex items-center justify-center p-6 md:p-32 snap-center overflow-hidden"
-                                onclick="closeLightbox()">
-                                <img src="assets/mewsic-3.png"
-                                    class="max-w-[90%] max-h-[75%] md:max-h-[80%] object-contain rounded-2xl md:rounded-[2rem] shadow-2xl pointer-events-auto transition-transform duration-300 origin-center"
-                                    style="transform: scale(1); cursor: zoom-in;" onclick="toggleZoom(event, this)">
-                            </div>
-                            <div class="min-w-full h-full flex items-center justify-center p-6 md:p-32 snap-center overflow-hidden"
-                                onclick="closeLightbox()">
-                                <img src="assets/mewsic-2.png"
-                                    class="max-w-[90%] max-h-[75%] md:max-h-[80%] object-contain rounded-2xl md:rounded-[2rem] shadow-2xl pointer-events-auto transition-transform duration-300 origin-center"
-                                    style="transform: scale(1); cursor: zoom-in;" onclick="toggleZoom(event, this)">
-                            </div>
-                            <div class="min-w-full h-full flex items-center justify-center p-6 md:p-32 snap-center overflow-hidden"
-                                onclick="closeLightbox()">
-                                <img src="assets/mewsic-1.png"
-                                    class="max-w-[90%] max-h-[75%] md:max-h-[80%] object-contain rounded-2xl md:rounded-[2rem] shadow-2xl pointer-events-auto transition-transform duration-300 origin-center"
-                                    style="transform: scale(1); cursor: zoom-in;" onclick="toggleZoom(event, this)">
-                            </div>
-                            <div class="min-w-full h-full flex items-center justify-center p-6 md:p-32 snap-center overflow-hidden"
-                                onclick="closeLightbox()">
-                                <img src="assets/mewsic-4.png"
-                                    class="max-w-[90%] max-h-[75%] md:max-h-[80%] object-contain rounded-2xl md:rounded-[2rem] shadow-2xl pointer-events-auto transition-transform duration-300 origin-center"
-                                    style="transform: scale(1); cursor: zoom-in;" onclick="toggleZoom(event, this)">
-                            </div>
-                            <div class="min-w-full h-full flex items-center justify-center p-6 md:p-32 snap-center overflow-hidden"
-                                onclick="closeLightbox()">
-                                <img src="assets/mewsic-5.png"
-                                    class="max-w-[90%] max-h-[75%] md:max-h-[80%] object-contain rounded-2xl md:rounded-[2rem] shadow-2xl pointer-events-auto transition-transform duration-300 origin-center"
-                                    style="transform: scale(1); cursor: zoom-in;" onclick="toggleZoom(event, this)">
-                            </div>
-                        </div>
-
-                        <!-- Lightbox Nav (PC) -->
-                        <div
-                            class="hidden md:flex absolute top-1/2 -translate-y-1/2 inset-x-8 justify-between pointer-events-none">
-                            <button onclick="event.stopPropagation(); navigateLightbox('left')"
-                                class="p-5 rounded-full bg-white/5 border border-white/10 text-white pointer-events-auto hover:bg-white hover:text-black transition-all">
-                                <iconify-icon icon="solar:alt-arrow-left-linear" class="text-3xl"></iconify-icon>
-                            </button>
-                            <button onclick="event.stopPropagation(); navigateLightbox('right')"
-                                class="p-5 rounded-full bg-white/5 border border-white/10 text-white pointer-events-auto hover:bg-white hover:text-black transition-all">
-                                <iconify-icon icon="solar:alt-arrow-right-linear" class="text-3xl"></iconify-icon>
-                            </button>
-                        </div>
-
-                    </div>
-
-                    <style>
-                        .no-scrollbar::-webkit-scrollbar {
-                            display: none;
-                        }
-
-                        .no-scrollbar {
-                            -ms-overflow-style: none;
-                            scrollbar-width: none;
-                        }
-
-                        .gallery-slide.active {
-                            transform: scale(1);
-                            opacity: 1;
-                        }
-                    </style>
-
-                    <script>
-                        function scrollGallery(direction) {
-                            const container = document.getElementById('gallery-container');
-                            const slideWidth = container.querySelector('.gallery-slide').offsetWidth;
-                            const maxScroll = container.scrollWidth - container.offsetWidth;
-
-                            if (direction === 'right' && container.scrollLeft >= maxScroll - 50) {
-                                container.scrollTo({ left: 0, behavior: 'smooth' });
-                            } else if (direction === 'left' && container.scrollLeft <= 50) {
-                                container.scrollTo({ left: maxScroll, behavior: 'smooth' });
-                            } else {
-                                container.scrollBy({ left: direction === 'left' ? -slideWidth : slideWidth, behavior: 'smooth' });
-                            }
-                        }
-
-                        function updateActiveSlide() {
-                            const container = document.getElementById('gallery-container');
-                            const slides = container.querySelectorAll('.gallery-slide');
-                            const containerCenter = container.scrollLeft + container.offsetWidth / 2;
-
-                            slides.forEach((slide, index) => {
-                                const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
-                                if (Math.abs(containerCenter - slideCenter) < slide.offsetWidth / 2) {
-                                    slide.classList.add('active');
-                                } else {
-                                    slide.classList.remove('active');
-                                }
-                            });
-                        }
-
-                        function openLightbox(index) {
-                            const lightbox = document.getElementById('lightbox');
-                            const container = document.getElementById('lightbox-container');
-
-                            lightbox.classList.remove('hidden');
-                            document.body.style.overflow = 'hidden';
-
-                            // Reset all zooms when opening
-                            container.querySelectorAll('img').forEach(img => {
-                                img.style.transform = 'scale(1)';
-                                img.style.cursor = 'zoom-in';
-                                img.parentElement.classList.remove('overflow-auto');
-                                img.parentElement.classList.add('overflow-hidden');
-                            });
-
-                            // Scroll to correct image immediately
-                            const slide = container.children[index];
-                            container.scrollTo({ left: slide.offsetLeft, behavior: 'instant' });
-
-                            setTimeout(() => {
-                                lightbox.classList.add('opacity-100');
-                            }, 10);
-                        }
-
-                        function closeLightbox() {
-                            const lightbox = document.getElementById('lightbox');
-                            lightbox.classList.remove('opacity-100');
-                            document.body.style.overflow = '';
-                            setTimeout(() => {
-                                lightbox.classList.add('hidden');
-                            }, 300);
-                        }
-
-                        function toggleZoom(e, img) {
-                            e.stopPropagation();
-                            const isZoomed = img.style.transform === 'scale(2)';
-
-                            if (isZoomed) {
-                                img.style.transform = 'scale(1)';
-                                img.style.cursor = 'zoom-in';
-                                img.parentElement.classList.remove('overflow-auto');
-                                img.parentElement.classList.add('overflow-hidden');
-                            } else {
-                                img.style.transform = 'scale(2)';
-                                img.style.cursor = 'zoom-out';
-                                img.parentElement.classList.remove('overflow-hidden');
-                                img.parentElement.classList.add('overflow-auto');
-                            }
-                        }
-
-                        function navigateLightbox(direction) {
-                            const container = document.getElementById('lightbox-container');
-                            const slideWidth = container.offsetWidth;
-                            const maxScroll = container.scrollWidth - container.offsetWidth;
-
-                            if (direction === 'right' && container.scrollLeft >= maxScroll - 10) {
-                                container.scrollTo({ left: 0, behavior: 'smooth' });
-                            } else if (direction === 'left' && container.scrollLeft <= 10) {
-                                container.scrollTo({ left: maxScroll, behavior: 'smooth' });
-                            } else {
-                                container.scrollBy({ left: direction === 'left' ? -slideWidth : slideWidth, behavior: 'smooth' });
-                            }
-                        }
-
-                        document.getElementById('gallery-container').addEventListener('scroll', updateActiveSlide);
-
-                        window.addEventListener('load', () => {
-                            const container = document.getElementById('gallery-container');
-                            const homeSlide = container.children[2];
-                            const scrollPos = homeSlide.offsetLeft - (container.offsetWidth - homeSlide.offsetWidth) / 2;
-                            container.scrollTo({ left: scrollPos });
-                            updateActiveSlide();
-                        });
-                    </script>
-
-                    <!-- Latest Changelog -->
-                    <div class="mb-12">
-                        <div class="flex items-center gap-3 mb-6">
-                            <h2 class="text-xl font-bold text-white uppercase tracking-tight">Latest Changelog</h2>
-                            <span
-                                class="px-2 py-0.5 rounded border border-amber-500/20 bg-amber-500/5 text-[10px] font-mono text-amber-500 uppercase tracking-wider">v1.0.0-3</span>
-                        </div>
-                        <div class="bg-white/[0.02] border border-white/5 rounded-3xl p-8">
-                            <ul class="grid md:grid-cols-2 gap-x-12 gap-y-8 text-zinc-300">
-                                <li class="space-y-1">
-                                    <span class="text-amber-500 font-medium block">Collapsible Sidebar</span>
-                                    <p class="text-sm text-zinc-500 leading-relaxed">You can now toggle the sidebar
-                                        manually in addition to automatic collapsing on smaller windows!</p>
-                                </li>
-                                <li class="space-y-1">
-                                    <span class="text-amber-500 font-medium block">Queue System Exposed</span>
-                                    <p class="text-sm text-zinc-500 leading-relaxed">Access the queue system via the new
-                                        queue button next to the mute toggle on the player bar.</p>
-                                </li>
-                                <li class="space-y-1">
-                                    <span class="text-amber-500 font-medium block text-balance">Updated Music
-                                        Cards</span>
-                                    <p class="text-sm text-zinc-500 leading-relaxed">All music cards now use the updated
-                                        style as part of the new UI changes.</p>
-                                </li>
-                                <li class="space-y-1">
-                                    <span class="text-amber-500 font-medium block">Bug Fixes</span>
-                                    <p class="text-sm text-zinc-500 leading-relaxed">Fixed a bug where songs with
-                                        special characters like # or ? would cause the app to panic.</p>
-                                </li>
-                            </ul>
-                            <div class="mt-8 pt-8 border-t border-white/5">
-                                <a href="/updates"
-                                    class="text-xs text-zinc-500 hover:text-white transition-colors flex items-center gap-2">
-                                    View full update history
-                                    <iconify-icon icon="solar:arrow-right-linear" class="text-sm"></iconify-icon>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Platform Selection Tabs -->
-                    <div class="mt-12">
-                        <div class="flex flex-wrap gap-4 mb-8">
-                            <button onclick="switchPlatform('windows')" id="tab-windows"
-                                class="platform-tab flex items-center gap-2 px-6 py-3 rounded-xl border border-white/20 bg-white/5 text-white transition-all duration-200">
-                                <iconify-icon icon="simple-icons:windows" class="text-xl text-white"></iconify-icon>
-                                <span class="font-medium">Windows</span>
-                            </button>
-                            <button onclick="switchPlatform('macos')" id="tab-macos"
-                                class="platform-tab flex items-center gap-2 px-6 py-3 rounded-xl border border-white/5 bg-white/[0.02] text-zinc-400 hover:text-white transition-all duration-200">
-                                <iconify-icon icon="simple-icons:apple" class="text-xl"></iconify-icon>
-                                <span class="font-medium">macOS</span>
-                            </button>
-                            <button onclick="switchPlatform('linux')" id="tab-linux"
-                                class="platform-tab flex items-center gap-2 px-6 py-3 rounded-xl border border-white/5 bg-white/[0.02] text-zinc-400 hover:text-white transition-all duration-200">
-                                <iconify-icon icon="simple-icons:linux" class="text-xl"></iconify-icon>
-                                <span class="font-medium">Linux</span>
-                            </button>
-                            <button onclick="switchPlatform('minecraft')" id="tab-minecraft"
-                                class="platform-tab flex items-center gap-2 px-6 py-3 rounded-xl border border-white/5 bg-white/[0.02] text-zinc-400 hover:text-white transition-all duration-200">
-                                <iconify-icon icon="mdi:minecraft" class="text-xl"></iconify-icon>
-                                <span class="font-medium">Minecraft Mod</span>
-                            </button>
-                        </div>
-
-                        <!-- Alert Box -->
-                        <div id="alert-windows"
-                            class="platform-content mb-8 p-6 rounded-2xl border border-blue-500/20 bg-blue-500/5 flex gap-4 items-start">
-                            <iconify-icon icon="solar:info-circle-bold"
-                                class="text-2xl text-blue-500 mt-1"></iconify-icon>
-                            <div>
-                                <h4 class="text-white font-semibold mb-1">Good to know</h4>
-                                <p class="text-sm text-zinc-400 leading-relaxed text-balance">If you get a warning that
-                                    the app cannot be opened or is unrecognized by Windows SmartScreen, click "Run
-                                    anyway" or "More info". This warning is entirely harmless and only shows because the
-                                    app is currently unverified.</p>
-                            </div>
-                        </div>
-
-
-                        <!-- Download Sections (Platform Specific) -->
-                        <div id="download-windows"
-                            class="platform-content p-8 rounded-3xl border border-white/10 bg-white/[0.02] relative overflow-hidden">
-                            <div class="flex items-center justify-between mb-8">
-                                <div class="hidden">
-                                    <iconify-icon icon="solar:shield-check-bold" class="text-sm"></iconify-icon>
-                                    SHA256: 90901bc2269329...
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    <span
-                                        class="bg-amber-500/10 text-amber-500 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Pre-Release</span>
-                                    <span class="text-[10px] font-mono text-zinc-600">v1.0.0-3 x64</span>
-                                </div>
-                            </div>
-
-                            <div class="flex flex-col sm:flex-row items-center gap-6">
-                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic-Setup.msi"
-                                    class="w-full sm:w-auto group flex flex-col items-center gap-1 bg-white text-zinc-950 px-10 py-5 rounded-2xl transition-all duration-300 hover:bg-zinc-200 hover:scale-[1.02]">
-                                    <div class="flex items-center gap-2 font-bold text-lg tracking-tight">
-                                        Windows 10, 11 (Recommended)
-                                    </div>
-                                    <span
-                                        class="text-[10px] uppercase tracking-tighter opacity-70 flex items-center gap-1">
-                                        <iconify-icon icon="solar:download-bold" class="text-sm"></iconify-icon>
-                                        Download .msi
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div id="download-macos"
-                            class="platform-content hidden p-8 rounded-3xl border border-white/10 bg-white/[0.02] relative overflow-hidden">
-                            <div class="flex items-center justify-between mb-8">
-                                <div class="hidden">
-                                    <iconify-icon icon="solar:shield-check-bold" class="text-sm"></iconify-icon>
-                                    SHA256: d4f64bbf603cc2...
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    <span
-                                        class="bg-amber-500/10 text-amber-500 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Pre-Release</span>
-                                    <span class="text-[10px] font-mono text-zinc-600">v1.0.0-3 MacOS</span>
-                                </div>
-                            </div>
-
-                            <div class="flex flex-col sm:flex-row items-center gap-6">
-                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic-arm64.dmg"
-                                    class="w-full sm:w-auto group flex flex-col items-center gap-1 bg-white text-zinc-950 px-10 py-5 rounded-2xl transition-all duration-300 hover:bg-zinc-200 hover:scale-[1.02]">
-                                    <div class="flex items-center gap-2 font-bold text-lg tracking-tight">
-                                        MacOS 11+ (Apple Silicon)
-                                    </div>
-                                    <span
-                                        class="text-[10px] uppercase tracking-tighter opacity-70 flex items-center gap-1">
-                                        <iconify-icon icon="solar:download-bold" class="text-sm"></iconify-icon>
-                                        Download .dmg
-                                    </span>
-                                </a>
-                                <span class="text-xs font-mono text-zinc-600 uppercase">OR</span>
-                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic-x64.dmg"
-                                    class="w-full sm:w-auto group flex flex-col items-center gap-1 bg-zinc-900 text-white border border-white/10 px-10 py-5 rounded-2xl transition-all duration-300 hover:bg-zinc-800 hover:scale-[1.02]">
-                                    <div class="flex items-center gap-2 font-bold text-lg tracking-tight">
-                                        MacOS 11+ (Intel)
-                                    </div>
-                                    <span
-                                        class="text-[10px] uppercase tracking-tighter text-zinc-500 flex items-center gap-1">
-                                        <iconify-icon icon="solar:download-bold" class="text-sm"></iconify-icon>
-                                        Download .dmg
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div id="download-linux"
-                            class="platform-content hidden p-8 rounded-3xl border border-white/10 bg-white/[0.02] relative overflow-hidden">
-                            <div class="flex items-center justify-between mb-8">
-                                <div class="hidden">
-                                    <iconify-icon icon="solar:shield-check-bold" class="text-sm"></iconify-icon>
-                                    SHA256: f6b11ea1b13277...
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    <span
-                                        class="bg-amber-500/10 text-amber-500 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Pre-Release</span>
-                                    <span class="text-[10px] font-mono text-zinc-600">v1.0.0-3 amd64</span>
-                                </div>
-                            </div>
-
-                            <div class="flex flex-wrap items-center gap-6">
-                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic-Setup.deb"
-                                    class="group flex flex-col items-center gap-1 bg-white text-zinc-950 px-8 py-4 rounded-2xl transition-all duration-300 hover:bg-zinc-200 hover:scale-[1.02]">
-                                    <div class="flex items-center gap-2 font-bold tracking-tight">
-                                        Debian, Ubuntu
-                                    </div>
-                                    <span
-                                        class="text-[10px] uppercase tracking-tighter opacity-70 flex items-center gap-1">
-                                        <iconify-icon icon="solar:download-bold" class="text-sm"></iconify-icon>
-                                        Download .deb
-                                    </span>
-                                </a>
-                                <span class="text-xs font-mono text-zinc-600 uppercase">OR</span>
-                                <a href="https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic-Setup.rpm"
-                                    class="group flex flex-col items-center gap-1 bg-zinc-900 text-white border border-white/10 px-8 py-4 rounded-2xl transition-all duration-300 hover:bg-zinc-800 hover:scale-[1.02]">
-                                    <div class="flex items-center gap-2 font-bold tracking-tight">
-                                        Fedora, RHEL
-                                    </div>
-                                    <span
-                                        class="text-[10px] uppercase tracking-tighter text-zinc-500 flex items-center gap-1">
-                                        <iconify-icon icon="solar:download-bold" class="text-sm"></iconify-icon>
-                                        Download .rpm
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div id="download-minecraft"
-                            class="platform-content hidden p-8 rounded-3xl border border-white/10 bg-white/[0.02] relative overflow-hidden">
-                            <div class="flex items-center justify-between mb-8">
-                                <div class="hidden">
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    <span
-                                        class="bg-[#1bd96a]/10 text-[#1bd96a] text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">Modrinth</span>
-                                    <span
-                                        class="px-2 py-0.5 rounded border border-purple-500/20 bg-purple-500/5 text-[11px] font-bold text-purple-400 tracking-wider">Fabric
-                                        1.21.11+</span>
-                                </div>
-                            </div>
-
-                            <div class="flex flex-wrap items-center gap-6">
-                                <a href="https://modrinth.com/mod/mewsic-bridge" target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="group flex flex-col items-center gap-1 bg-[#1bd96a] text-zinc-950 px-8 py-4 rounded-2xl transition-all duration-300 hover:bg-[#15b856] hover:scale-[1.02]">
-                                    <div class="flex items-center gap-2 font-bold tracking-tight">
-                                        <iconify-icon icon="simple-icons:modrinth" class="text-xl"></iconify-icon>
-                                        Get it on Modrinth
-                                    </div>
-                                    <span class="text-[10px] uppercase tracking-tighter opacity-70">
-                                        modrinth.com/mod/mewsic-bridge
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="mt-6 text-center text-xs text-zinc-500">
-                            By downloading and/or using this software, you agree to our <a href="tos/"
-                                class="text-amber-500 hover:text-amber-400 underline underline-offset-2 transition-colors">Terms
-                                of Service</a> and <a href="privacy/"
-                                class="text-amber-500 hover:text-amber-400 underline underline-offset-2 transition-colors">Privacy
-                                Policy</a>.
-                        </div>
-
-                        <div class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-                            <a href="https://github.com/xeoniii/Mewsic"
-                                class="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-white transition-colors"
-                                target="_blank" rel="noopener noreferrer">
-                                <iconify-icon icon="simple-icons:github"></iconify-icon>
-                                View source on GitHub
-                            </a>
-                            <span class="text-[10px] font-mono text-green-500 uppercase tracking-widest">Licensed under
-                                GPL v3.0</span>
-                        </div>
-                    </div>
-
-                    <script>
-                        function switchPlatform(platform) {
-                            // Tabs
-                            document.querySelectorAll('.platform-tab').forEach(tab => {
-                                tab.classList.remove('border-white/20', 'bg-white/5', 'text-white');
-                                tab.classList.add('border-white/5', 'bg-white/[0.02]', 'text-zinc-400');
-                                tab.querySelector('iconify-icon').classList.remove('text-white');
-                            });
-
-                            const activeTab = document.getElementById('tab-' + platform);
-                            activeTab.classList.add('border-white/20', 'bg-white/5', 'text-white');
-                            activeTab.classList.remove('border-white/5', 'bg-white/[0.02]', 'text-zinc-400');
-                            activeTab.querySelector('iconify-icon').classList.add('text-white');
-
-                            // Content
-                            document.querySelectorAll('.platform-content').forEach(content => {
-                                content.classList.add('hidden');
-                            });
-
-                            document.getElementById('download-' + platform).classList.remove('hidden');
-
-                            if (platform === 'windows') {
-                                document.getElementById('alert-windows').classList.remove('hidden');
-                            }
-                        }
-
-                        async function fetchDownloads() {
-                            try {
-                                const response = await fetch('https://api.github.com/repos/xeoniii/Mewsic/releases');
-                                const releases = await response.json();
-                                let totalDownloads = 0;
-                                releases.forEach(release => {
-                                    release.assets.forEach(asset => {
-                                        totalDownloads += asset.download_count;
-                                    });
-                                });
-
-                                if (totalDownloads > 0) {
-                                    const countText = document.getElementById('download-count-text');
-                                    if (countText) {
-                                        let currentCount = 0;
-                                        const duration = 1000;
-                                        const steps = 30;
-                                        const stepTime = duration / steps;
-                                        const increment = totalDownloads / steps;
-
-                                        const timer = setInterval(() => {
-                                            currentCount += increment;
-                                            if (currentCount >= totalDownloads) {
-                                                countText.innerText = totalDownloads.toLocaleString();
-                                                clearInterval(timer);
-                                            } else {
-                                                countText.innerText = Math.floor(currentCount).toLocaleString();
-                                            }
-                                        }, stepTime);
-                                    }
-                                }
-                            } catch (error) {
-                                console.error('Error fetching download count:', error);
-                            }
-                        }
-
-                        document.addEventListener('DOMContentLoaded', fetchDownloads);
-                    </script>
                 </div>
             </div>
         </section>
+
     </main>
 
+    <!-- Fullscreen Lightbox Modal -->
+    <div id="lightbox"
+        class="fixed inset-0 z-[100] bg-black/95 backdrop-blur-2xl hidden transition-opacity duration-300 opacity-0 flex flex-col items-center justify-center p-4 md:p-10"
+        onclick="closeLightbox()">
+
+        <!-- Lightbox Controls -->
+        <div class="absolute top-6 right-6 flex items-center gap-4 z-10" onclick="event.stopPropagation()">
+            <button onclick="closeLightbox()"
+                class="w-12 h-12 rounded-full bg-white/10 border border-white/20 text-white flex items-center justify-center hover:bg-white hover:text-black transition-all">
+                <iconify-icon icon="solar:close-circle-bold" class="text-2xl"></iconify-icon>
+            </button>
+        </div>
+
+        <!-- Lightbox Image Wrapper -->
+        <div class="relative max-w-6xl w-full h-[80vh] flex items-center justify-center"
+            onclick="event.stopPropagation()">
+            <img id="lightbox-img" src="assets/Home.png" alt="Enlarged screenshot"
+                class="max-w-full max-h-full object-contain rounded-2xl shadow-2xl transition-transform duration-300 cursor-zoom-in"
+                onclick="toggleZoom(this)">
+
+            <!-- Arrows -->
+            <button onclick="navigateLightbox(-1)"
+                class="absolute left-2 md:-left-16 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 border border-white/20 text-white flex items-center justify-center hover:bg-white hover:text-black transition-all">
+                <iconify-icon icon="solar:alt-arrow-left-linear" class="text-2xl"></iconify-icon>
+            </button>
+            <button onclick="navigateLightbox(1)"
+                class="absolute right-2 md:-right-16 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 border border-white/20 text-white flex items-center justify-center hover:bg-white hover:text-black transition-all">
+                <iconify-icon icon="solar:alt-arrow-right-linear" class="text-2xl"></iconify-icon>
+            </button>
+        </div>
+
+        <div class="mt-4 text-xs font-mono text-zinc-500" style="font-family: 'JetBrains Mono', monospace;">
+            Press ESC to close • Click image to zoom • Use &larr; / &rarr; keys to browse
+        </div>
+    </div>
+
+    <!-- Footer -->
     <footer class="border-t border-white/5 px-6 py-12 bg-[#09090b]">
         <div
             class="mx-auto max-w-6xl flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-            <a href="../" class="text-xl font-semibold tracking-tighter text-white">
-                xeoniii.<span class="text-zinc-600">dev</span>
-            </a>
-            <p class="text-xs font-mono text-zinc-600">
-                © 2026 xeoniii.dev — ALL RIGHTS RESERVED
+            <div class="flex items-center gap-3">
+                <a href="../" class="text-xl font-semibold tracking-tighter text-white">
+                    xeoniii.<span class="text-zinc-600">dev</span>
+                </a>
+            </div>
+
+            <div class="flex items-center gap-6 text-xs text-zinc-500">
+                <a href="tos/" class="hover:text-white transition-colors">Terms of Service</a>
+                <a href="privacy/" class="hover:text-white transition-colors">Privacy Policy</a>
+                <a href="plugin-api/" class="hover:text-white transition-colors">Plugin API</a>
+                <a href="https://github.com/xeoniii/Mewsic" target="_blank" rel="noopener noreferrer"
+                    class="hover:text-white transition-colors">GitHub</a>
+            </div>
+
+            <p class="text-xs font-mono text-zinc-600" style="font-family: 'JetBrains Mono', monospace;">
+                &copy; 2026 xeoniii.dev — ALL RIGHTS RESERVED
             </p>
         </div>
     </footer>
 
+    <!-- Interactive Scripts -->
+    <script>
+        // Gallery Data
+        const galleryItems = [
+            {
+                src: 'assets/Home.png',
+                title: 'Home Dashboard',
+                desc: 'Modern music dashboard with quick access to your music, pinned playlists, and recently added tracks.'
+            },
+            {
+                src: 'assets/Library.png',
+                title: 'Local Music Library',
+                desc: 'Browse and search your full local library with instant filtering, album grouping, and metadata parsing.'
+            },
+            {
+                src: 'assets/Playlist.png',
+                title: 'Playlist Manager',
+                desc: 'Organize custom playlists with full drag-and-drop track reordering and effortless queue management.'
+            },
+            {
+                src: 'assets/Lyrics.png',
+                title: 'Synchronized Lyrics',
+                desc: 'Distraction-free typography with smooth real-time auto-scrolling synced to your audio playback.'
+            },
+            {
+                src: 'assets/Audio%20Engine.png',
+                title: 'Mewsic Audio Engine V3',
+                desc: 'Built-in DSP audio effects pipeline featuring Reverb, Bass Boost, and much more.'
+            },
+            {
+                src: 'assets/Harbour.png',
+                title: 'Harbour Downloader',
+                desc: 'Built-in track search and download tool to seamlessly fetch music into your local library.'
+            }
+        ];
+
+        let currentGalleryIndex = 0;
+
+        function switchGalleryTab(index) {
+            currentGalleryIndex = index;
+            const item = galleryItems[index];
+
+            const img = document.getElementById('gallery-display-img');
+            img.style.opacity = '0';
+            setTimeout(() => {
+                img.src = item.src;
+                img.style.opacity = '1';
+            }, 150);
+
+            document.getElementById('gallery-display-title').innerText = item.title;
+            document.getElementById('gallery-display-desc').innerText = item.desc;
+
+            // Update tab pills
+            document.querySelectorAll('.gallery-btn').forEach((btn, i) => {
+                if (i === index) {
+                    btn.classList.add('bg-white', 'text-zinc-950');
+                    btn.classList.remove('text-zinc-400');
+                } else {
+                    btn.classList.remove('bg-white', 'text-zinc-950');
+                    btn.classList.add('text-zinc-400');
+                }
+            });
+
+            // Update thumbnails
+            document.querySelectorAll('.thumbnail-btn').forEach((btn, i) => {
+                if (i === index) {
+                    btn.classList.add('border-white/40', 'opacity-100');
+                    btn.classList.remove('border-transparent', 'opacity-60');
+                } else {
+                    btn.classList.remove('border-white/40', 'opacity-100');
+                    btn.classList.add('border-transparent', 'opacity-60');
+                }
+            });
+        }
+
+        function navigateGallery(delta) {
+            let nextIndex = (currentGalleryIndex + delta + galleryItems.length) % galleryItems.length;
+            switchGalleryTab(nextIndex);
+        }
+
+        // Platform Switcher
+        function switchPlatform(platform) {
+            document.querySelectorAll('.platform-tab').forEach(tab => {
+                tab.classList.remove('border-white/20', 'bg-white/5', 'text-white');
+                tab.classList.add('border-white/5', 'bg-white/[0.02]', 'text-zinc-400');
+            });
+
+            const activeTab = document.getElementById('tab-' + platform);
+            if (activeTab) {
+                activeTab.classList.add('border-white/20', 'bg-white/5', 'text-white');
+                activeTab.classList.remove('border-white/5', 'bg-white/[0.02]', 'text-zinc-400');
+            }
+
+            document.querySelectorAll('.platform-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+
+            const activeContent = document.getElementById('download-' + platform);
+            if (activeContent) {
+                activeContent.classList.remove('hidden');
+            }
+        }
+
+        // Smooth scroll to downloads
+        function scrollToDownloads(e) {
+            if (e) e.preventDefault();
+            const target = document.getElementById('downloads');
+            if (target) {
+                const navHeight = 64;
+                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // OS Auto-Detection for Hero CTA
+        function initOSDetection() {
+            const nav = window.navigator;
+            const ua = (nav.userAgent || '').toLowerCase();
+            const platform = (nav.userAgentData?.platform || nav.platform || '').toLowerCase();
+
+            const heroBtn = document.getElementById('hero-download-btn');
+            const heroIcon = document.getElementById('hero-os-icon');
+            const heroText = document.getElementById('hero-btn-text');
+            const detectHint = document.getElementById('hero-detect-hint');
+
+            if (!heroBtn || !heroIcon || !heroText || !detectHint) return;
+
+            // 1. Android
+            if (ua.includes('android') || platform.includes('android')) {
+                heroBtn.href = "../mewsic-android/";
+                heroIcon.setAttribute('icon', 'f7:logo-android');
+                heroIcon.icon = 'f7:logo-android';
+                heroText.innerText = "Get Mewsic for Android";
+                detectHint.innerHTML = 'Auto-detected for <span class="text-zinc-400">Android</span> • Native Kotlin mobile companion';
+                switchPlatform('android');
+                return;
+            }
+
+            // 2. iOS
+            if (ua.includes('iphone') || ua.includes('ipad') || ua.includes('ipod')) {
+                heroBtn.href = "#downloads";
+                heroIcon.setAttribute('icon', 'simple-icons:apple');
+                heroIcon.icon = 'simple-icons:apple';
+                heroText.innerText = "View All Releases";
+                detectHint.innerHTML = 'Mewsic is available for <span class="text-zinc-400">Windows, macOS, Linux &amp; Android</span>';
+                return;
+            }
+
+            // 3. macOS
+            if (platform.includes('mac') || ua.includes('macintosh') || ua.includes('mac os')) {
+                heroBtn.href = "https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic-arm64.dmg";
+                heroIcon.setAttribute('icon', 'simple-icons:apple');
+                heroIcon.icon = 'simple-icons:apple';
+                heroText.innerText = "Download for macOS (.dmg)";
+                detectHint.innerHTML = 'Auto-detected for <span class="text-zinc-400">macOS (Apple Silicon M1/M2/M3/M4)</span> • Free &amp; Open Source (GPL v3.0)';
+                switchPlatform('macos');
+                return;
+            }
+
+            // 4. Linux (excluding Android)
+            if (platform.includes('linux') || ua.includes('linux') || ua.includes('x11')) {
+                const isRpm = ua.includes('fedora') || ua.includes('redhat') || ua.includes('rhel') || ua.includes('suse');
+                if (isRpm) {
+                    heroBtn.href = "https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic-Setup.rpm";
+                    heroText.innerText = "Download for Linux (.rpm)";
+                    detectHint.innerHTML = 'Auto-detected for <span class="text-zinc-400">Linux (Fedora, RHEL, RPM)</span> • Free &amp; Open Source (GPL v3.0)';
+                } else {
+                    heroBtn.href = "https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic-Setup.deb";
+                    heroText.innerText = "Download for Linux (.deb)";
+                    detectHint.innerHTML = 'Auto-detected for <span class="text-zinc-400">Linux (Debian, Ubuntu, DEB)</span> • Free &amp; Open Source (GPL v3.0)';
+                }
+                heroIcon.setAttribute('icon', 'simple-icons:linux');
+                heroIcon.icon = 'simple-icons:linux';
+                switchPlatform('linux');
+                return;
+            }
+
+            // 5. Windows (Default fallback)
+            heroBtn.href = "https://github.com/xeoniii/Mewsic/releases/latest/download/Mewsic-Setup.exe";
+            heroIcon.setAttribute('icon', 'simple-icons:windows');
+            heroIcon.icon = 'simple-icons:windows';
+            heroText.innerText = "Download for Windows";
+            detectHint.innerHTML = 'Auto-detected for <span class="text-zinc-400">Windows 10/11 (64-bit)</span> • Free &amp; Open Source (GPL v3.0)';
+            switchPlatform('windows');
+        }
+
+        // Lightbox Functions
+        let lightboxIndex = 0;
+
+        function openLightbox(index) {
+            lightboxIndex = index;
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            img.src = galleryItems[index].src;
+            img.style.transform = 'scale(1)';
+            img.style.cursor = 'zoom-in';
+
+            lightbox.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => {
+                lightbox.classList.add('opacity-100');
+            }, 10);
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('opacity-100');
+            document.body.style.overflow = '';
+            setTimeout(() => {
+                lightbox.classList.add('hidden');
+            }, 300);
+        }
+
+        function navigateLightbox(delta) {
+            lightboxIndex = (lightboxIndex + delta + galleryItems.length) % galleryItems.length;
+            const img = document.getElementById('lightbox-img');
+            img.style.transform = 'scale(1)';
+            img.src = galleryItems[lightboxIndex].src;
+        }
+
+        function toggleZoom(img) {
+            if (img.style.transform === 'scale(1.75)') {
+                img.style.transform = 'scale(1)';
+                img.style.cursor = 'zoom-in';
+            } else {
+                img.style.transform = 'scale(1.75)';
+                img.style.cursor = 'zoom-out';
+            }
+        }
+
+        // Keyboard navigation for lightbox
+        window.addEventListener('keydown', (e) => {
+            const lightbox = document.getElementById('lightbox');
+            if (!lightbox.classList.contains('hidden')) {
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowLeft') navigateLightbox(-1);
+                if (e.key === 'ArrowRight') navigateLightbox(1);
+            }
+        });
+
+        // GitHub Release Downloads Fetcher & Counter Animation
+        async function fetchGitHubDownloads() {
+            try {
+                const response = await fetch('https://api.github.com/repos/xeoniii/Mewsic/releases');
+                if (!response.ok) throw new Error('API request failed');
+                const releases = await response.json();
+                let total = 0;
+                releases.forEach(rel => {
+                    if (rel.assets && Array.isArray(rel.assets)) {
+                        rel.assets.forEach(asset => {
+                            total += (asset.download_count || 0);
+                        });
+                    }
+                });
+
+                if (total > 0) {
+                    animateCounter('download-count-text', total);
+                } else {
+                    document.getElementById('download-count-text').innerText = '1,200+';
+                }
+            } catch (err) {
+                console.warn('Could not fetch live download count from GitHub:', err);
+                const countElem = document.getElementById('download-count-text');
+                if (countElem && countElem.innerText === '...') {
+                    countElem.innerText = '1,000+';
+                }
+            }
+        }
+
+        function animateCounter(elemId, target) {
+            const elem = document.getElementById(elemId);
+            if (!elem) return;
+            const duration = 1200;
+            const steps = 40;
+            const stepTime = duration / steps;
+            let current = 0;
+            const inc = target / steps;
+
+            const timer = setInterval(() => {
+                current += inc;
+                if (current >= target) {
+                    elem.innerText = target.toLocaleString();
+                    clearInterval(timer);
+                } else {
+                    elem.innerText = Math.floor(current).toLocaleString();
+                }
+            }, stepTime);
+        }
+
+        // Initialize immediately
+        initOSDetection();
+        fetchGitHubDownloads();
+
+        // Also ensure run if still loading
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                initOSDetection();
+                fetchGitHubDownloads();
+            });
+        }
+    </script>
 </body>
 
 </html>
