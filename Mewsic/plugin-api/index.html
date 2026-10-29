@@ -303,9 +303,9 @@
                 </button>
                 <div id="nav-group-api" class="flex flex-col gap-0.5 mt-1">
                     <a href="#api-overview"
-                        class="nav-link nav-item-active flex items-center justify-between px-3 py-1.5 rounded-lg text-sm transition-colors">
+                        class="nav-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm text-zinc-400 hover:bg-white/5 hover:text-white transition-colors">
                         <span>Overview</span>
-                        <iconify-icon icon="solar:star-bold" class="text-xs"></iconify-icon>
+                        <iconify-icon icon="solar:star-bold" class="text-xs text-zinc-600"></iconify-icon>
                     </a>
                     <a href="#player"
                         class="nav-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm text-zinc-400 hover:bg-white/5 hover:text-white transition-colors">
@@ -330,6 +330,11 @@
                     <a href="#settings"
                         class="nav-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm text-zinc-400 hover:bg-white/5 hover:text-white transition-colors">
                         <span class="font-mono text-xs">Mewsic.settings</span>
+                        <iconify-icon icon="solar:alt-arrow-right-linear" class="text-xs text-zinc-600"></iconify-icon>
+                    </a>
+                    <a href="#config"
+                        class="nav-link flex items-center justify-between px-3 py-1.5 rounded-lg text-sm text-zinc-400 hover:bg-white/5 hover:text-white transition-colors">
+                        <span class="font-mono text-xs">Mewsic.config</span>
                         <iconify-icon icon="solar:alt-arrow-right-linear" class="text-xs text-zinc-600"></iconify-icon>
                     </a>
                     <a href="#storage"
@@ -561,6 +566,11 @@ console.log("Hello from my plugin!", window.Mewsic.version);</code></pre>
                                     <td class="p-3.5 font-mono text-zinc-400 text-xs">string[]</td>
                                     <td class="p-3.5 text-zinc-300 text-sm">Informational only — tells users what the
                                         plugin touches. Not enforced.</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3.5 font-mono text-[#1bd96a] font-medium">config</td>
+                                    <td class="p-3.5 font-mono text-zinc-400 text-xs">PluginConfigField[]</td>
+                                    <td class="p-3.5 text-zinc-300 text-sm">Declarative settings schema auto-rendered in the plugin's Config tab and saved to local storage. (<code>"settings"</code> is also supported). <a href="#config" class="text-xs text-[#1bd96a] hover:underline">See Mewsic.config &rarr;</a></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -800,6 +810,12 @@ zip -r ../my-plugin.mewsic manifest.json plugin.js styles.css</code></pre>
                                 <td class="p-3.5 text-zinc-300 text-sm">Persistent app configuration, hotkey remapping,
                                     and theme control</td>
                                 <td class="p-3.5 text-right"><a href="#settings"
+                                        class="text-xs text-[#1bd96a] hover:underline">View docs &rarr;</a></td>
+                            </tr>
+                            <tr class="hover:bg-white/[0.02] transition-colors">
+                                <td class="p-3.5 font-mono text-[#1bd96a] font-medium">Mewsic.config</td>
+                                <td class="p-3.5 text-zinc-300 text-sm">Declarative plugin settings schemas, UI auto-generation, reactive subscriptions</td>
+                                <td class="p-3.5 text-right"><a href="#config"
                                         class="text-xs text-[#1bd96a] hover:underline">View docs &rarr;</a></td>
                             </tr>
                             <tr class="hover:bg-white/[0.02] transition-colors">
@@ -1367,6 +1383,7 @@ Mewsic.ui.openLibrary()
 Mewsic.ui.openPlayer()
 Mewsic.ui.openSettings()
 Mewsic.ui.openPlaylist("playlist-id")
+Mewsic.ui.openPluginConfig("my-plugin") // open plugin manager directly to config tab
 Mewsic.ui.setSearchQuery("query")    // pre-fill the search bar
 
 Mewsic.ui.setTheme("dark" | "light")
@@ -1408,14 +1425,14 @@ Mewsic.ui.removeNotification(id);</code></pre>
                         Custom Views & Sidebar Components
                     </h3>
                     <p class="text-sm text-zinc-400 mb-3">
-                        Register a clickable icon in Mewsic's navigation sidebar linked to your own custom tab renderer:
+                        Register a clickable icon in Mewsic's navigation sidebar linked to your own custom tab renderer. The <code>render</code> function receives a <code>context</code> object with plugin metadata, config state, and reactive update listeners:
                     </p>
                     <div class="code-card my-4 rounded-xl overflow-hidden border border-[#262830] bg-[#14161b]">
                         <div
                             class="flex items-center justify-between px-4 py-2 bg-[#1b1d24] border-b border-[#262830] text-xs font-mono text-zinc-400">
                             <span>javascript</span>
                             <button class="copy-code-btn flex items-center gap-1 hover:text-white transition-colors"
-                                data-code="Mewsic.ui.registerSidebarComponent(&quot;spotify&quot;, {&#10;  name: &quot;Spotify&quot;,&#10;  icon: &quot;&lt;svg&gt;...&lt;/svg&gt;&quot;,   // raw SVG string&#10;  viewId: &quot;plugin:spotify&quot;&#10;});&#10;&#10;Mewsic.ui.registerTab(&quot;plugin:spotify&quot;, {&#10;  render: (container) => {&#10;    container.innerHTML = &quot;&lt;h1&gt;Spotify&lt;/h1&gt;&quot;;&#10;  },&#10;  cleanup: () => {&#10;    // called when tab is unregistered or plugin unloads&#10;  }&#10;});&#10;&#10;// Cleanup when needed&#10;Mewsic.ui.unregisterSidebarComponent(&quot;spotify&quot;);&#10;Mewsic.ui.unregisterTab(&quot;plugin:spotify&quot;);">
+                                data-code="Mewsic.ui.registerSidebarComponent(&quot;spotify&quot;, {&#10;  name: &quot;Spotify&quot;,&#10;  icon: &quot;&lt;svg&gt;...&lt;/svg&gt;&quot;,   // raw SVG string&#10;  viewId: &quot;plugin:spotify&quot;&#10;});&#10;&#10;Mewsic.ui.registerTab(&quot;plugin:spotify&quot;, {&#10;  render: (container, context) => {&#10;    // context contains:&#10;    // context.viewId: string (&quot;plugin:spotify&quot;)&#10;    // context.pluginId: string&#10;    // context.config: Record&lt;string, any&gt;&#10;    // context.getConfig(key)&#10;    // context.setConfig(key, value)&#10;    // context.onConfigChange((newConfig, changedKey) => { ... })&#10;&#10;    container.innerHTML = `&#10;      &lt;div class=&quot;p-6&quot;&gt;&#10;        &lt;h1 class=&quot;text-xl font-bold&quot;&gt;Spotify Dashboard&lt;/h1&gt;&#10;        &lt;p&gt;Current Quality: ${context.config.streamQuality || '320k'}&lt;/p&gt;&#10;        &lt;button id=&quot;btn-cfg&quot; class=&quot;btn-accent px-4 py-2 mt-4 rounded-xl&quot;&gt;&#10;          Open Plugin Settings&#10;        &lt;/button&gt;&#10;      &lt;/div&gt;&#10;    `;&#10;&#10;    container.querySelector(&quot;#btn-cfg&quot;).onclick = () => {&#10;      Mewsic.ui.openPluginConfig(context.pluginId);&#10;    };&#10;&#10;    context.onConfigChange((newConfig, changedKey) => {&#10;      console.log(`Setting [${changedKey}] changed:`, newConfig[changedKey]);&#10;    });&#10;  },&#10;  cleanup: () => {&#10;    // called when tab is unregistered or plugin unloads&#10;  }&#10;});&#10;&#10;// Cleanup when needed&#10;Mewsic.ui.unregisterSidebarComponent(&quot;spotify&quot;);&#10;Mewsic.ui.unregisterTab(&quot;plugin:spotify&quot;);">
                                 <iconify-icon icon="solar:copy-linear" class="text-sm"></iconify-icon>
                                 <span>Copy</span>
                             </button>
@@ -1427,8 +1444,32 @@ Mewsic.ui.removeNotification(id);</code></pre>
 });
 
 Mewsic.ui.registerTab("plugin:spotify", {
-  render: (container) => {
-    container.innerHTML = "&lt;h1&gt;Spotify&lt;/h1&gt;";
+  render: (container, context) => {
+    // context contains:
+    // context.viewId: string ("plugin:spotify")
+    // context.pluginId: string
+    // context.config: Record&lt;string, any&gt;
+    // context.getConfig(key)
+    // context.setConfig(key, value)
+    // context.onConfigChange((newConfig, changedKey) => { ... })
+
+    container.innerHTML = `
+      &lt;div class="p-6"&gt;
+        &lt;h1 class="text-xl font-bold"&gt;Spotify Dashboard&lt;/h1&gt;
+        &lt;p&gt;Current Quality: ${context.config.streamQuality || '320k'}&lt;/p&gt;
+        &lt;button id="btn-cfg" class="btn-accent px-4 py-2 mt-4 rounded-xl"&gt;
+          Open Plugin Settings
+        &lt;/button&gt;
+      &lt;/div&gt;
+    `;
+
+    container.querySelector("#btn-cfg").onclick = () => {
+      Mewsic.ui.openPluginConfig(context.pluginId);
+    };
+
+    context.onConfigChange((newConfig, changedKey) => {
+      console.log(`Setting [${changedKey}] changed:`, newConfig[changedKey]);
+    });
   },
   cleanup: () => {
     // called when tab is unregistered or plugin unloads
@@ -1439,6 +1480,9 @@ Mewsic.ui.registerTab("plugin:spotify", {
 Mewsic.ui.unregisterSidebarComponent("spotify");
 Mewsic.ui.unregisterTab("plugin:spotify");</code></pre>
                     </div>
+                    <p class="text-xs text-zinc-400 mt-2">
+                        <strong>Dedicated Standalone Config Views:</strong> If you navigate to or register a view ID matching <code>plugin-config:&lt;pluginId&gt;</code> or <code>config:&lt;pluginId&gt;</code>, Mewsic automatically renders the complete interactive settings form for that plugin!
+                    </p>
                 </div>
 
                 <!-- Overlays & CSS Injection -->
@@ -1651,7 +1695,336 @@ const all = Mewsic.settings.get();</code></pre>
                 </div>
             </section>
 
-            <!-- Section 10: Mewsic.storage -->
+            <!-- Section 10: Mewsic.config -->
+            <section id="config" class="mb-14 pt-4 border-t border-[#22242a]">
+                <div class="flex items-center gap-2 mb-2">
+                    <span
+                        class="px-2 py-0.5 rounded text-[11px] font-mono bg-[#252830] text-zinc-300 font-bold border border-[#2f323c]">NAMESPACE</span>
+                    <h2 class="text-2xl font-bold tracking-tight text-white font-mono">
+                        Mewsic.config
+                    </h2>
+                </div>
+                <p class="text-sm text-zinc-400 mb-6">
+                    Declarative schema registration, live reactive settings management, and automated UI form generation for plugins.
+                    Settings are automatically rendered under the <strong>Config</strong> tab in the plugin manager, persistently saved in client local storage (<code>mewsic_plugin_config_&lt;pluginId&gt;</code>), and adapt in real time across the UI without requiring an app reload.
+                </p>
+
+                <!-- 1. Defining Configuration in manifest.json -->
+                <div class="mt-8">
+                    <h3 class="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-[#1bd96a]"></span>
+                        Defining Configuration in manifest.json
+                    </h3>
+                    <p class="text-sm text-zinc-400 mb-3">
+                        Plugin authors can declare configuration options directly inside their <code>manifest.json</code>. When Mewsic loads the plugin, its schema is registered automatically. Both <code>"config"</code> and <code>"settings"</code> keys are supported.
+                    </p>
+
+                    <div class="code-card my-4 rounded-xl overflow-hidden border border-[#262830] bg-[#14161b]">
+                        <div
+                            class="flex items-center justify-between px-4 py-2 bg-[#1b1d24] border-b border-[#262830] text-xs font-mono text-zinc-400">
+                            <span>json</span>
+                            <button class="copy-code-btn flex items-center gap-1 hover:text-white transition-colors"
+                                data-code="{&#10;  &quot;name&quot;: &quot;Last.fm Scrobbler&quot;,&#10;  &quot;version&quot;: &quot;1.0.0&quot;,&#10;  &quot;description&quot;: &quot;Scrobbles your played tracks to Last.fm in real time.&quot;,&#10;  &quot;author&quot;: &quot;MusicLover&quot;,&#10;  &quot;config&quot;: [&#10;    {&#10;      &quot;key&quot;: &quot;apiKey&quot;,&#10;      &quot;label&quot;: &quot;API Key&quot;,&#10;      &quot;type&quot;: &quot;string&quot;,&#10;      &quot;placeholder&quot;: &quot;Enter Last.fm API Key&quot;,&#10;      &quot;description&quot;: &quot;Your registered Last.fm application API key.&quot;&#10;    },&#10;    {&#10;      &quot;key&quot;: &quot;apiSecret&quot;,&#10;      &quot;label&quot;: &quot;API Secret&quot;,&#10;      &quot;type&quot;: &quot;password&quot;,&#10;      &quot;placeholder&quot;: &quot;Enter Last.fm Secret Token&quot;,&#10;      &quot;description&quot;: &quot;Your application secret key.&quot;&#10;    },&#10;    {&#10;      &quot;key&quot;: &quot;scrobbleDelay&quot;,&#10;      &quot;label&quot;: &quot;Scrobble Threshold (%)&quot;,&#10;      &quot;type&quot;: &quot;number&quot;,&#10;      &quot;default&quot;: 50,&#10;      &quot;min&quot;: 10,&#10;      &quot;max&quot;: 90,&#10;      &quot;step&quot;: 5,&#10;      &quot;description&quot;: &quot;Percentage of track duration played before submitting scrobble.&quot;&#10;    },&#10;    {&#10;      &quot;key&quot;: &quot;scrobbleMode&quot;,&#10;      &quot;label&quot;: &quot;Scrobble Mode&quot;,&#10;      &quot;type&quot;: &quot;select&quot;,&#10;      &quot;default&quot;: &quot;all&quot;,&#10;      &quot;options&quot;: [&#10;        { &quot;label&quot;: &quot;All Tracks&quot;, &quot;value&quot;: &quot;all&quot; },&#10;        { &quot;label&quot;: &quot;Local Only&quot;, &quot;value&quot;: &quot;local&quot; },&#10;        { &quot;label&quot;: &quot;Virtual Only&quot;, &quot;value&quot;: &quot;virtual&quot; }&#10;      ],&#10;      &quot;description&quot;: &quot;Filter which types of tracks are scrobbled.&quot;&#10;    },&#10;    {&#10;      &quot;key&quot;: &quot;autoLove&quot;,&#10;      &quot;label&quot;: &quot;Auto-Love Favorited Songs&quot;,&#10;      &quot;type&quot;: &quot;boolean&quot;,&#10;      &quot;default&quot;: true,&#10;      &quot;description&quot;: &quot;Automatically send a Love rating to Last.fm when adding a track to Favorites.&quot;&#10;    },&#10;    {&#10;      &quot;key&quot;: &quot;badgeColor&quot;,&#10;      &quot;label&quot;: &quot;Status Badge Color&quot;,&#10;      &quot;type&quot;: &quot;color&quot;,&#10;      &quot;default&quot;: &quot;#d51007&quot;,&#10;      &quot;description&quot;: &quot;Custom color used for Last.fm status overlays.&quot;&#10;    }&#10;  ]&#10;}">
+                                <iconify-icon icon="solar:copy-linear" class="text-sm"></iconify-icon>
+                                <span>Copy</span>
+                            </button>
+                        </div>
+                        <pre><code class="language-json">{
+  "name": "Last.fm Scrobbler",
+  "version": "1.0.0",
+  "description": "Scrobbles your played tracks to Last.fm in real time.",
+  "author": "MusicLover",
+  "config": [
+    {
+      "key": "apiKey",
+      "label": "API Key",
+      "type": "string",
+      "placeholder": "Enter Last.fm API Key",
+      "description": "Your registered Last.fm application API key."
+    },
+    {
+      "key": "apiSecret",
+      "label": "API Secret",
+      "type": "password",
+      "placeholder": "Enter Last.fm Secret Token",
+      "description": "Your application secret key."
+    },
+    {
+      "key": "scrobbleDelay",
+      "label": "Scrobble Threshold (%)",
+      "type": "number",
+      "default": 50,
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "description": "Percentage of track duration played before submitting scrobble."
+    },
+    {
+      "key": "scrobbleMode",
+      "label": "Scrobble Mode",
+      "type": "select",
+      "default": "all",
+      "options": [
+        { "label": "All Tracks", "value": "all" },
+        { "label": "Local Only", "value": "local" },
+        { "label": "Virtual Only", "value": "virtual" }
+      ],
+      "description": "Filter which types of tracks are scrobbled."
+    },
+    {
+      "key": "autoLove",
+      "label": "Auto-Love Favorited Songs",
+      "type": "boolean",
+      "default": true,
+      "description": "Automatically send a Love rating to Last.fm when adding a track to Favorites."
+    },
+    {
+      "key": "badgeColor",
+      "label": "Status Badge Color",
+      "type": "color",
+      "default": "#d51007",
+      "description": "Custom color used for Last.fm status overlays."
+    }
+  ]
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- 2. Supported Field Types -->
+                <div class="mt-8">
+                    <h3 class="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-[#1bd96a]"></span>
+                        Supported Field Types (PluginConfigField)
+                    </h3>
+                    <div class="overflow-x-auto my-4 rounded-xl border border-[#262830] bg-[#16181d]">
+                        <table class="w-full text-left border-collapse text-sm">
+                            <thead>
+                                <tr class="bg-[#1b1d24] border-b border-[#262830]">
+                                    <th class="p-3.5 font-semibold text-zinc-200">Type</th>
+                                    <th class="p-3.5 font-semibold text-zinc-200">UI Component</th>
+                                    <th class="p-3.5 font-semibold text-zinc-200">Schema Properties</th>
+                                    <th class="p-3.5 font-semibold text-zinc-200">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-[#262830]/70 text-zinc-300">
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3.5 font-mono text-[#1bd96a] font-medium">boolean</td>
+                                    <td class="p-3.5 text-zinc-300 text-xs">Toggle switch</td>
+                                    <td class="p-3.5 font-mono text-zinc-400 text-xs">key, label, default, description</td>
+                                    <td class="p-3.5 text-zinc-400 text-xs">Simple true/false toggle switch.</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3.5 font-mono text-[#1bd96a] font-medium">string | text</td>
+                                    <td class="p-3.5 text-zinc-300 text-xs">Text input</td>
+                                    <td class="p-3.5 font-mono text-zinc-400 text-xs">key, label, default, placeholder, description</td>
+                                    <td class="p-3.5 text-zinc-400 text-xs">Single-line standard text input.</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3.5 font-mono text-[#1bd96a] font-medium">password</td>
+                                    <td class="p-3.5 text-zinc-300 text-xs">Masked input</td>
+                                    <td class="p-3.5 font-mono text-zinc-400 text-xs">key, label, placeholder, description</td>
+                                    <td class="p-3.5 text-zinc-400 text-xs">Password field with reveal/hide eye button.</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3.5 font-mono text-[#1bd96a] font-medium">number</td>
+                                    <td class="p-3.5 text-zinc-300 text-xs">Numeric input</td>
+                                    <td class="p-3.5 font-mono text-zinc-400 text-xs">key, label, default, min, max, step, description</td>
+                                    <td class="p-3.5 text-zinc-400 text-xs">Numeric input with optional min/max bounds and step.</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3.5 font-mono text-[#1bd96a] font-medium">select</td>
+                                    <td class="p-3.5 text-zinc-300 text-xs">Dropdown select</td>
+                                    <td class="p-3.5 font-mono text-zinc-400 text-xs">key, label, default, options, description</td>
+                                    <td class="p-3.5 text-zinc-400 text-xs">Dropdown. <code>options</code> can be <code>string[]</code> or <code>{ label, value }[]</code>.</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3.5 font-mono text-[#1bd96a] font-medium">color</td>
+                                    <td class="p-3.5 text-zinc-300 text-xs">Color picker</td>
+                                    <td class="p-3.5 font-mono text-zinc-400 text-xs">key, label, default, description</td>
+                                    <td class="p-3.5 text-zinc-400 text-xs">Color swatch picker with interactive hex input.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 3. Programmatic API Reference (Mewsic.config) -->
+                <div class="mt-8">
+                    <h3 class="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-[#1bd96a]"></span>
+                        Programmatic API Reference
+                    </h3>
+                    <p class="text-sm text-zinc-400 mb-3">
+                        Plugins can register schemas dynamically, query values, listen to live reactive updates, and set config options programmatically:
+                    </p>
+
+                    <div class="code-card my-4 rounded-xl overflow-hidden border border-[#262830] bg-[#14161b]">
+                        <div
+                            class="flex items-center justify-between px-4 py-2 bg-[#1b1d24] border-b border-[#262830] text-xs font-mono text-zinc-400">
+                            <span>javascript</span>
+                            <button class="copy-code-btn flex items-center gap-1 hover:text-white transition-colors"
+                                data-code="// 1. Register a schema dynamically at runtime&#10;Mewsic.config.register(&quot;my-plugin&quot;, [&#10;  {&#10;    key: &quot;streamQuality&quot;,&#10;    label: &quot;Streaming Quality&quot;,&#10;    type: &quot;select&quot;,&#10;    default: &quot;high&quot;,&#10;    options: [&#10;      { label: &quot;High (320kbps)&quot;, value: &quot;high&quot; },&#10;      { label: &quot;Standard (192kbps)&quot;, value: &quot;standard&quot; },&#10;      { label: &quot;Low (128kbps)&quot;, value: &quot;low&quot; }&#10;    ]&#10;  },&#10;  {&#10;    key: &quot;cacheEnabled&quot;,&#10;    label: &quot;Enable Offline Cache&quot;,&#10;    type: &quot;boolean&quot;,&#10;    default: true&#10;  }&#10;]);&#10;&#10;// 2. Get a single value (returns schema default if not modified)&#10;const quality = Mewsic.config.get(&quot;my-plugin&quot;, &quot;streamQuality&quot;);&#10;&#10;// 3. Get all values as a dictionary&#10;const config = Mewsic.config.getAll(&quot;my-plugin&quot;);&#10;console.log(config.streamQuality, config.cacheEnabled);&#10;&#10;// 4. Set values (persists to storage and notifies all listeners)&#10;Mewsic.config.set(&quot;my-plugin&quot;, &quot;streamQuality&quot;, &quot;standard&quot;); // single key&#10;Mewsic.config.set(&quot;my-plugin&quot;, {                             // batch update&#10;  streamQuality: &quot;high&quot;,&#10;  cacheEnabled: false&#10;});&#10;&#10;// 5. Reset to schema defaults&#10;Mewsic.config.reset(&quot;my-plugin&quot;, &quot;streamQuality&quot;); // single key&#10;Mewsic.config.reset(&quot;my-plugin&quot;);                 // all keys&#10;&#10;// 6. Get registered schema definition array&#10;const schema = Mewsic.config.getSchema(&quot;my-plugin&quot;);&#10;&#10;// 7. Subscribe to real-time changes (returns unsubscribe fn)&#10;const unsubscribe = Mewsic.config.onChange(&quot;my-plugin&quot;, (newConfig, changedKey) => {&#10;  console.log(`Setting [${changedKey}] changed to:`, newConfig[changedKey]);&#10;  if (changedKey === &quot;streamQuality&quot;) {&#10;    updateAudioBufferQuality(newConfig.streamQuality);&#10;  }&#10;});&#10;&#10;// To stop listening later:&#10;// unsubscribe();">
+                                <iconify-icon icon="solar:copy-linear" class="text-sm"></iconify-icon>
+                                <span>Copy</span>
+                            </button>
+                        </div>
+                        <pre><code class="language-javascript">// 1. Register a schema dynamically at runtime
+Mewsic.config.register("my-plugin", [
+  {
+    key: "streamQuality",
+    label: "Streaming Quality",
+    type: "select",
+    default: "high",
+    options: [
+      { label: "High (320kbps)", value: "high" },
+      { label: "Standard (192kbps)", value: "standard" },
+      { label: "Low (128kbps)", value: "low" }
+    ]
+  },
+  {
+    key: "cacheEnabled",
+    label: "Enable Offline Cache",
+    type: "boolean",
+    default: true
+  }
+]);
+
+// 2. Get a single value (returns schema default if not modified)
+const quality = Mewsic.config.get("my-plugin", "streamQuality");
+
+// 3. Get all values as a dictionary
+const config = Mewsic.config.getAll("my-plugin");
+console.log(config.streamQuality, config.cacheEnabled);
+
+// 4. Set values (persists to storage and notifies all listeners)
+Mewsic.config.set("my-plugin", "streamQuality", "standard"); // single key
+Mewsic.config.set("my-plugin", {                             // batch update
+  streamQuality: "high",
+  cacheEnabled: false
+});
+
+// 5. Reset to schema defaults
+Mewsic.config.reset("my-plugin", "streamQuality"); // single key
+Mewsic.config.reset("my-plugin");                 // all keys
+
+// 6. Get registered schema definition array
+const schema = Mewsic.config.getSchema("my-plugin");
+
+// 7. Subscribe to real-time changes (returns unsubscribe fn)
+const unsubscribe = Mewsic.config.onChange("my-plugin", (newConfig, changedKey) => {
+  console.log(`Setting [${changedKey}] changed to:`, newConfig[changedKey]);
+  if (changedKey === "streamQuality") {
+    updateAudioBufferQuality(newConfig.streamQuality);
+  }
+});
+
+// To stop listening later:
+// unsubscribe();</code></pre>
+                    </div>
+                </div>
+
+                <!-- 4. UI Helpers & View Integration -->
+                <div class="mt-8">
+                    <h3 class="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-[#1bd96a]"></span>
+                        UI Helpers & View Integration
+                    </h3>
+                    <p class="text-sm text-zinc-400 mb-3">
+                        Mewsic provides seamless UI helpers to open settings tabs and access configuration directly inside custom views:
+                    </p>
+
+                    <div class="code-card my-4 rounded-xl overflow-hidden border border-[#262830] bg-[#14161b]">
+                        <div
+                            class="flex items-center justify-between px-4 py-2 bg-[#1b1d24] border-b border-[#262830] text-xs font-mono text-zinc-400">
+                            <span>javascript</span>
+                            <button class="copy-code-btn flex items-center gap-1 hover:text-white transition-colors"
+                                data-code="// Open the Mewsic plugin manager directly to your plugin's config tab&#10;Mewsic.ui.openPluginConfig(&quot;my-plugin&quot;);&#10;&#10;// In custom tabs, context includes direct config bindings&#10;Mewsic.ui.registerTab(&quot;plugin:my-plugin:dashboard&quot;, {&#10;  render: (container, context) => {&#10;    // context.viewId: string&#10;    // context.pluginId: string (&quot;my-plugin&quot;)&#10;    // context.config: Record&lt;string, any&gt;&#10;    // context.getConfig(key)&#10;    // context.setConfig(key, value)&#10;    // context.onConfigChange((newConfig, changedKey) => { ... })&#10;&#10;    container.innerHTML = `&#10;      &lt;div class=&quot;p-6&quot;&gt;&#10;        &lt;h1 class=&quot;text-xl font-bold&quot;&gt;My Plugin Dashboard&lt;/h1&gt;&#10;        &lt;p&gt;Current Quality: ${context.config.streamQuality}&lt;/p&gt;&#10;        &lt;button id=&quot;btn-toggle&quot; class=&quot;btn-accent px-4 py-2 mt-4 rounded-xl&quot;&gt;&#10;          Toggle Cache (Currently: ${context.config.cacheEnabled})&#10;        &lt;/button&gt;&#10;      &lt;/div&gt;&#10;    `;&#10;&#10;    container.querySelector(&quot;#btn-toggle&quot;).onclick = () => {&#10;      context.setConfig(&quot;cacheEnabled&quot;, !context.config.cacheEnabled);&#10;    };&#10;&#10;    context.onConfigChange((newConfig) => {&#10;      console.log(&quot;Config updated from settings view!&quot;, newConfig);&#10;    });&#10;  },&#10;  cleanup: () => {}&#10;});">
+                                <iconify-icon icon="solar:copy-linear" class="text-sm"></iconify-icon>
+                                <span>Copy</span>
+                            </button>
+                        </div>
+                        <pre><code class="language-javascript">// Open the Mewsic plugin manager directly to your plugin's config tab
+Mewsic.ui.openPluginConfig("my-plugin");
+
+// In custom tabs, context includes direct config bindings
+Mewsic.ui.registerTab("plugin:my-plugin:dashboard", {
+  render: (container, context) => {
+    // context.viewId: string
+    // context.pluginId: string ("my-plugin")
+    // context.config: Record&lt;string, any&gt;
+    // context.getConfig(key)
+    // context.setConfig(key, value)
+    // context.onConfigChange((newConfig, changedKey) => { ... })
+
+    container.innerHTML = `
+      &lt;div class="p-6"&gt;
+        &lt;h1 class="text-xl font-bold"&gt;My Plugin Dashboard&lt;/h1&gt;
+        &lt;p&gt;Current Quality: ${context.config.streamQuality}&lt;/p&gt;
+        &lt;button id="btn-toggle" class="btn-accent px-4 py-2 mt-4 rounded-xl"&gt;
+          Toggle Cache (Currently: ${context.config.cacheEnabled})
+        &lt;/button&gt;
+      &lt;/div&gt;
+    `;
+
+    container.querySelector("#btn-toggle").onclick = () => {
+      context.setConfig("cacheEnabled", !context.config.cacheEnabled);
+    };
+
+    context.onConfigChange((newConfig) => {
+      console.log("Config updated from settings view!", newConfig);
+    });
+  },
+  cleanup: () => {}
+});</code></pre>
+                    </div>
+
+                    <p class="text-xs text-zinc-400 mt-2">
+                        <strong>Dedicated Standalone Config Views:</strong> If you navigate to or register a view ID matching <code>plugin-config:&lt;pluginId&gt;</code> or <code>config:&lt;pluginId&gt;</code>, Mewsic automatically renders the complete interactive settings form for that plugin!
+                    </p>
+                </div>
+
+                <!-- 5. Configuration Events Reference -->
+                <div class="mt-8">
+                    <h3 class="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-[#1bd96a]"></span>
+                        Configuration Events
+                    </h3>
+                    <div class="overflow-x-auto my-4 rounded-xl border border-[#262830] bg-[#16181d]">
+                        <table class="w-full text-left border-collapse text-sm">
+                            <thead>
+                                <tr class="bg-[#1b1d24] border-b border-[#262830]">
+                                    <th class="p-3.5 font-semibold text-zinc-200">Event Name</th>
+                                    <th class="p-3.5 font-semibold text-zinc-200">Source</th>
+                                    <th class="p-3.5 font-semibold text-zinc-200">Payload</th>
+                                    <th class="p-3.5 font-semibold text-zinc-200">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-[#262830]/70 text-zinc-300">
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3.5 font-mono text-[#1bd96a] font-medium">plugin_config_changed</td>
+                                    <td class="p-3.5 font-mono text-zinc-400 text-xs">Mewsic.events.on</td>
+                                    <td class="p-3.5 font-mono text-zinc-400 text-xs">{ pluginId, key, value, config }</td>
+                                    <td class="p-3.5 text-zinc-400 text-xs">Fired when any plugin config value changes.</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3.5 font-mono text-[#1bd96a] font-medium">plugin-config-updated</td>
+                                    <td class="p-3.5 font-mono text-zinc-400 text-xs">window (CustomEvent)</td>
+                                    <td class="p-3.5 font-mono text-zinc-400 text-xs">e.detail: { pluginId, key, config }</td>
+                                    <td class="p-3.5 text-zinc-400 text-xs">DOM event dispatched on <code>window</code> when settings are saved.</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3.5 font-mono text-[#1bd96a] font-medium">plugin-config-registered</td>
+                                    <td class="p-3.5 font-mono text-zinc-400 text-xs">window (CustomEvent)</td>
+                                    <td class="p-3.5 font-mono text-zinc-400 text-xs">e.detail: { pluginId, schema }</td>
+                                    <td class="p-3.5 text-zinc-400 text-xs">DOM event dispatched on <code>window</code> when a schema is registered.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 11: Mewsic.storage -->
             <section id="storage" class="mb-14 pt-4 border-t border-[#22242a]">
                 <div class="flex items-center gap-2 mb-2">
                     <span
@@ -1687,7 +2060,7 @@ Mewsic.storage.clear("my-plugin");</code></pre>
                 </div>
             </section>
 
-            <!-- Section 11: Mewsic.events -->
+            <!-- Section 12: Mewsic.events -->
             <section id="events" class="mb-14 pt-4 border-t border-[#22242a]">
                 <div class="flex items-center gap-2 mb-2">
                     <span
@@ -1818,6 +2191,10 @@ Mewsic.events.once("track_changed", (track) => {
                                     <td class="p-3.5 font-mono text-[#1bd96a] font-medium">track_error</td>
                                     <td class="p-3.5 font-mono text-zinc-400 text-xs">{ trackId: string, error: string }
                                     </td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.02] transition-colors">
+                                    <td class="p-3.5 font-mono text-[#1bd96a] font-medium">plugin_config_changed</td>
+                                    <td class="p-3.5 font-mono text-zinc-400 text-xs">{ pluginId: string, key: string, value: any, config: Record&lt;string, any&gt; }</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -2126,6 +2503,8 @@ Mewsic.events.offCustom("my-plugin:sync-done", handler);</code></pre>
                     data-id="ui">Mewsic.ui</a>
                 <a href="#settings" class="toc-link block py-1 hover:text-white transition-colors font-mono"
                     data-id="settings">Mewsic.settings</a>
+                <a href="#config" class="toc-link block py-1 hover:text-white transition-colors font-mono"
+                    data-id="config">Mewsic.config</a>
                 <a href="#storage" class="toc-link block py-1 hover:text-white transition-colors font-mono"
                     data-id="storage">Mewsic.storage</a>
                 <a href="#events" class="toc-link block py-1 hover:text-white transition-colors font-mono"
@@ -2251,34 +2630,51 @@ Mewsic.events.offCustom("my-plugin:sync-done", handler);</code></pre>
         const navLinks = document.querySelectorAll('.nav-link');
 
         function updateActiveSection() {
-            let current = '';
-            const scrollPos = window.scrollY + 120;
+            const scrollPos = window.scrollY + 140;
+            let current = sections[0] ? sections[0].getAttribute('id') : '';
 
             sections.forEach(section => {
-                const top = section.offsetTop;
-                const height = section.offsetHeight;
-                if (scrollPos >= top && scrollPos < top + height) {
+                if (scrollPos >= section.offsetTop) {
                     current = section.getAttribute('id');
                 }
             });
 
-            if (!current && sections.length > 0) {
-                current = sections[0].getAttribute('id');
+            // Activate last section if scrolled to page bottom
+            if ((window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - 60)) {
+                if (sections.length > 0) {
+                    current = sections[sections.length - 1].getAttribute('id');
+                }
             }
 
             // Update right "On this page" TOC
+            const tocTarget = (current === 'api-overview') ? 'namespaces-summary' : current;
             tocLinks.forEach(link => {
-                link.classList.remove('active', 'text-[#1bd96a]', 'font-semibold');
-                if (link.getAttribute('data-id') === current) {
+                const id = link.getAttribute('data-id');
+                if (id === tocTarget) {
                     link.classList.add('active', 'text-[#1bd96a]', 'font-semibold');
+                } else {
+                    link.classList.remove('active', 'text-[#1bd96a]', 'font-semibold');
                 }
             });
 
-            // Update left sidebar green pill if matching
+            // Update left sidebar active item
             navLinks.forEach(link => {
                 const href = link.getAttribute('href');
-                if (href === '#' + current || (current === 'overview' && href === '#overview')) {
-                    // Avoid removing active style if user specifically focused on api-overview
+                const isMatch = (href === '#' + current);
+                const icon = link.querySelector('iconify-icon');
+
+                if (isMatch) {
+                    link.classList.add('nav-item-active');
+                    link.classList.remove('text-zinc-400');
+                    if (icon) {
+                        icon.classList.remove('text-zinc-600');
+                    }
+                } else {
+                    link.classList.remove('nav-item-active');
+                    link.classList.add('text-zinc-400');
+                    if (icon && !icon.classList.contains('chevron-icon') && icon.getAttribute('icon') !== 'solar:star-bold') {
+                        icon.classList.add('text-zinc-600');
+                    }
                 }
             });
         }
@@ -2320,8 +2716,13 @@ Mewsic.events.offCustom("my-plugin:sync-done", handler);</code></pre>
             { title: "Mewsic.ui.addNotification()", desc: "Display toast notification in Mewsic UI", href: "#ui-notifications", category: "Method" },
             { title: "Mewsic.settings", desc: "Read and write app settings, view modes, and key shortcuts", href: "#settings", category: "Namespace" },
             { title: "Mewsic.settings.setShortcut()", desc: "Remap keyboard hotkeys (e.g. togglePlay, skipForward)", href: "#settings-setters", category: "Method" },
+            { title: "Mewsic.config", desc: "Declarative settings schema, reactive config, automated UI tabs", href: "#config", category: "Namespace" },
+            { title: "Mewsic.config.get() / set()", desc: "Get or set plugin configuration values", href: "#config", category: "Method" },
+            { title: "Mewsic.config.onChange()", desc: "Subscribe to live config updates with unlisten callback", href: "#config", category: "Method" },
+            { title: "Mewsic.ui.openPluginConfig()", desc: "Open the Mewsic plugin manager to this plugin's config tab", href: "#ui-navigation", category: "Method" },
             { title: "Mewsic.storage", desc: "Per-plugin isolated key-value store with JSON serialization", href: "#storage", category: "Namespace" },
             { title: "Mewsic.events", desc: "System lifecycle events and inter-plugin event bus", href: "#events", category: "Namespace" },
+            { title: "plugin_config_changed", desc: "Fires when plugin settings change", href: "#events-system", category: "Event" },
             { title: "track_changed event", desc: "Fires whenever active song changes with Track payload", href: "#events-system", category: "Event" },
             { title: "playback_state_changed", desc: "Fires when audio plays or pauses", href: "#events-system", category: "Event" },
             { title: "Track Object Schema", desc: "TypeScript interface for Track model", href: "#track-object", category: "Reference" },
