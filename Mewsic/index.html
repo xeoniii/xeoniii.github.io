@@ -61,6 +61,31 @@
         .glass-panel:hover {
             border-color: rgba(255, 255, 255, 0.14);
         }
+
+        .mewsic-pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            animation: mewsic-pulse 2s infinite;
+            display: inline-block;
+        }
+
+        @keyframes mewsic-pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            }
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+            }
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
     </style>
 </head>
 
@@ -146,28 +171,43 @@
 
             <!-- Stats Bar -->
             <div
-                class="w-full max-w-xl mx-auto grid grid-cols-2 gap-4 p-6 rounded-3xl border border-white/5 bg-white/[0.01]">
-                <div class="flex flex-col items-center justify-center p-4">
+                class="w-full max-w-2xl mx-auto grid grid-cols-3 gap-2 sm:gap-4 p-4 sm:p-6 rounded-3xl border border-white/5 bg-white/[0.01]">
+                <div class="flex flex-col items-center justify-center p-2 sm:p-4 text-center">
                     <span id="download-count-text"
-                        class="text-3xl md:text-5xl font-semibold text-white tracking-tighter mb-1">
+                        class="text-2xl sm:text-4xl md:text-5xl font-semibold text-white tracking-tighter mb-1">
                         ...
                     </span>
                     <span
-                        class="text-[10px] font-mono text-zinc-500 uppercase tracking-widest flex items-center gap-1.5"
+                        class="text-[9px] sm:text-[10px] font-mono text-zinc-500 uppercase tracking-widest flex items-center justify-center gap-1 sm:gap-1.5"
                         style="font-family: 'JetBrains Mono', monospace;">
                         <iconify-icon icon="solar:download-bold" class="text-emerald-400"></iconify-icon>
-                        Total Downloads
+                        <span class="whitespace-nowrap">Total Downloads</span>
                     </span>
                 </div>
-                <div class="flex flex-col items-center justify-center p-4">
-                    <span class="text-3xl md:text-5xl font-semibold text-white tracking-tighter mb-1">
+                <div id="mewsic-live-badge" class="flex flex-col items-center justify-center p-2 sm:p-4 text-center">
+                    <div class="flex items-center justify-center gap-2 mb-1">
+                        <span class="mewsic-pulse-dot"></span>
+                        <span id="mewsic-active-count"
+                            class="text-2xl sm:text-4xl md:text-5xl font-semibold text-white tracking-tighter">
+                            0
+                        </span>
+                    </div>
+                    <span
+                        class="text-[9px] sm:text-[10px] font-mono text-zinc-500 uppercase tracking-widest flex items-center justify-center gap-1 sm:gap-1.5"
+                        style="font-family: 'JetBrains Mono', monospace;">
+                        <iconify-icon icon="solar:headphones-round-sound-bold" class="text-emerald-400"></iconify-icon>
+                        <span id="mewsic-active-label" class="whitespace-nowrap">Active Listeners</span>
+                    </span>
+                </div>
+                <div class="flex flex-col items-center justify-center p-2 sm:p-4 text-center">
+                    <span class="text-2xl sm:text-4xl md:text-5xl font-semibold text-white tracking-tighter mb-1">
                         GPL v3.0
                     </span>
                     <span
-                        class="text-[10px] font-mono text-zinc-500 uppercase tracking-widest flex items-center gap-1.5"
+                        class="text-[9px] sm:text-[10px] font-mono text-zinc-500 uppercase tracking-widest flex items-center justify-center gap-1 sm:gap-1.5"
                         style="font-family: 'JetBrains Mono', monospace;">
                         <iconify-icon icon="solar:code-bold" class="text-blue-400"></iconify-icon>
-                        Open Source
+                        <span class="whitespace-nowrap">Open Source</span>
                     </span>
                 </div>
             </div>
@@ -1159,31 +1199,95 @@
             }
         });
 
+        // Filter actual installable binaries vs updater manifests and signatures
+        function isInstallableAsset(filename) {
+            if (!filename || typeof filename !== 'string') return false;
+            const lower = filename.toLowerCase();
+
+            // Exclude signature files, updater manifests, checksums, and metadata
+            const excludedExtensions = [
+                '.sig',
+                '.minisig',
+                '.asc',
+                '.json',
+                '.sha256',
+                '.sha512',
+                '.sha1',
+                '.md5',
+                '.txt',
+                '.yaml',
+                '.yml',
+                '.blockmap'
+            ];
+            if (excludedExtensions.some(ext => lower.endsWith(ext))) {
+                return false;
+            }
+
+            // Exclude latest.json or updater metadata
+            if (lower === 'latest.json' || lower.includes('manifest')) {
+                return false;
+            }
+
+            // Allowed installer, package, and application archive extensions
+            const allowedExtensions = [
+                '.exe',
+                '.msi',
+                '.dmg',
+                '.pkg',
+                '.deb',
+                '.rpm',
+                '.appimage',
+                '.tar.gz',
+                '.tgz',
+                '.tar.xz',
+                '.zip',
+                '.7z',
+                '.jar',
+                '.apk'
+            ];
+            return allowedExtensions.some(ext => lower.endsWith(ext));
+        }
+
         // GitHub Release Downloads Fetcher & Counter Animation
         async function fetchGitHubDownloads() {
+            const countElem = document.getElementById('download-count-text');
+            const CACHE_KEY = 'mewsic_total_downloads';
+            const cachedCount = localStorage.getItem(CACHE_KEY);
+
             try {
-                const response = await fetch('https://api.github.com/repos/xeoniii/Mewsic/releases');
-                if (!response.ok) throw new Error('API request failed');
+                const response = await fetch('https://api.github.com/repos/xeoniii/Mewsic/releases?per_page=100');
+                if (!response.ok) throw new Error('GitHub API request failed: ' + response.status);
                 const releases = await response.json();
                 let total = 0;
-                releases.forEach(rel => {
-                    if (rel.assets && Array.isArray(rel.assets)) {
-                        rel.assets.forEach(asset => {
-                            total += (asset.download_count || 0);
-                        });
-                    }
-                });
+                if (Array.isArray(releases)) {
+                    releases.forEach(rel => {
+                        if (rel.assets && Array.isArray(rel.assets)) {
+                            rel.assets.forEach(asset => {
+                                if (isInstallableAsset(asset.name)) {
+                                    // Deduct 1 baseline automatic download from security crawlers/scanners per asset
+                                    total += Math.max(0, (asset.download_count || 0) - 1);
+                                }
+                            });
+                        }
+                    });
+                }
 
                 if (total > 0) {
+                    try { localStorage.setItem(CACHE_KEY, total); } catch (e) { }
                     animateCounter('download-count-text', total);
-                } else {
-                    document.getElementById('download-count-text').innerText = '1,200+';
+                } else if (cachedCount) {
+                    animateCounter('download-count-text', parseInt(cachedCount, 10));
+                } else if (countElem) {
+                    countElem.innerText = '350+';
                 }
             } catch (err) {
                 console.warn('Could not fetch live download count from GitHub:', err);
-                const countElem = document.getElementById('download-count-text');
-                if (countElem && countElem.innerText === '...') {
-                    countElem.innerText = '1,000+';
+                if (countElem) {
+                    if (cachedCount) {
+                        animateCounter('download-count-text', parseInt(cachedCount, 10));
+                    } else if (countElem.innerText === '...') {
+                        countElem.innerText = '350+';
+                    }
                 }
             }
         }
@@ -1208,15 +1312,44 @@
             }, stepTime);
         }
 
+        // Mewsic Live Active Listeners Presence Fetcher & Polling
+        async function fetchActiveListeners() {
+            const ENDPOINT = "https://mewsic-presence.imrishan320.workers.dev/active-users";
+            const countEl = document.getElementById("mewsic-active-count");
+            const labelEl = document.getElementById("mewsic-active-label");
+
+            try {
+                const response = await fetch(ENDPOINT, { cache: "no-store" });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+
+                const count = typeof data.activeUsers === "number" ? data.activeUsers : 0;
+
+                if (countEl) {
+                    countEl.innerText = count.toLocaleString();
+                }
+                if (labelEl) {
+                    labelEl.innerText = count === 1 ? "Active Listener" : "Active Listeners";
+                }
+            } catch (err) {
+                console.warn("Mewsic presence unreachable:", err);
+            }
+        }
+
         // Initialize immediately
         initOSDetection();
         fetchGitHubDownloads();
+        fetchActiveListeners();
+
+        // Refresh active listeners every 30 seconds
+        setInterval(fetchActiveListeners, 30000);
 
         // Also ensure run if still loading
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
                 initOSDetection();
                 fetchGitHubDownloads();
+                fetchActiveListeners();
             });
         }
     </script>
